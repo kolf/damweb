@@ -1,0 +1,65 @@
+import React, {Component} from "react";
+import ReactDOM           from "react-dom";
+import TableBox           from "app/components/editor/table";
+
+// input:{Lists}
+// output: components
+
+const tableInit = {
+    "idField": "id",
+    "isTitle": null,
+    "head": [
+        {
+            "field": "createTime",
+            "text": "编审时间",
+        },
+        {
+            "field": "userName",
+            "text": "编审人"
+        },
+        {
+            "field": "message",
+            "text": "具体操作",
+        }
+    ],
+    "list": null,
+    "pages": 1,
+    "params": null
+};
+
+export default class EditRecord extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            lists: this.filterData(this.props.Lists)
+        }
+    };
+
+    filterData(lists) {
+        let _lists = [];
+        if(lists) {
+            [...lists].map((item, i)=>{
+                const list = {
+                    id: item.id,
+                    createTime: item.createTime,
+                    userName: item.userName,
+                    message: item.message
+                };
+                _lists.push(list);
+            });
+        }
+
+        tableInit.list = _lists;
+        return _lists;
+    };
+
+    render() {
+        const {lists} = this.props;
+        return (
+            <div id="editRecord" className="editRecord">
+                <TableBox {...tableInit}/>
+            </div>
+        )
+    };
+}
