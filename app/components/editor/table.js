@@ -110,9 +110,9 @@ export default class TableBox extends Component {
                 //);
                 return [
                     <tr
-                        key={row}
+                        key={id+row}
                         className={this.state.checkbox.checked[row] && "border-active"}
-                        onMouseDown={this.handleOnClick.bind(this)}
+                        onMouseDown={this.handleOnClick.bind(this,{"operate":"checkbox",idField,row:row})}
                         onDoubleClick={this.handleOnDouble.bind(this,id)}
                         >
                         <th colSpan={colSpan}><p>{tr[isTitle]}</p></th>
@@ -137,7 +137,7 @@ export default class TableBox extends Component {
             <tr
                 key={row}
                 className={this.state.checkbox.checked[row] && "border-active"}
-                onMouseDown={this.handleOnClick.bind(this)}
+                onMouseDown={this.handleOnClick.bind(this,{"operate":"checkbox",idField,row:row})}
                 onDoubleClick={this.handleOnDouble.bind(this,id)}
                 >
                 {[...head].map((item, i) => {
@@ -174,7 +174,7 @@ export default class TableBox extends Component {
                             break;
                         case "field":
                             td_tag = (
-                                <span onClick={this.handleOnClick.bind({"operate":field,"item":tr,idField},this)} className="text-primary hand" title={text}>{text}</span>
+                                <span onClick={this.handleOnClick.bind(this,{"operate":field,"item":tr,idField})} className="text-primary hand" title={text}>{text}</span>
                             );
                             break;
                         case "link":
@@ -206,7 +206,7 @@ export default class TableBox extends Component {
         )
     };
 
-    renderSelect ({operate,item,idField,value},self) {
+    renderSelect ({operate,item,idField,value}) {
         const html = value.map((item, i) => {
             return (
                 <option value={item.id} key={i}>{item.text}</option>
@@ -214,7 +214,7 @@ export default class TableBox extends Component {
         });
         return (
             <select id={'j_select_' + operate + '_' + item[idField]} defaultValue={item[operate]}
-                onChange={this.handleOnClick.bind({operate,item,idField},self)}>
+                onChange={this.handleOnClick.bind(this,{operate,item,idField})}>
                 {html}
             </select>
         )
@@ -226,13 +226,13 @@ export default class TableBox extends Component {
         return (
             <OverlayTrigger placement="top" trigger={['click', 'hover', 'focus']} overlay={tooltip} key={i}>
                 <i
-                    onMouseDown={this.handleOnClick.bind({operate,item,idField})}
+                    onMouseDown={this.handleOnClick.bind(this,{operate,item,idField})}
                     className={"ace-icon fa hand blue bigger-110 "+ icon}></i>
             </OverlayTrigger>
         );
     };
 
-    renderOperateText ({item,idField,val},i,self) {
+    renderOperateText ({item,idField,val},i) {
         const id = item[idField];
         const {operate,text,href} = val;
         let text_tag;
@@ -242,7 +242,7 @@ export default class TableBox extends Component {
         } else {
             text_tag = (
                 <span id={'j_'+operate+'_'+id}
-                      onClick={this.handleOnClick.bind({operate,item,idField},self)}
+                      onClick={this.handleOnClick.bind(this,{operate,item,idField})}
                       className="text-primary hand" key={i}>{text}</span>
             );
         }
@@ -283,10 +283,12 @@ export default class TableBox extends Component {
     };
 
     handleOnClick (params,self) {
+        self.preventDefault();
+        self.stopPropagation();
         // {operate,item,idField}
-        console.log("handleOnClick::",params);
-        console.log("self::",self);
-        //event.preventDefault();
+        //console.log("handleOnClick::",params);
+        //console.log("self::",self.Target);
+        //console.log("self::",this);
         this.props.onTable(params);
     };
 
