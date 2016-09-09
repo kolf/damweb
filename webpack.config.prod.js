@@ -1,89 +1,69 @@
-var path                  = require("path");
-var webpack               = require("webpack");
-var WebpackNotifierPlugin = require("webpack-notifier");
-var HtmlWebpackPlugin     = require('html-webpack-plugin');
-var CleanWebpackPlugin    = require('clean-webpack-plugin');
-var ExtractTextPlugin     = require('extract-text-webpack-plugin');
+import webpack from 'webpack';
+import path from 'path';
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import autoprefixer from 'autoprefixer';
 
-var config = {
-  "app": path.join(__dirname, "/app"),
-  "host": (process.env.HOST || "localhost"),
-  "port":(process.env.PORT || 3000),
-  "apiHost": (process.env.APIHOST || "localhost"),
-  "apiPort": (process.env.APIPORT || 3030),
-  "web": path.join(__dirname, "/web/prod")
+const extractCss = new ExtractTextPlugin('app.[contenthash].css');
+const extractAntd = new ExtractTextPlugin('antd.[contenthash].css');
+
+const updateIndexHTML = require('./tools/updateIndexHTML');
+
+const GLOBALS = {
+  'process.env.NODE_ENV': JSON.stringify('production'),
+  __DEV__: false
 };
 
-console.log(config);
-console.log("NODE_ENV:",process.env.NODE_ENV);
-
-module.exports = {
-  context: config.app,
-  entry: {
-    app: "index.js",
-    vendor: "vendors/index.js"
-  },
-  devServer: {
-    contentBase: config.web,
-    historyApiFallback: true,
-    headers: {'Access-Control-Allow-Origin': '*'},
-    host: config.host,
-    port: config.port
-  },
+export default {
+  debug: false,
+  devtool: false, // more info:https://webpack.github.io/docs/build-performance.html#sourcemaps and https://webpack.github.io/docs/configuration.html#devtool
+  noInfo: true, // set to false to see a list of every file being bundled.
+  entry: './src/index',
+  target: 'web', // necessary per https://webpack.github.io/docs/testing.html#compile-and-test
   output: {
-    path    : config.web,
-    filename: '[name].[hash].js',
-    publicPath: "/"
-  },
-  module: {
-    loaders: [
-      {test:/\.js$/, loader:'react-hot!babel', exclude:/node_modules/, include:__dirname},
-      {test:/\.js$/, loader:'babel', include:config.app},
-      //{test:/\.jsx?$/, loader:'babel', exclude: /node_modules/},
-      {test:/\.css$/, loader: ExtractTextPlugin.extract('style', 'css')},
-      //  {test:/\.scss/,loader: ExtractTextPlugin.extract('style', 'css!sass')},
-      {test:/\.(png|gif|jpe?g|svg)$/, loader:"url?limit=10000&name=[name].[ext]"},
-      {test:/\.(ttf|eot|woff|woff2|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader:"url"},
-      {test:/\.html$/, loader:'html'},
-      {test:/\.json$/, loader:"json"}
-    ],
-    preLoaders: [
-      //{test: /\.jsx/, loader: 'babel!baggage?[file].html=template&[file].scss', exclude:/node_modules/}
-    ]
-  },
-  resolve: {
-    root: __dirname,
-    modulesDirectories: [
-      'app',
-      'node_modules'
-    ],
-    extensions: ['', '.json', '.js', '.jsx']
+    path: `${__dirname}/dist`,
+    publicPath: '/',
+    filename: 'app.[chunkhash].js',
+    chunkFilename: '[id].[chunkhash].js'
   },
   plugins: [
-    new CleanWebpackPlugin(config.web),
-    new ExtractTextPlugin("[name].[hash].css", {allChunks: true}),
-    new WebpackNotifierPlugin(),
-    new HtmlWebpackPlugin({
-      title: "内容管理系统 - VCG &copy; 视觉中国",
-      favicon: "favicon.ico",
-      template: config.app + '/assets/index.template.html'
-      // filename: ""
-    }),
-    //new webpack.BannerPlugin('test vcg')
-
-    // optimizations
-    // new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.DefinePlugin(GLOBALS), // Tells React to build in prod mode. https://facebook.github.io/react/downloads.html
+    extractAntd,
+    extractCss,
+    new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
-      compressor: {
+      compress: {
         warnings: false
       }
     }),
-
-    new webpack.NoErrorsPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production')
-    })
-  ]
+    new HtmlWebpackPlugin({
+      filename: `${__dirname}/dist/index.html`,
+      template: `${__dirname}/src/index.html`,
+      inject: true,
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeAttributeQuotes: true
+        // more options:
+        // https://github.com/kangax/html-minifier#options-quick-reference
+      }
+    }),
+    new updateIndexHTML()
+  ],
+  module: {
+    loaders: [
+      {test: /\.js$/, include: path.join(__dirname, 'src'), loaders: ['babel']},
+      {test: /\.eot(\?v=\d+.\d+.\d+)?$/, loader: 'file'},
+      {test: /\.(woff|woff2)$/, loader: 'file-loader?prefix=font/&limit=5000'},
+      {test: /\.ttf(\?v=\d+.\d+.\d+)?$/, loader: 'file-loader?limit=10000&mimetype=application/octet-stream'},
+      {test: /\.svg(\?v=\d+.\d+.\d+)?$/, loader: 'file-loader?limit=10000&mimetype=image/svg+xml'},
+      {test: /\.(jpe?g|png|gif)$/i, loaders: ['file']},
+      {test: /\.ico$/, loader: 'file-loader?name=[name].[ext]'},
+      // https://github.com/webpack/style-loader#recommended-configuration
+      {test: /(\.css|\.scss)$/, include: path.join(__dirname, 'node_modules/antd'), loader: extractAntd.extract('css')},
+      {test: /(\.css|\.scss)$/, include: path.join(__dirname, 'src'), loader: extractCss.extract('css!postcss!sass')}
+    ]
+  },
+  postcss: ()=> [autoprefixer]
 };

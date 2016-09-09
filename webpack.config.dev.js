@@ -1,96 +1,42 @@
-var path                  = require("path");
-var webpack               = require("webpack");
-var WebpackNotifierPlugin = require("webpack-notifier");
-var HtmlWebpackPlugin     = require('html-webpack-plugin');
-var CleanWebpackPlugin    = require('clean-webpack-plugin');
-var ExtractTextPlugin     = require('extract-text-webpack-plugin');
+import webpack from 'webpack';
+import path from 'path';
+import autoprefixer from 'autoprefixer';
 
-var config = {
-  "app": path.join(__dirname, "/app"),
-  "host": (process.env.HOST || "localhost"),
-  "port":(process.env.PORT || 3000),
-  "apiHost": (process.env.APIHOST || "localhost"),
-  "apiPort": (process.env.APIPORT || 3030),
-  "web": path.join(__dirname, "/web/dev")
+const GLOBALS = {
+  'process.env.NODE_ENV': JSON.stringify('development'),
+  __DEV__: true
 };
 
-console.log(config);
-console.log("NODE_ENV:",process.env.NODE_ENV);
-
-module.exports = {
-  context: config.app,
-  entry: {
-    app: "index.js",
-    vendor: "vendors/index.js"
-  },
-  devServer: {
-    contentBase: config.web,
-    hot   : true,
-    colors: true,
-    inline: true,
-    historyApiFallback: true,
-    headers: {'Access-Control-Allow-Origin': '*'},
-    host: config.host,
-    port: config.port,
-    proxy: {
-      "/api/*": {
-        target: {
-          host: config.apiHost,
-          port: config.apiPort
-        }
-      }
-    }
-  },
+export default {
+  debug: true,
+  devtool: 'cheap-module-eval-source-map', // more info:https://webpack.github.io/docs/build-performance.html#sourcemaps and https://webpack.github.io/docs/configuration.html#devtool
+  noInfo: true, // set to false to see a list of every file being bundled.
+  entry: [
+    'webpack-hot-middleware/client?reload=true',
+    './src/index'
+  ],
+  target: 'web', // necessary per https://webpack.github.io/docs/testing.html#compile-and-test
   output: {
-    path    : config.web,
-    filename: '[name].[hash].js',
-    // publicPath: "http://"+config.host+":"+config.port+"/"
-    publicPath: "/"
-    
-  },
-  // or devtool: 'eval' to debug issues with compiled output:
-  devtool: '#cheap-module-eval-source-map',
-  module: {
-    loaders: [
-      {test:/\.js$/, loader:'react-hot!babel', exclude:/node_modules/, include:__dirname},
-      {test:/\.js$/, loader:'babel', include:config.app},
-      //{test:/\.jsx?$/, loader:'babel', exclude: /node_modules/},
-      {test:/\.css$/, loader: ExtractTextPlugin.extract('style', 'css')},
-      //  {test:/\.scss/,loader: ExtractTextPlugin.extract('style', 'css!sass')},
-      {test:/\.(png|gif|jpe?g|svg)$/, loader:"url?limit=10000&name=[name].[ext]"},
-      {test:/\.(ttf|eot|woff|woff2|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader:"url"},
-      {test:/\.html$/, loader:'html'},
-      {test:/\.json$/, loader:"json"}
-    ],
-    preLoaders: [
-      //{test: /\.jsx/, loader: 'babel!baggage?[file].html=template&[file].scss', exclude:/node_modules/}
-    ]
-  },
-  resolve: {
-    root: __dirname,
-    modulesDirectories: [
-      'app',
-      'node_modules'
-    ],
-    extensions: ['', '.json', '.js', '.jsx']
+    path: `${__dirname}/dist`, // Note: Physical files are only output by the production build task `npm run build`.
+    publicPath: 'http://localhost:3000/', // Use absolute paths to avoid the way that URLs are resolved by Chrome when they're parsed from a dynamically loaded CSS blob. Note: Only necessary in Dev.
+    filename: 'bundle.js'
   },
   plugins: [
-    new CleanWebpackPlugin(config.web),
-    new ExtractTextPlugin("[name].[hash].css", {allChunks: true}),
-    new WebpackNotifierPlugin(),
-    new HtmlWebpackPlugin({
-      title: "内容管理系统 - VCG &copy; 视觉中国",
-      favicon: "favicon.ico",
-      template: config.app + '/assets/index.template.html'
-      // filename: ""
-    }),
-
-    //new webpack.BannerPlugin('test vcg')
-
-    new webpack.NoErrorsPlugin(),
-    new webpack.HotModuleReplacementPlugin()
-     // new webpack.DefinePlugin({
-    //   'process.env.NODE_ENV': JSON.stringify('development')
-    // })
-  ]
+    new webpack.DefinePlugin(GLOBALS), // Tells React to build in prod mode. https://facebook.github.io/react/downloads.htmlnew webpack.HotModuleReplacementPlugin());
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoErrorsPlugin()
+  ],
+  module: {
+    loaders: [
+      {test: /\.js$/, include: path.join(__dirname, 'src'), loaders: ['babel']},
+      {test: /\.eot(\?v=\d+.\d+.\d+)?$/, loader: 'file'},
+      {test: /\.(woff|woff2)$/, loader: 'file-loader?prefix=font/&limit=5000'},
+      {test: /\.ttf(\?v=\d+.\d+.\d+)?$/, loader: 'file-loader?limit=10000&mimetype=application/octet-stream'},
+      {test: /\.svg(\?v=\d+.\d+.\d+)?$/, loader: 'file-loader?limit=10000&mimetype=image/svg+xml'},
+      {test: /\.(jpe?g|png|gif)$/i, loaders: ['file']},
+      {test: /\.ico$/, loader: 'file-loader?name=[name].[ext]'},
+      {test: /(\.css|\.scss)$/, loaders: ['style', 'css?sourceMap', 'postcss', 'sass?sourceMap']}
+    ]
+  },
+  postcss: ()=> [autoprefixer]
 };
