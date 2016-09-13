@@ -1,50 +1,25 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
 import CustomTable from './../../components/CustomTable';
 
-import { fetchUsers } from './../../actions/users';
+import { queryUsers } from './../../actions/users';
 import { Form, Input, Row, Col, Button } from 'antd';
+const CreateForm = Form.create;
 const FormItem = Form.Item;
 const ButtonGroup = Button.Group;
 
-import './UsersPage.scss';
-// Which part of the Redux global state does our component want to receive as props?
-function mapStateToProps(state) {
-  const { users } = state;
-  return {
-    users
-  };
-}
+import './Users.scss';
 
-// Which action creators does it want to receive by props?
-function mapDispatchToProps(dispatch) {
-  // bindActionCreators(ActionCreators, dispatch)
-  return {
-    fetchUsers: (params) => dispatch(fetchUsers(params))
-  };
-}
-
-export class UsersPage extends React.Component {
-  static propTypes = {
-    fetchUsers: React.PropTypes.func,
-    users: React.PropTypes.object
-  };
-
+class Users extends Component {
   constructor(props) {
     super(props);
     this.handleTableChange = this.handleTableChange.bind(this);
-    this.state = {
-      selectedRowKeys: []
-    };
-  }
-
-  componentDidMount() {
-    this.props.fetchUsers();
   }
 
   handleTableChange(pagination, filters = {}, sorter = {}) {
+    const { dispatch } = this.props;
     const pageParams = { page: pagination.current, per_page: pagination.pageSize };
     const filtersField = {};
     if(Object.keys(filters).length !== 0) {
@@ -79,49 +54,43 @@ export class UsersPage extends React.Component {
     }
 
     const params = Object.assign({}, pageParams, filtersField, sortParams);
-    this.props.fetchUsers(params);
+
+    dispatch(queryUsers(params))
   }
 
   render() {
     const { users: { data, meta, isFetching } } = this.props;
-    const columns = [
-      {
+    const columns = [{
         title: "用户帐号",
         dataIndex: "account",
         key: "account",
         sorter: true
-      },
-      {
+      },{
         title: "用户姓名",
         dataIndex: "name",
         key: "name",
         sorter: true
-      },
-      {
+      },{
         title: "手机号",
         dataIndex: "phone",
         key: "phone",
         sorter: true
-      },
-      {
+      },{
         title: "公司名称",
         dataIndex: "company",
         key: "company",
         sorter: true
-      },
-      {
+      },{
         title: "申请时间",
         dataIndex: "created_at",
         key: "created_at",
         sorter: true
-      },
-      {
+      },{
         title: "定制产品",
         dataIndex: "products",
         key: "products",
         sorter: true
-      },
-      {
+      },{
         title: '操作',
         key: 'operation',
         render: () => (
@@ -158,7 +127,7 @@ export class UsersPage extends React.Component {
         <Row>
           <Col span={8}>
             <div style={{ marginBottom: 16 }}>
-              <Button type="primary"><Link to={'/user/new'}>添加用户</Link></Button>
+              <Button type="primary"><Link to={'/user/create'}>添加用户</Link></Button>
             </div>
           </Col>
         </Row>
@@ -175,7 +144,16 @@ export class UsersPage extends React.Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UsersPage);
+Users.propTypes = {
+  form: PropTypes.object.isRequired,
+  dispatch: PropTypes.func.isRequired
+};
+
+function mapStateToProps(state) {
+  const { users } = state;
+  return {
+    users
+  };
+}
+
+export default connect(mapStateToProps)(CreateForm()(Users));

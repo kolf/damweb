@@ -8,6 +8,7 @@ import routes from './routes';
 import configureStore from './store/configureStore';
 import { syncHistoryWithStore } from 'react-router-redux';
 
+import './assets/styles/index.scss';
 // load favicon.ico
 require('./favicon.ico');
 

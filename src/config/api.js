@@ -1,16 +1,12 @@
-let host;
+let host = "http://192.168.3.120:9090";
 
-if(process.env.NODE_ENV == "test"){
-  host = "http://localhost:4000";
-}else{
-  host = location.origin;
-}
-
-const baseUri = host + "/api/v1/";
+const baseUri = host + "/";
 export const API_CONFIG = {
   host: host,
   baseUri: baseUri,
-  auth: 'auth',
-  users: 'users',
+  auth: 'damSys/syslogin',
+  queryUser: 'users',
+  createUser: 'damUser/create',
+  queryUserProducts: 'damProduct/list',
   products: 'products',
 };

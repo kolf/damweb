@@ -1,5 +1,6 @@
 import {
-  PRODUCTS_QERUEST, PRODUCTS_SUCCESS, PRODUCTS_FAILURE
+  PRODUCTS_QERUEST, PRODUCTS_SUCCESS, PRODUCTS_FAILURE,
+  USER_PRODUCTS_QERUEST, USER_PRODUCTS_SUCCESS, USER_PRODUCTS_FAILURE
 } from './../constants/actionTypes';
 import cFetch from './../utils/cFetch';
 
@@ -29,10 +30,10 @@ function productsError(message) {
   };
 }
 
-export function fetchProducts(params = { page: 1, per_page: 10 }) {
+export function queryProducts(params = { page: 1, per_page: 10 }) {
   return dispatch => {
     dispatch(requestProducts());
-    return cFetch(API_CONFIG.products, { method: "GET", params: params }).then((response) => {
+    return cFetch(API_CONFIG.queryUserProducts, { method: "GET", params: params, headers:{}}).then((response) => {
       if (response.jsonResult.error_code === 4001) {
         dispatch(productsError(response.jsonResult.error_message));
         message.error(response.jsonResult.error_message);

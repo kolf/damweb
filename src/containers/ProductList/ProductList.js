@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 
 import CustomTable from './../../components/CustomTable';
 
-import { fetchProducts } from './../../actions/products';
+import { queryProducts } from '../../actions/products';
 import { Form, Input, Row, Col, Button, InputNumber } from 'antd';
 const FormItem = Form.Item;
 const ButtonGroup = Button.Group;
@@ -22,7 +22,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   // bindActionCreators(ActionCreators, dispatch)
   return {
-    fetchProducts: (params) => dispatch(fetchProducts(params))
+    fetchProducts: (params) => dispatch(queryProducts(params))
   };
 }
 

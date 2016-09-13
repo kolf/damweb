@@ -2,9 +2,6 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import Login from './../Login/Login';
 import { Link } from 'react-router';
-
-import "../../style/index.less";
-
 import './App.scss';
 import { Menu, Breadcrumb, Icon, Dropdown } from 'antd';
 const SubMenu = Menu.SubMenu;
@@ -74,7 +71,7 @@ class App extends Component {
             </div>
           </div>
           <div className="ant-layout-footer">
-             视觉中国 © 2016 DAM 运营管理系统
+             视觉中国 © 2016 DAM数字资产管理系统
           </div>
         </div>
       </div>

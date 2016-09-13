@@ -23,5 +23,8 @@ export default {
       page: 1
     },
     data: []
+  },
+  userProducts: {
+
   }
 };

@@ -96,7 +96,11 @@ function toQueryString(object) {
 function cFetch(url, options) {
   let mergeUrl = API_CONFIG.baseUri + url;
   const defaultOptions = {
-    method: 'GET'
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+    }
   };
 
   const opts = Object.assign({}, defaultOptions, {...options});

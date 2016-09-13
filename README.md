@@ -53,7 +53,7 @@ npm run test:cover
 │   │   └── users.spec.js  # redux action test
 │   ├── components  # write your redux components here
 │   │   ├── CustomTable.js
-│   │   └── NotFoundPage  # this is a folder which include NotFoundPage.js, NotFoundPage.scss, NotFoundPage.spec.js
+│   │   └── NotFoundPage  # this is a folder which include NotFound.js, NotFoundPage.scss, NotFoundPage.spec.js
 │   ├── config
 │   │   └── api.js  # write your api config here
 │   ├── constants  # some constants
@@ -65,9 +65,9 @@ npm run test:cover
 │   │   └── db.json  # mock data file
 │   ├── favicon.ico
 │   ├── index.html  # template index.html
-│   ├── index.js  # entry file
+│   ├── CreateUser.js  # entry file
 │   ├── reducers  # write your redux reducers here.
-│   │   ├── index.js  # entry file
+│   │   ├── CreateUser.js  # entry file
 │   │   ├── initialState.js  # put all of the initial state in here
 │   │   ├── users.js  # users reducers
 │   │   └── users.spec.js  # users reducers spec

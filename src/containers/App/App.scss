@@ -110,3 +110,9 @@
     float: right !important;
   }
 }
+.gap{
+  &-inline{
+    display: inline-block;
+    width:10px;
+  }
+}

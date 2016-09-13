@@ -1,0 +1,25 @@
+.ant{
+  &-input{
+    border-radius: 2px;
+  }
+  &-btn{
+    border-radius: 2px;
+  }
+  &-form{
+    &-horizontal{
+      padding-top:24px;
+    }
+  }
+  &-menu{
+    &-submenu{
+      &>.ant-menu{
+        border-radius: 2px;
+      }
+    }
+  }
+  &-select{
+    &-selection{
+      border-radius: 2px;
+    }
+  }
+}
