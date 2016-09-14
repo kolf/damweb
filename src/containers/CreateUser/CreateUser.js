@@ -19,8 +19,7 @@ class CreateUser extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
-
-    dispatch(queryProducts())
+    dispatch(queryProducts());
   }
 
   handleReset(e) {
@@ -34,7 +33,7 @@ class CreateUser extends Component {
     const { dispatch } = this.props;
 
     this.props.form.validateFields((errors) => {
-      if (!!errors) {
+      if (errors) {
         return;
       }
       const creds = (this.props.form.getFieldsValue());
@@ -74,6 +73,14 @@ class CreateUser extends Component {
       trigger: 'onBlur',
     });
 
+    const passwordProps = getFieldProps('password', {
+      rules: [
+        { required: true, min: 6, message: '密码至少为 6 个字符' },
+        { validator: this.userExists },
+      ],
+      trigger: 'onBlur',
+    });
+
     const companyProps = getFieldProps('orgName', {
       rules: [
         { required: true, min: 4, message: '公司名称至少为 4 个字符' },
@@ -104,7 +111,7 @@ class CreateUser extends Component {
       }],
     });
 
-    const productsOpts = [];
+    let productsOpts = [];
 
     const formItemLayout = {
       labelCol: { span: 4 },
@@ -112,7 +119,7 @@ class CreateUser extends Component {
     };
 
     return (
-        <Form horizontal className="ant-col-offset-5">
+        <Form horizontal className="ant-col-offset-5" onSubmit={this.handleSubmit}>
           <FormItem
             {...formItemLayout}
             label="用户名"
@@ -121,6 +128,15 @@ class CreateUser extends Component {
             help={isFieldValidating('damId') ? '校验中...' : (getFieldError('damId') || []).join(', ')}
           >
             <Input {...accountProps} />
+          </FormItem>
+
+          <FormItem
+            {...formItemLayout}
+            label="密码"
+            hasFeedback
+            required
+          >
+            <Input type="password" {...passwordProps} />
           </FormItem>
 
           <FormItem
@@ -172,7 +188,6 @@ class CreateUser extends Component {
           >
             <Select
               multiple
-              style={{ width: '100%' }}
               placeholder="请选择产品"
             >
               {productsOpts}
@@ -180,7 +195,7 @@ class CreateUser extends Component {
           </FormItem>
 
           <FormItem wrapperCol={{ span: 8, offset: 4 }}>
-            <Button type="primary" onClick={this.handleSubmit}>确定</Button><span className="gap-inline"></span><Button type="ghost" onClick={this.handleReset}>取消</Button>
+            <Button type="primary" htmlType="submit">确定</Button><span className="gap-inline"></span><Button type="ghost" onClick={this.handleReset}>取消</Button>
           </FormItem>
         </Form>
     );

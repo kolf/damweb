@@ -57,26 +57,25 @@ export function queryUsers(params) {
   return dispatch => {
     dispatch(requestUsers());
     return cFetch(API_CONFIG.queryUser, { method: "GET", params: params }).then((response) => {
-      if (response.jsonResult.error_code === 4001) {
-        dispatch(usersError(response.jsonResult.error_message));
-        message.error(response.jsonResult.error_message);
-      } else {
+      if (response.jsonResult.returnCode === '1') {
         dispatch(receiveUsers(response.jsonResult));
+      } else {
+        dispatch(usersError(response.jsonResult.msg));
+        message.error(response.jsonResult.msg);
       }
     });
   };
 }
 
 export function createUser(creds) {
-  console.log(creds);
   return dispatch => {
     dispatch(requestCreateUser());
     return cFetch(API_CONFIG.createUser,{ method: "POST", body: JSON.stringify(creds) }).then((response) => {
-      if (response.jsonResult.error_code === 4001) {
-        dispatch(createUserError(response.jsonResult.error_message));
-        message.error(response.jsonResult.error_message);
-      } else {
+      if (response.jsonResult.returnCode === '1') {
         dispatch(receiveCreateUser(response.jsonResult));
+      } else {
+        dispatch(createUserError(response.jsonResult.msg));
+        message.error(response.jsonResult.msg);
       }
     });
   };

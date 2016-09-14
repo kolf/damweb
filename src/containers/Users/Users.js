@@ -1,11 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { Form, Input, Row, Col, Button } from 'antd';
 import { Link } from 'react-router';
 
 import CustomTable from './../../components/CustomTable';
-
 import { queryUsers } from './../../actions/users';
-import { Form, Input, Row, Col, Button } from 'antd';
+
 const CreateForm = Form.create;
 const FormItem = Form.Item;
 const ButtonGroup = Button.Group;
@@ -18,19 +18,16 @@ class Users extends Component {
     this.handleTableChange = this.handleTableChange.bind(this);
   }
 
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch(queryUsers())
+  }
+
   handleTableChange(pagination, filters = {}, sorter = {}) {
     const { dispatch } = this.props;
-    const pageParams = { page: pagination.current, per_page: pagination.pageSize };
+    const pageParams = { pageNum: pagination.current, pageSize: pagination.pageSize };
     const filtersField = {};
     if(Object.keys(filters).length !== 0) {
-      // enum filters
-      [{
-        key: "roles", filterParams: "roles_in"
-      }].map(item => {
-        if(filters[item.key]){
-          filtersField[`q[${item.filterParams}]`] = filters[item.key];
-        }
-      });
 
       // date range filter
       ['created_at'].map(item => {
@@ -47,6 +44,7 @@ class Users extends Component {
         }
       });
     }
+
     const sortParams = {};
     if (Object.keys(sorter).length !== 0) {
       const sortMethod = sorter.order === "descend" ? "desc" : "asc";
@@ -59,7 +57,9 @@ class Users extends Component {
   }
 
   render() {
+    console.log(this.props);
     const { users: { data, meta, isFetching } } = this.props;
+
     const columns = [{
         title: "用户帐号",
         dataIndex: "account",
@@ -105,7 +105,7 @@ class Users extends Component {
     const pagination = {
       showSizeChanger: true,
       total: meta.total,
-      pageSize: meta.perPage,
+      pageSize: meta.pageSize,
       pageSizeOptions: ['5','10','20','40']
     };
 

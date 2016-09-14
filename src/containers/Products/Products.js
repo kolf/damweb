@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
@@ -9,8 +9,8 @@ import { Form, Input, Row, Col, Button, InputNumber } from 'antd';
 const FormItem = Form.Item;
 const ButtonGroup = Button.Group;
 
-import './ProductList.scss';
-// Which part of the Redux global state does our component want to receive as props?
+import './Products.scss';
+
 function mapStateToProps(state) {
   const { products } = state;
   return {
@@ -18,42 +18,26 @@ function mapStateToProps(state) {
   };
 }
 
-// Which action creators does it want to receive by props?
 function mapDispatchToProps(dispatch) {
-  // bindActionCreators(ActionCreators, dispatch)
   return {
-    fetchProducts: (params) => dispatch(queryProducts(params))
+    queryPdoducts: (params) => dispatch(queryProducts(params))
   };
 }
 
-export class ProductList extends React.Component {
-  static propTypes = {
-    fetchProducts: React.PropTypes.func,
-    products: React.PropTypes.object
-  };
-
+class ProductList extends Component {
   constructor(props) {
     super(props);
     this.handleTableChange = this.handleTableChange.bind(this);
   }
 
   componentDidMount() {
-    this.props.fetchProducts();
+    this.props.queryPdoducts();
   }
 
   handleTableChange(pagination, filters = {}, sorter = {}) {
-    const pageParams = { page: pagination.current, per_page: pagination.pageSize };
+    const pageParams = { pageNum: pagination.current, pageSize: pagination.pageSize };
     const filtersField = {};
     if(Object.keys(filters).length !== 0) {
-      // date range filter
-      ['created_at'].map(item => {
-        if(filters[item]){
-          filtersField[`q[${item}_gteq]`] = filters[item][0];
-          filtersField[`q[${item}_lteq]`] = filters[item][1];
-        }
-      });
-
-      // string filter
       ['name'].map(item => {
         if(filters[item]){
           filtersField[`q[${item}_cont]`] = filters[item];
@@ -67,7 +51,7 @@ export class ProductList extends React.Component {
     }
 
     const params = Object.assign({}, pageParams, filtersField, sortParams);
-    this.props.fetchProducts(params);
+    this.props.queryPdoducts(params);
   }
 
 
@@ -125,7 +109,7 @@ export class ProductList extends React.Component {
     const pagination = {
       showSizeChanger: true,
       total: meta.total,
-      pageSize: meta.perPage,
+      pageSize: meta.pageSize,
       pageSizeOptions: ['5','10','20','40']
     };
 
@@ -150,7 +134,7 @@ export class ProductList extends React.Component {
         <Row>
           <Col span={8}>
             <div style={{ marginBottom: 16 }}>
-              <Button type="primary"><Link to={'/product/new'}>添加产品</Link></Button>
+              <Button type="primary"><Link to={'/product/create'}>添加产品</Link></Button>
             </div>
           </Col>
         </Row>

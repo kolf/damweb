@@ -10,8 +10,8 @@ export default {
     isFetching: false,
     meta: {
       total: 0,
-      perPage: 10,
-      page: 1
+      pageSize: 10,
+      pageNum: 1
     },
     data: []
   },
@@ -19,12 +19,21 @@ export default {
     isFetching: false,
     meta: {
       total: 0,
-      perPage: 10,
-      page: 1
+      pageSize: 10,
+      pageNum: 1
     },
     data: []
   },
-  userProducts: {
-
+  productsOpts: {
+    isFetching: false,
+    data: []
+  },
+  resOpts: {
+    isFetching: false,
+    data: []
+  },
+  sysResOpts: {
+    isFetching: false,
+    data: []
   }
 };

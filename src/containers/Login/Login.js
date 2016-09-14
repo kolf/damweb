@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, Message } from 'antd';
 import { loginUser } from './../../actions/auth';
 
 import './Login.scss';
@@ -24,8 +24,6 @@ class Login extends Component {
 
     const { dispatch } = this.props;
 
-    console.log(this.props);
-
     this.props.form.validateFields((errors) => {
       if (errors) {
         return false;
@@ -39,25 +37,26 @@ class Login extends Component {
     const { setFields } = this.props.form;
     const newValue = {
       name: {
-        name: "name",
+        name: "damId",
         validating: false,
         value: name,
         errors: [message]
       }
     };
     setFields(newValue);
+    console.log(message)
   }
 
   render() {
     const { getFieldProps } = this.props.form;
-    const nameProps = getFieldProps('name', {
+    const nameProps = getFieldProps('damId', {
       rules: [
         { required: true, min: 2, message: '用户名至少为 2 个字符' },
         { validator: this.userExists },
       ],
     });
 
-    const passwordProps = getFieldProps('password', {
+    const passwordProps = getFieldProps('damPasswd', {
       rules: [
         { required: true, min: 6, message: '密码至少为 6 个字符' }
       ]
@@ -67,12 +66,11 @@ class Login extends Component {
       <div className="login-container">
         <div className="login-content">
           <div className="login-header">DAM数字资产管理系统</div>
-          <Form className="login-form" horizontal onSubmit={this.handleSubmit} form={this.props.form}>
+          <Form className="login-form" horizontal onSubmit={this.handleSubmit}>
           <FormItem label="用户名" hasFeedback>
             <Input
               {...nameProps}
               placeholder="请输入用户名"
-              type="name"
               />
             </FormItem>
             <FormItem label="密码" hasFeedback>

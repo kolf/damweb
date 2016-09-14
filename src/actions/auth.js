@@ -53,16 +53,13 @@ function receiveLogout() {
 export function loginUser(creds, cbk) {
   return dispatch => {
     dispatch(requestLogin(creds));
-
-    cookie.set('access_token', 'n');
-
-    cFetch(API_CONFIG.auth, { method: "POST", body: JSON.stringify(creds) , headers:{}}).then((response) => {
-      if (response.jsonResult.error_code === 4001) {
-        dispatch(loginError(response.jsonResult.error_message));
-        cbk(creds.name, response.jsonResult.error_message);
-      } else {
+    cFetch(API_CONFIG.auth, { method: "POST", body: JSON.stringify(creds) }).then((response) => {
+      if (response.jsonResult.returnCode === '1') {
         cookie.set('access_token', response.jsonResult.access_token);
         dispatch(receiveLogin(response.jsonResult));
+      } else {
+        dispatch(loginError(response.jsonResult.msg));
+        cbk(creds.damId, response.jsonResult.msg);
       }
     });
   };

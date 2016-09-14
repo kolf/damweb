@@ -2,14 +2,16 @@ import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 
 import auth from './auth';
-import user from './users';
-import product from './products';
+import users from './users';
+import products from './products';
+import resOpts from './resOpts';
 
 const rootReducer = combineReducers({
   routing: routerReducer,
   auth,
-  user,
-  product
+  users,
+  products,
+  resOpts
 });
 
 export default rootReducer;

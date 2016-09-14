@@ -6,6 +6,8 @@ import './App.scss';
 import { Menu, Breadcrumb, Icon, Dropdown } from 'antd';
 const SubMenu = Menu.SubMenu;
 
+import { logoutUser } from './../../actions/auth';
+
 class App extends Component {
   static propTypes = {
     children: PropTypes.element,
@@ -16,13 +18,16 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.renderAuthenticatedPage = this.renderAuthenticatedPage.bind(this);
-
-    this.state = {
-      collapse: false
-    };
+    this.handleLogout = this.handleLogout.bind(this);
   }
 
   componentDidMount() {
+
+  }
+
+  handleLogout() {
+    const { dispatch } = this.props;
+    dispatch(logoutUser())
   }
 
   renderAuthenticatedPage() {
@@ -33,14 +38,14 @@ class App extends Component {
           <Menu mode="inline" theme="dark" defaultSelectedKeys={['1']} defaultOpenKeys={['sub1']}>
             <SubMenu key="sub1" title={<span><Icon type="user" />用户管理</span>}>
               <Menu.Item key="1">
-                <Link to={'/users'}>
+                <Link to={'/user'}>
                   用户列表
                 </Link>
               </Menu.Item>
             </SubMenu>
             <SubMenu key="sub2" title={<span><Icon type="cloud" />产吕管理</span>}>
               <Menu.Item key="2">
-                <Link to={'/products'}>
+                <Link to={'/product'}>
                   产品列表
                 </Link>
               </Menu.Item>
@@ -49,11 +54,8 @@ class App extends Component {
         </aside>
         <div className="ant-layout-main">
           <div className="ant-layout-header">
-          <Menu mode="horizontal">
+          <Menu mode="horizontal" onClick={this.handleLogout}>
               <SubMenu className="pull-right" title={<span><Icon type="user" />Kolf</span>}>
-                <Menu.Item key="setting:1">选项1</Menu.Item>
-                <Menu.Item key="setting:2">选项2</Menu.Item>
-                <Menu.Divider />
                 <Menu.Item key="setting:3">退出</Menu.Item>
               </SubMenu>
             </Menu>
@@ -87,6 +89,10 @@ class App extends Component {
     );
   }
 }
+
+App.propTypes = {
+  dispatch: PropTypes.func.isRequired
+};
 
 function mapStateToProps(state) {
   const { routing, auth: { isAuthenticated, user } } = state;

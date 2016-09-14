@@ -14,11 +14,11 @@ export default function products(state = initialState.products, action) {
         isFetching: false,
         errorMessage: '',
         meta: {
-          total: action.products.meta.total,
-          perPage: action.products.meta.per_page,
-          page: action.products.meta.page
+          total: action.products.data.total,
+          pageSize: action.products.data.pageSize,
+          pageNum: action.products.data.pageNum
         },
-        data: action.products.data
+        data: action.products.data.list
       });
     case PRODUCTS_FAILURE:
       return Object.assign({}, state, {

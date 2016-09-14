@@ -98,8 +98,8 @@ function cFetch(url, options) {
   const defaultOptions = {
     method: 'GET',
     headers: {
-      'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
-      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+      'Accept': '*/*',
+      'Content-Type': 'application/json'
     }
   };
 

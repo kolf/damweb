@@ -1,26 +1,21 @@
 import {
-  USERS_QERUEST, USERS_SUCCESS, USERS_FAILURE
+  RES_QERUEST, RES_SUCCESS, RES_FAILURE
 } from './../constants/actionTypes';
 import initialState from './initialState';
 
-export default function users(state = initialState.users, action) {
+export default function resOpts(state = initialState.resOpts, action) {
   switch (action.type) {
-    case USERS_QERUEST:
+    case RES_QERUEST:
       return Object.assign({}, state, {
         isFetching: true
       });
-    case USERS_SUCCESS:
+    case RES_SUCCESS:
       return Object.assign({}, {
         isFetching: false,
         errorMessage: '',
-        meta: {
-          total: action.users.data.total,
-          pageSize: action.users.data.pageSize,
-          pageNum: action.users.data.pageNum
-        },
-        data: action.users.data.list
+        data: action.res.data.subRes
       });
-    case USERS_FAILURE:
+    case RES_FAILURE:
       return Object.assign({}, state, {
         isFetching: false,
         errorMessage: action.message
@@ -29,3 +24,12 @@ export default function users(state = initialState.users, action) {
       return state;
   }
 }
+
+
+
+/**
+
+<OptGroup label="Engineer">
+  <Option value="yiminghe">yiminghe</Option>
+</OptGroup>
+ **/

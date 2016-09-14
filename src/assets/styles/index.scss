@@ -22,4 +22,12 @@
       border-radius: 2px;
     }
   }
+  &-input{
+    &-number{
+      border-radius: 2px;
+    }
+  }
+}
+.ant-pagination-prev, .ant-pagination-next, .ant-pagination-jump-prev, .ant-pagination-jump-next, .ant-pagination-item, .ant-select-dropdown,.ant-select-tree-checkbox-inner{
+  border-radius: 2px;
 }
