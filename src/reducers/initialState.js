@@ -28,11 +28,11 @@ export default {
     isFetching: false,
     data: []
   },
-  resOpts: {
+  res: {
     isFetching: false,
     data: []
   },
-  sysResOpts: {
+  sysRes: {
     isFetching: false,
     data: []
   }

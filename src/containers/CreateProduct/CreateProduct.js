@@ -2,7 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Button, Form, Input, Checkbox, Select, InputNumber } from 'antd';
 import { createProduct } from './../../actions/products';
-import { queryRes, querySysRes } from './../../actions/res';
+import { queryRes } from './../../actions/res';
+import { querySysRes } from './../../actions/sysRes';
 
 import './CreateProduct.scss';
 
@@ -70,7 +71,19 @@ class CreateProduct extends Component {
 
   render() {
     const { getFieldProps, getFieldError, isFieldValidating } = this.props.form;
-    const { resOpts } = this.props;
+    let { res, sysRes } = this.props;
+
+    res = res.data;
+    let resOpts = [];
+    for(let i=0;i<res.length;i++){
+      resOpts.push(<Option key={res[i].id}>{res[i].resName}</Option>)
+    }
+
+    sysRes = sysRes.data;
+    let sysResOpts = [];
+    for(let i=0;i<sysRes.length;i++){
+      sysResOpts.push(<Option key={res[i].id}>{res[i].resName}</Option>)
+    }
 
     const nameProps = getFieldProps('productName', {
       rules: [
@@ -162,8 +175,11 @@ class CreateProduct extends Component {
           <FormItem
             {...formItemLayout}
             label="产品功能"
+            hasFeedback
           >
-
+            <Select multiple placeholder="请选择" onChange={this.handleChange}>
+              {resOpts}
+            </Select>
           </FormItem>
 
           <FormItem
@@ -171,14 +187,8 @@ class CreateProduct extends Component {
             label="系统功能"
             hasFeedback
           >
-            <Select placeholder="请选择" onChange={this.handleChange}>
-              <OptGroup label="Manager">
-                <Option value="jack">jack</Option>
-                <Option value="lucy">lucy</Option>
-              </OptGroup>
-              <OptGroup label="Engineer">
-                <Option value="yiminghe">yiminghe</Option>
-              </OptGroup>
+            <Select multiple placeholder="请选择" onChange={this.handleChange}>
+              {sysResOpts}
             </Select>
           </FormItem>
           <FormItem wrapperCol={{ span:10, offset: 4 }}>
@@ -198,9 +208,10 @@ CreateProduct.propTypes = {
 
 function mapStateToProps(state) {
   console.log(state);
-  const { resOpts, sysRes } = state;
+  const { res, sysRes } = state;
   return {
-    resOpts
+    res,
+    sysRes
   };
 }
 

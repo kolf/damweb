@@ -3,13 +3,14 @@ import {
 } from './../constants/actionTypes';
 import initialState from './initialState';
 
-export default function resOpts(state = initialState.resOpts, action) {
+export default function res(state = initialState.res, action) {
   switch (action.type) {
     case RES_QERUEST:
       return Object.assign({}, state, {
         isFetching: true
       });
     case RES_SUCCESS:
+      console.log(action);
       return Object.assign({}, {
         isFetching: false,
         errorMessage: '',

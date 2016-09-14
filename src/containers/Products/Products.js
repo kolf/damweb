@@ -60,8 +60,8 @@ class ProductList extends Component {
     const columns = [
       {
         title: "产品名称",
-        dataIndex: "name",
-        key: "name",
+        dataIndex: "productName",
+        key: "productName",
         sorter: true
       },
       {

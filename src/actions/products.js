@@ -52,15 +52,15 @@ function CreateProductError(message) {
   };
 }
 
-export function queryProducts(params = { page: 1, per_page: 10 }) {
+export function queryProducts(params = { pageNum: 1, pageSize: 10 }) {
   return dispatch => {
     dispatch(requestProducts());
     return cFetch(API_CONFIG.products, { method: "GET", params: params }).then((response) => {
       if (response.jsonResult.returnCode === '1') {
+        dispatch(receiveProducts(response.jsonResult));
+      } else {
         dispatch(productsError(response.jsonResult.error_message));
         message.error(response.jsonResult.error_message);
-      } else {
-        dispatch(receiveProducts(response.jsonResult));
       }
     });
   };

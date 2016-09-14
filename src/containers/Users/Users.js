@@ -62,13 +62,13 @@ class Users extends Component {
 
     const columns = [{
         title: "用户帐号",
-        dataIndex: "account",
-        key: "account",
+        dataIndex: "damId",
+        key: "damId",
         sorter: true
       },{
         title: "用户姓名",
-        dataIndex: "name",
-        key: "name",
+        dataIndex: "userName",
+        key: "userName",
         sorter: true
       },{
         title: "手机号",

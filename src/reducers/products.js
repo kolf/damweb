@@ -4,6 +4,7 @@ import {
 import initialState from './initialState';
 
 export default function products(state = initialState.products, action) {
+  console.log(action);
   switch (action.type) {
     case PRODUCTS_QERUEST:
       return Object.assign({}, state, {

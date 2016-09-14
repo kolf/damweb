@@ -1,6 +1,5 @@
 import {
-  RES_QERUEST, RES_SUCCESS, RES_FAILURE,
-  SYS_RES_QERUEST, SYS_RES_SUCCESS, SYS_RES_FAILURE
+  RES_QERUEST, RES_SUCCESS, RES_FAILURE
 } from './../constants/actionTypes';
 import cFetch from './../utils/cFetch';
 
@@ -30,30 +29,7 @@ function resError(message) {
   };
 }
 
-function requestSysRes() {
-  return {
-    type: SYS_RES_QERUEST,
-    isFetching: true
-  };
-}
-
-function receiveSysRes(sysRes) {
-  return {
-    type: SYS_RES_SUCCESS,
-    isFetching: false,
-    sysRes
-  };
-}
-
-function sysResError(message) {
-  return {
-    type: SYS_RES_FAILURE,
-    isFetching: false,
-    message
-  };
-}
-
-export function queryRes(params) {
+export function queryRes(params= {resType: 1}) {
   return dispatch => {
     dispatch(requestRes());
     return cFetch(API_CONFIG.queryRes,{ method: "GET", params: params }).then((response) => {
@@ -61,20 +37,6 @@ export function queryRes(params) {
         dispatch(receiveRes(response.jsonResult));
       } else {
         dispatch(resError(response.jsonResult.msg));
-        message.error(response.jsonResult.msg);
-      }
-    });
-  };
-}
-
-export function querySysRes(params) {
-  return dispatch => {
-    dispatch(requestSysRes());
-    return cFetch(API_CONFIG.queryRes,{ method: "GET", params: params }).then((response) => {
-      if (response.jsonResult.returnCode === '1') {
-        dispatch(receiveSysRes(response.jsonResult));
-      } else {
-        dispatch(sysResError(response.jsonResult.msg));
         message.error(response.jsonResult.msg);
       }
     });
