@@ -4,7 +4,6 @@ import {
 import initialState from './initialState';
 
 export default function sysRes(state = initialState.sysRes, action) {
-  console.log(action.sysRes);
   switch (action.type) {
     case SYS_RES_QERUEST:
       return Object.assign({}, state, {

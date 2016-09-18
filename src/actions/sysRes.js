@@ -29,7 +29,7 @@ function sysResError(message) {
   };
 }
 
-export function querySysRes(params= {resType: 0}) {
+export function querySysRes(params) {
   return dispatch => {
     dispatch(requestSysRes());
     return cFetch(API_CONFIG.querySysRes,{ method: "GET", params: params }).then((response) => {

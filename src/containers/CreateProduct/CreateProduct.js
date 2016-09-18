@@ -1,9 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Button, Form, Input, Checkbox, Select, InputNumber } from 'antd';
+import { Button, Form, Input, Select, InputNumber } from 'antd';
 import { createProduct } from './../../actions/products';
 import { queryRes } from './../../actions/res';
-import { querySysRes } from './../../actions/sysRes';
 
 import './CreateProduct.scss';
 
@@ -12,14 +11,10 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 const OptGroup = Select.OptGroup;
 
-function noop() {
-  return false;
-}
-
 class CreateProduct extends Component {
   constructor(props) {
     super(props);
-    this.handleChange = this.handleChange.bind(this);
+    this.changeRes = this.changeRes.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleReset = this.handleReset.bind(this);
   }
@@ -28,8 +23,6 @@ class CreateProduct extends Component {
     const { dispatch } = this.props;
 
     dispatch(queryRes());
-    dispatch(querySysRes());
-    console.log(this.props)
   }
 
   handleReset(e) {
@@ -51,9 +44,13 @@ class CreateProduct extends Component {
     });
   }
 
-  handleChange(value) {
-    console.log('onChange ', value, arguments);
+  changeRes(value) {
+    const {form} = this.props;
+    form.setFieldsValue({
+      res: value
+    });
   }
+
 
   userExists(rule, value, callback) {
     if (!value) {
@@ -71,19 +68,18 @@ class CreateProduct extends Component {
 
   render() {
     const { getFieldProps, getFieldError, isFieldValidating } = this.props.form;
-    let { res, sysRes } = this.props;
 
-    res = res.data;
-    let resOpts = [];
-    for(let i=0;i<res.length;i++){
-      resOpts.push(<Option key={res[i].id}>{res[i].resName}</Option>)
-    }
-
-    sysRes = sysRes.data;
-    let sysResOpts = [];
-    for(let i=0;i<sysRes.length;i++){
-      sysResOpts.push(<Option key={res[i].id}>{res[i].resName}</Option>)
-    }
+    const resOpts = () => {
+      const {res} = this.props;
+      const resOptGroup = res.data.map(res => <OptGroup key={res.id} label={res.resName}>
+        {res.subRes.map(subRes => <Option key={subRes.id}>{subRes.resName}</Option>)}
+      </OptGroup>)
+      return (
+        <Select multiple placeholder="请选择" onChange={this.changeRes}>
+          {resOptGroup}
+        </Select>
+      )
+    };
 
     const nameProps = getFieldProps('productName', {
       rules: [
@@ -177,20 +173,9 @@ class CreateProduct extends Component {
             label="产品功能"
             hasFeedback
           >
-            <Select multiple placeholder="请选择" onChange={this.handleChange}>
-              {resOpts}
-            </Select>
+            {resOpts()}
           </FormItem>
 
-          <FormItem
-            {...formItemLayout}
-            label="系统功能"
-            hasFeedback
-          >
-            <Select multiple placeholder="请选择" onChange={this.handleChange}>
-              {sysResOpts}
-            </Select>
-          </FormItem>
           <FormItem wrapperCol={{ span:10, offset: 4 }}>
             <Button type="primary" htmlType="submit">确定</Button>
             <span className="gap-inline"></span>
@@ -207,11 +192,9 @@ CreateProduct.propTypes = {
 };
 
 function mapStateToProps(state) {
-  console.log(state);
-  const { res, sysRes } = state;
+  const { res } = state;
   return {
-    res,
-    sysRes
+    res
   };
 }
 

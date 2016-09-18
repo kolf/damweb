@@ -29,7 +29,7 @@ function resError(message) {
   };
 }
 
-export function queryRes(params= {resType: 1}) {
+export function queryRes(params) {
   return dispatch => {
     dispatch(requestRes());
     return cFetch(API_CONFIG.queryRes,{ method: "GET", params: params }).then((response) => {

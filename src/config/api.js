@@ -11,5 +11,5 @@ export const API_CONFIG = {
   products: 'damProduct/pageList',        //查询产品
   createProduct: 'damProduct/create',     //创建产品
   querySysRes: 'damRes/listSysRes',     //查询系统功能
-  queryRes: 'damRes/list',           //查询普通功能
+  queryRes: 'damRes/listNoneSysRes',           //查询普通功能
 };
