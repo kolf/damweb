@@ -66,20 +66,20 @@ class ProductList extends Component {
       },
       {
         title: "产品限定人数(人)",
-        dataIndex: "people",
-        key: "people",
+        dataIndex: "maxUser",
+        key: "maxUser",
         sorter: true
       },
       {
         title: "产品使用周期(月)",
-        dataIndex: "period",
-        key: "period",
+        dataIndex: "counterWay",
+        key: "counterWay",
         sorter: true
       },
       {
         title: "产品存储空间(G)",
-        dataIndex: "space",
-        key: "space",
+        dataIndex: "spaceAllowed",
+        key: "spaceAllowed",
         sorter: true
       },
       {

@@ -66,12 +66,13 @@ export function queryProducts(params = { pageNum: 1, pageSize: 10 }) {
   };
 }
 
-export function createProduct(params) {
+export function createProduct(params, cb) {
   return dispatch => {
     dispatch(requestCreateProduct());
     return cFetch(API_CONFIG.createProduct, { method: "POST", body: JSON.stringify(params) }).then((response) => {
       if (response.jsonResult.returnCode === '1') {
         dispatch(receiveCreateProduct(response.jsonResult));
+        cb(response.jsonResult.msg);
       } else {
         dispatch(CreateProductError(response.jsonResult.msg));
         message.error(response.jsonResult.msg);

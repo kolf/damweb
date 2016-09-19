@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
 import { Button, Form, Input, Select, InputNumber } from 'antd';
 import { createProduct } from './../../actions/products';
 import { queryRes } from './../../actions/res';
@@ -14,7 +15,6 @@ const OptGroup = Select.OptGroup;
 class CreateProduct extends Component {
   constructor(props) {
     super(props);
-    this.changeRes = this.changeRes.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleReset = this.handleReset.bind(this);
   }
@@ -40,17 +40,9 @@ class CreateProduct extends Component {
         return;
       }
       const creds = (this.props.form.getFieldsValue());
-      dispatch(createProduct(creds));
+      dispatch(createProduct(creds, () => browserHistory.push('/product/list')));
     });
   }
-
-  changeRes(value) {
-    const {form} = this.props;
-    form.setFieldsValue({
-      res: value
-    });
-  }
-
 
   userExists(rule, value, callback) {
     if (!value) {
@@ -75,7 +67,7 @@ class CreateProduct extends Component {
         {res.subRes.map(subRes => <Option key={subRes.id}>{subRes.resName}</Option>)}
       </OptGroup>)
       return (
-        <Select multiple placeholder="请选择" onChange={this.changeRes}>
+        <Select multiple placeholder="请选择" {...getFieldProps('res')}>
           {resOptGroup}
         </Select>
       )
@@ -95,7 +87,7 @@ class CreateProduct extends Component {
       ],
     });
 
-    const periodProps = getFieldProps('period', {
+    const periodProps = getFieldProps('counterWay', {
       rules: [
         { required: true, type: 'number', message: '产品周期只能为数字' },
         { validator: this.userExists },

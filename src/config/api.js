@@ -1,4 +1,5 @@
-let host = "http://dev.dam-server.vcg.com";
+// let host = "http://dev.dam-server.vcg.com";
+const host = "http://192.168.3.120:8080";
 
 const baseUri = host + "/";
 export const API_CONFIG = {
