@@ -43,7 +43,7 @@ class App extends Component {
                 </Link>
               </Menu.Item>
             </SubMenu>
-            <SubMenu key="sub2" title={<span><Icon type="cloud" />产吕管理</span>}>
+            <SubMenu key="sub2" title={<span><Icon type="cloud" />产品管理</span>}>
               <Menu.Item key="2">
                 <Link to={'/product'}>
                   产品列表
