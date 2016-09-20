@@ -1,0 +1,79 @@
+.login-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  background: #444 url("../../assets/images/login_bg.jpg") center no-repeat;
+  background-size: cover;
+  padding-top:100px;
+  font-size: 14px;
+  //display: flex;
+  //justify-content: center;
+  //align-items: center;
+
+  .login-content {
+    //background-color: #fff;
+    z-index: 1;
+    width: 100%;
+    max-width:460px;
+    padding:40px 30px;
+    margin: 0 auto;
+    button.ant-btn {
+      //height: 40px;
+    }
+  }
+
+  .login{
+    &-header{
+      text-align: center;
+      background: url("../../assets/images/logo.svg") center 0 no-repeat;
+      padding-top: 110px;
+      font-size: 25px;
+      padding-bottom: 30px;
+      color: #eee;
+    }
+    &-footer{
+      //text-align: right;
+      &>a{
+        color:#fff;
+      }
+    }
+    &-content{
+      .ant-form-item{
+        padding-bottom:10px;
+      }
+      .ant-input{
+        height:50px;
+        line-height:50px;
+        padding: 10px;
+        font-size: 16px;
+        border-color: #fff;
+      }
+      .has-feedback{
+        &:after{
+          height: 50px;
+          line-height:50px;
+        }
+      }
+      .ant-btn{
+        height: 50px;
+        font-size: 18px;
+      }
+      .ant-form-explain{
+        background: #f50;
+        color: #fff;
+        padding:5px 8px;
+        margin-top:0;
+      }
+    }
+    &-regBtn{
+      border-left:2px solid #fff;
+      margin-left:10px;
+      padding-left: 10px;
+    }
+  }
+
+  .ant-form-item {
+
+  }
+}

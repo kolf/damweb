@@ -1,0 +1,42 @@
+.ant{
+  &-input{
+    border-radius: 2px;
+  }
+  &-btn{
+    border-radius: 2px;
+  }
+  &-form{
+    &-horizontal{
+      padding-top:24px;
+    }
+  }
+  &-menu{
+    &-submenu{
+      &>.ant-menu{
+        border-radius: 2px;
+      }
+    }
+  }
+  &-select{
+    &-selection{
+      border-radius: 2px;
+    }
+  }
+  &-input{
+    &-number{
+      border-radius: 2px;
+    }
+  }
+  &-tag{
+    border-radius: 2px;
+  }
+}
+.ant-pagination-prev, .ant-pagination-next, .ant-pagination-jump-prev, .ant-pagination-jump-next, .ant-pagination-item, .ant-select-dropdown,.ant-select-tree-checkbox-inner,.ant-time-picker-input,.ant-calendar,.ant-calendar-year-panel-year,.ant-time-picker-panel-inner,.ant-cascader-menus,.ant-upload-list-picture .ant-upload-list-item, .ant-upload-list-picture-card .ant-upload-list-item,.ant-upload.ant-upload-select-picture-card{
+  border-radius: 2px;
+}
+.ant-radio-button-wrapper:first-child{
+  border-radius:2px 0 0 2px;
+}
+.ant-radio-button-wrapper:last-child{
+  border-radius:0 2px 2px 0;
+}
