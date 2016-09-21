@@ -29,15 +29,15 @@ function usersError(message) {
   };
 }
 
-export function fetchUsers(params) {
+export function queryUsers(params) {
   return dispatch => {
     dispatch(requestUsers());
-    return cFetch(API_CONFIG.users, { method: "GET", params: params }).then((response) => {
-      if (response.jsonResult.error_code === 4001) {
-        dispatch(usersError(response.jsonResult.error_message));
-        message.error(response.jsonResult.error_message);
+    return cFetch(API_CONFIG.queryUser, { method: "GET", params: params }).then((res) => {
+      if (res.jsonResult.returnCode === '1') {
+        dispatch(receiveUsers(res.jsonResult));
       } else {
-        dispatch(receiveUsers(response.jsonResult));
+        dispatch(usersError(res.jsonResult.msg));
+        message.error(res.jsonResult.msg);
       }
     });
   };

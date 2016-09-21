@@ -32,50 +32,52 @@ class App extends Component {
 
   renderAuthenticatedPage() {
     return (
-      <div className="ant-layout-aside">
-        <aside className="ant-layout-sider">
-          <div className="ant-layout-logo">DAM数字资产管理系统</div>
-          <Menu mode="inline" theme="dark" defaultSelectedKeys={['1']} defaultOpenKeys={['sub1']}>
-            <SubMenu key="sub1" title={<span><Icon type="user" />资源管理</span>}>
-              <Menu.Item key="1">
-                <Link to={'/upload/image'}>
-                  上传图片
-                </Link>
-              </Menu.Item>
-              <Menu.Item key="2">
-                <Link to={'/upload/imageGroup'}>
-                  上传组照
-                </Link>
-              </Menu.Item>
-              <Menu.Item key="3">
-                <Link to={'/upload/video'}>
-                  上传视频
-                </Link>
-              </Menu.Item>
-              <Menu.Item key="4">
-                <Link to={'/upload/audio'}>
-                  上传音频
-                </Link>
-              </Menu.Item>
-            </SubMenu>
-          </Menu>
-        </aside>
-        <div className="ant-layout-main">
-          <div className="ant-layout-header">
-          <Menu mode="horizontal" onClick={this.handleLogout}>
-              <SubMenu className="pull-right" title={<span><Icon type="user" />Kolf</span>}>
-                <Menu.Item key="setting:3">退出</Menu.Item>
+      <div className="ant-layout-topaside">
+        <div className="ant-layout-header">
+          <div className="ant-layout-wrapper">
+            <div className="ant-layout-logo">DAM数字资产管理系统</div>
+            <Menu theme="dark" className="menu-primary" mode="horizontal" defaultSelectedKeys={['2']} style={{lineHeight: '60px'}}>
+              <Menu.Item key="1"><Link to={'/resource'}><Icon type="folder" />资源库列表</Link></Menu.Item>
+              <Menu.Item key="2"><Link to={'/audit'}><Icon type="laptop" />资源审核</Link></Menu.Item>
+              <Menu.Item key="3"><Link to={'/download'}><Icon type="cloud-download" />下载管理</Link></Menu.Item>
+              <SubMenu key="sub2" title={<span>
+                <Icon type="user" />用户管理</span>}>
+                <Menu.Item key="5">用户注册</Menu.Item>
+                <Menu.Item key="6">角色管理</Menu.Item>
               </SubMenu>
+              <Menu.Item key="7"><Link to={'/watermark'}><Icon type="pushpin-o" />水印管理</Link></Menu.Item>
+
+              <Menu.Item key="mail" className="pull-right">
+                <Icon type="question" />帮助
+              </Menu.Item>
             </Menu>
           </div>
-          <div className="ant-layout-breadcrumb">
-            <Breadcrumb>
-              <Breadcrumb.Item>首页</Breadcrumb.Item>
-              <Breadcrumb.Item>资源管理</Breadcrumb.Item>
-              <Breadcrumb.Item>上传图片</Breadcrumb.Item>
-            </Breadcrumb>
-          </div>
+        </div>
+        <div className="ant-layout-wrapper">
           <div className="ant-layout-container">
+            <aside className="ant-layout-sider">
+              <Menu _theme="dark" mode="inline" defaultSelectedKeys={['1']} defaultOpenKeys={['sub1']}>
+                <SubMenu key="sub4" title={<span><Icon type="user" />精品图片</span>}>
+                  <Menu.Item key="1">故事</Menu.Item>
+                  <Menu.Item key="2">历史</Menu.Item>
+                  <Menu.Item key="3">肖像</Menu.Item>
+                  <Menu.Item key="4">乐活</Menu.Item>
+                </SubMenu>
+                <SubMenu key="sub5" title={<span><Icon type="laptop" />创意图片</span>}>
+                  <Menu.Item key="5">平面</Menu.Item>
+                  <Menu.Item key="6">插画</Menu.Item>
+                  <Menu.Item key="7">动漫</Menu.Item>
+                  <Menu.Item key="8">UI设计</Menu.Item>
+                </SubMenu>
+              </Menu>
+            </aside>
+            <div className="ant-layout-breadcrumb">
+              <Breadcrumb>
+                <Breadcrumb.Item>首页</Breadcrumb.Item>
+                <Breadcrumb.Item>应用列表</Breadcrumb.Item>
+                <Breadcrumb.Item>某应用</Breadcrumb.Item>
+              </Breadcrumb>
+            </div>
             <div className="ant-layout-content">
               {this.props.children}
             </div>

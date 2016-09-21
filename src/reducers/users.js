@@ -14,11 +14,11 @@ export default function users(state = initialState.users, action) {
         isFetching: false,
         errorMessage: '',
         meta: {
-          total: action.users.meta.total,
-          perPage: action.users.meta.per_page,
-          page: action.users.meta.page
+          total: action.users.data.total,
+          pageSize: action.users.data.pageSize,
+          pageNum: action.users.data.pageNum
         },
-        data: action.users.data
+        data: action.users.data.list
       });
     case USERS_FAILURE:
       return Object.assign({}, state, {

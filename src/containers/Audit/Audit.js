@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
-import './Home.scss';
+import './Audit.scss';
 
-class HomePage extends Component {
+class Audit extends Component {
   constructor(props) {
     super(props);
   }
 
   render() {
-    return <div>首页</div>;
+    return <div>审核页面</div>;
   }
 }
 
-HomePage.propTypes = {
+Audit.propTypes = {
 };
 
 function mapStateToProps() {
@@ -21,4 +21,4 @@ function mapStateToProps() {
   };
 }
 
-export default connect(mapStateToProps)(HomePage);
+export default connect(mapStateToProps)(Audit);

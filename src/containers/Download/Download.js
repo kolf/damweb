@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
-import './Home.scss';
+import './Download.scss';
 
-class HomePage extends Component {
+class Download extends Component {
   constructor(props) {
     super(props);
   }
 
   render() {
-    return <div>首页</div>;
+    return <div>资源下载</div>;
   }
 }
 
-HomePage.propTypes = {
+Download.propTypes = {
 };
 
 function mapStateToProps() {
@@ -21,4 +21,4 @@ function mapStateToProps() {
   };
 }
 
-export default connect(mapStateToProps)(HomePage);
+export default connect(mapStateToProps)(Download);

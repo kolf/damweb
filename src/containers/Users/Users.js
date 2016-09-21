@@ -1,37 +1,18 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { Form, Input, Row, Col, Button } from 'antd';
+import { Link } from 'react-router';
 
 import CustomTable from './../../components/CustomTable';
-import StringFilterDropdown from './../../components/StringFilterDropdown';
-import DateTimeFilterDropdown from './../../components/DateTimeFilterDropdown';
+import { queryUsers } from './../../actions/users';
 
-import { fetchUsers } from './../../actions/users';
-import { Input, Button, Row, Col } from 'antd';
-const InputGroup = Input.Group;
+const CreateForm = Form.create;
+const FormItem = Form.Item;
 const ButtonGroup = Button.Group;
 
-// Which part of the Redux global state does our component want to receive as props?
-function mapStateToProps(state) {
-  const { users } = state;
-  return {
-    users
-  };
-}
+import './Users.scss';
 
-// Which action creators does it want to receive by props?
-function mapDispatchToProps(dispatch) {
-  // bindActionCreators(ActionCreators, dispatch)
-  return {
-    fetchUsers: (params) => dispatch(fetchUsers(params))
-  };
-}
-
-export class UsersPage extends React.Component {
-  static propTypes = {
-    fetchUsers: React.PropTypes.func,
-    users: React.PropTypes.object
-  };
-
+class Users extends Component {
   constructor(props) {
     super(props);
     this.handleTableChange = this.handleTableChange.bind(this);
@@ -42,21 +23,15 @@ export class UsersPage extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchUsers();
+    const { dispatch } = this.props;
+    dispatch(queryUsers())
   }
 
   handleTableChange(pagination, filters = {}, sorter = {}) {
-    const pageParams = { page: pagination.current, per_page: pagination.pageSize };
+    const { dispatch } = this.props;
+    const pageParams = { pageNum: pagination.current, pageSize: pagination.pageSize };
     const filtersField = {};
     if(Object.keys(filters).length !== 0) {
-      // enum filters
-      [{
-        key: "roles", filterParams: "roles_in"
-      }].map(item => {
-        if(filters[item.key]){
-          filtersField[`q[${item.filterParams}]`] = filters[item.key];
-        }
-      });
 
       // date range filter
       ['created_at'].map(item => {
@@ -80,11 +55,8 @@ export class UsersPage extends React.Component {
     }
 
     const params = Object.assign({}, pageParams, filtersField, sortParams);
-    this.props.fetchUsers(params);
-  }
 
-  onSelectChange(selectedRowKeys) {
-    this.setState({ selectedRowKeys });
+    dispatch(queryUsers(params))
   }
 
   render() {
@@ -143,47 +115,51 @@ export class UsersPage extends React.Component {
     const pagination = {
       showSizeChanger: true,
       total: meta.total,
-      pageSize: meta.perPage,
-      pageSizeOptions: ['1','10','20','40']
+      pageSize: meta.pageSize,
+      pageSizeOptions: ['5','10','20','40']
     };
-    const { selectedRowKeys } = this.state;
-    const rowSelection = {
-     selectedRowKeys,
-     onChange: this.onSelectChange,
+
+    const formItemLayout = {
+      labelCol: { span: 10 },
+      wrapperCol: { span: 14 }
     };
-    const hasSelected = selectedRowKeys.length > 0;
 
     return (
       <div>
-        <Row>
-          <Col span={8}>
-            <div style={{ marginBottom: 16 }}>
-              <Button type="primary">批量操作</Button>
-              <span style={{ marginLeft: 8 }}>
-                {hasSelected ? `选择了 ${selectedRowKeys.length} 个对象` : ''}
-              </span>
-            </div>
-          </Col>
-          <Col span={8} offset={8}>
-            <div className="ant-search-input-wrapper">
-              <InputGroup className="ant-search-input">
-                <Input placeholder="高级搜索"/>
-                <div className="ant-input-group-wrap">
-                  <Button icon="search" className="ant-search-btn" />
-                </div>
-              </InputGroup>
-            </div>
-          </Col>
-        </Row>
-
+        <Form horizontal className="ant-advanced-search-form">
+          <Row gutter={16}>
+            <Col sm={8}>
+              <FormItem label="用户帐号" {...formItemLayout} >
+                <Input placeholder="请输入产品名称" size="default" />
+              </FormItem>
+            </Col>
+            <Col sm={8}>
+              <FormItem label="用户姓名" {...formItemLayout}>
+                <Input placeholder="请输入搜索名称" size="default" />
+              </FormItem>
+            </Col>
+            <Col sm={8}>
+              <FormItem label="手机号" {...formItemLayout}>
+                <Input placeholder="请输入搜索名称" size="default" />
+              </FormItem>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={12} offset={12} style={{ textAlign: 'right' }}>
+              <Button type="primary" htmlType="submit">搜索</Button>
+              <Button>清除条件</Button>
+            </Col>
+          </Row>
+        </Form>
+        <div className="pad-v">
+          <Button type="primary"><Link to={'/user/create'}>添加用户</Link></Button>
+        </div>
         <CustomTable
           columns={columns}
           dataSource={data}
           pagination={pagination}
-          rowKey={(record) => record.id}
           loading={isFetching}
           onChange={this.handleTableChange}
-          rowSelection={rowSelection}
           bordered
         />
       </div>
@@ -191,7 +167,16 @@ export class UsersPage extends React.Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UsersPage);
+Users.propTypes = {
+  form: PropTypes.object.isRequired,
+  dispatch: PropTypes.func.isRequired
+};
+
+function mapStateToProps(state) {
+  const { users } = state;
+  return {
+    users
+  };
+}
+
+export default connect(mapStateToProps)(CreateForm()(Users));

@@ -31,7 +31,7 @@
     border-radius: 2px;
   }
 }
-.ant-pagination-prev, .ant-pagination-next, .ant-pagination-jump-prev, .ant-pagination-jump-next, .ant-pagination-item, .ant-select-dropdown,.ant-select-tree-checkbox-inner,.ant-time-picker-input,.ant-calendar,.ant-calendar-year-panel-year,.ant-time-picker-panel-inner,.ant-cascader-menus,.ant-upload-list-picture .ant-upload-list-item, .ant-upload-list-picture-card .ant-upload-list-item,.ant-upload.ant-upload-select-picture-card{
+.ant-pagination-prev, .ant-pagination-next, .ant-pagination-jump-prev, .ant-pagination-jump-next, .ant-pagination-item, .ant-select-dropdown,.ant-select-tree-checkbox-inner,.ant-time-picker-input,.ant-calendar,.ant-calendar-year-panel-year,.ant-time-picker-panel-inner,.ant-cascader-menus,.ant-upload-list-picture .ant-upload-list-item, .ant-upload-list-picture-card .ant-upload-list-item,.ant-upload.ant-upload-select-picture-card,.ant-input-group-addon{
   border-radius: 2px;
 }
 .ant-radio-button-wrapper:first-child{
@@ -39,4 +39,22 @@
 }
 .ant-radio-button-wrapper:last-child{
   border-radius:0 2px 2px 0;
+}
+.ant-table,.ant-table table{
+  border-radius: 2px 2px 0 0;
+}
+
+.pull{
+  &-left{
+    float: left;
+  }
+  &-right{
+    float: right;
+  }
+}
+.pad{
+  padding: 24px;
+  &-v{
+    padding: 24px 0;
+  }
 }

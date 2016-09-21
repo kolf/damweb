@@ -1,9 +1,13 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 
-import App from './containers/App/App';
 import Home from './containers/Home/Home';
-import Users from './containers/Users/Users';
+import App from './containers/App/App';
+import Resource from './containers/Resource/Resource';
+import Audit from './containers/Audit/Audit';
+import Download from './containers/Download/Download';
+import Watermark from './containers/Watermark/Watermark';
+import User from './containers/Users/Users';
 import UploadImage from './containers/UploadImage/UploadImage';
 import UploadImageGroup from './containers/UploadImageGroup/UploadImageGroup';
 import NotFound from './components/NotFound/NotFound';
@@ -11,7 +15,11 @@ import NotFound from './components/NotFound/NotFound';
 export default (
   <Route path="/" component={App}>
     <IndexRoute component={Home}/>
-    <Route path="users" component={Users}/>
+    <Route path="resource" breadcrumbName="资源库列表" component={Resource}/>
+    <Route path="audit" component={Audit}/>
+    <Route path="download" component={Download}/>
+    <Route path="watermark" component={Watermark}/>
+    <Route path="user" component={User}/>
     <Route path="upload/image" component={UploadImage}/>
     <Route path="upload/imageGroup" component={UploadImageGroup}/>
     <Route path="*" component={NotFound}/>
