@@ -1,0 +1,30 @@
+// color variables
+$lightGrey: #e9e9e9;
+$primary:#2DB7F5;
+
+.edit{
+  &-view{
+    &-img{
+      width: 100%;
+      padding-top: 80%;
+      background-color: #333;
+      background-position: center;
+      background-repeat: none;
+      //min-width: 500px;
+      //background-size:auto cover;
+    }
+    &-exif{
+      h4{
+        padding: 0 0 0 8px;
+        margin: 12px 0;
+        border-left: 2px solid $primary
+      }
+    }
+  }
+}
+
+.list{
+  &-v{
+    line-height: 1.6;
+  }
+}

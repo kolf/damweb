@@ -54,6 +54,12 @@ class App extends Component {
           </div>
         </div>
         <div className="ant-layout-wrapper">
+          <div className="ant-layout-breadcrumb">
+            <Breadcrumb>
+              <Breadcrumb.Item>首页</Breadcrumb.Item>
+              <Breadcrumb.Item>资源库列表</Breadcrumb.Item>
+            </Breadcrumb>
+          </div>
           <div className="ant-layout-container">
             <aside className="ant-layout-sider">
               <Menu _theme="dark" mode="inline" defaultSelectedKeys={['1']} defaultOpenKeys={['sub1']}>
@@ -71,14 +77,7 @@ class App extends Component {
                 </SubMenu>
               </Menu>
             </aside>
-            <div className="ant-layout-breadcrumb">
-              <Breadcrumb>
-                <Breadcrumb.Item>首页</Breadcrumb.Item>
-                <Breadcrumb.Item>应用列表</Breadcrumb.Item>
-                <Breadcrumb.Item>某应用</Breadcrumb.Item>
-              </Breadcrumb>
-            </div>
-            <div className="ant-layout-content">
+            <div className="ant-layout-content" style={{minHeight: 700}}>
               {this.props.children}
             </div>
           </div>

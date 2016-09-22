@@ -9,7 +9,12 @@ import Download from './containers/Download/Download';
 import Watermark from './containers/Watermark/Watermark';
 import User from './containers/Users/Users';
 import UploadImage from './containers/UploadImage/UploadImage';
+import UploadIndex from './containers/UploadIndex/UploadIndex';
 import UploadImageGroup from './containers/UploadImageGroup/UploadImageGroup';
+
+import EditImage from './containers/EditImage/EditImage';
+import EditImageGroup from './containers/EditImageGroup/EditImageGroup';
+
 import NotFound from './components/NotFound/NotFound';
 
 export default (
@@ -20,8 +25,14 @@ export default (
     <Route path="download" component={Download}/>
     <Route path="watermark" component={Watermark}/>
     <Route path="user" component={User}/>
+
+    <Route path="upload/index" component={UploadIndex}/>
     <Route path="upload/image" component={UploadImage}/>
     <Route path="upload/imageGroup" component={UploadImageGroup}/>
+
+    <Route path="edit/image" component={EditImage}/>
+    <Route path="edit/imageGroup" component={EditImageGroup}/>
+
     <Route path="*" component={NotFound}/>
   </Route>
 );

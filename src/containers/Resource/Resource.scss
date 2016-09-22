@@ -15,13 +15,46 @@ $primary: #2db7f5;
     height: 42px;
     line-height:42px;
     width: 100px;
-    padding-left:20px;
+    //padding-left:20px;
   }
   .ant-search-btn{
     width: 100px;
     border-radius: 0 2px 2px 0;
   }
   .ant-select-arrow{
-    right: 18px;
+    //right: 18px;
+  }
+}
+.ant-card{
+  border-radius: 0;
+}
+.thumb{
+  &-list{
+    &-item{
+      margin-bottom:12px;
+      //position: relative;
+      .custom-image{
+        padding-top: 80%;
+        background-size: cover;
+      }
+      .custom-card{
+        padding:12px 0 6px;
+        h3{
+          padding-bottom:8px;
+          font-weight: 400;
+        }
+        .ant-btn-group{
+          //position: absolute;
+          //right: 24px;
+          //top: 24px;
+        }
+      }
+
+      &.active{
+        .ant-card-bordered{
+          border-color: $primary;
+        }
+      }
+    }
   }
 }

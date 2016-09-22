@@ -67,80 +67,32 @@ class UploadImageGroup extends Component {
       wrapperCol: { span: 18 }
     };
 
+    const uploadListProps = {
+      action: '/upload.do',
+      listType: 'picture-card',
+      defaultFileList: [{
+        uid: -1,
+        name: '图片名字一',
+        status: 'done',
+        url: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
+        thumbUrl: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
+      }, {
+        uid: -2,
+        name: '图片名字二',
+        status: 'done',
+        url: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
+        thumbUrl: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
+      }],
+    };
+
     return (
       <div className="upload-container">
         <div className="upload-main">
           <div className="upload-thumbs">
-            <Row gutter={24}>
-              <Col className="gutter-row" md={{span:8}} lg={{span:4}}>
-                <div className="gutter-box upload-list-thumb active">
-                  <div className="upload-thumb-body">
-                    <img src="../../assets/images/login_bg.jpg" alt=""/>
-                    <img src="../../assets/images/login_bg.jpg" className="hide" alt=""/>
-                  </div>
-                  <div className="upload-thumb-footer">
-                    <span className="upload-thumb-turn">
-                      <Icon type="reload" />
-                    </span>
-                    <span className="upload-thumb-remove">
-                      <Icon type="minus-circle-o"></Icon>
-                    </span>
-                  </div>
-                </div>
-                <div className="upload-list-title">图片标题</div>
-              </Col>
-              <Col className="gutter-row" md={{span:8}} lg={{span:4}}>
-                <div className="gutter-box upload-list-thumb active">
-                  <div className="upload-thumb-body">
-                    <img src="../../assets/images/login_bg.jpg" alt=""/>
-                    <img src="../../assets/images/login_bg.jpg" className="hide" alt=""/>
-                  </div>
-                  <div className="upload-thumb-footer">
-                    <span className="upload-thumb-turn">
-                      <Icon type="reload" />
-                    </span>
-                    <span className="upload-thumb-remove">
-                      <Icon type="minus-circle-o"></Icon>
-                    </span>
-                  </div>
-                </div>
-                <div className="upload-list-title">图片标题</div>
-              </Col>
-              <Col className="gutter-row" md={{span:8}} lg={{span:4}}>
-                <div className="gutter-box upload-list-thumb active">
-                  <div className="upload-thumb-body">
-                    <img src="../../assets/images/login_bg.jpg" alt=""/>
-                    <img src="../../assets/images/login_bg.jpg" className="hide" alt=""/>
-                  </div>
-                  <div className="upload-thumb-footer">
-                    <span className="upload-thumb-turn">
-                      <Icon type="reload" />
-                    </span>
-                    <span className="upload-thumb-remove">
-                      <Icon type="minus-circle-o"></Icon>
-                    </span>
-                  </div>
-                </div>
-                <div className="upload-list-title">图片标题</div>
-              </Col>
-              <Col className="gutter-row" md={{span:8}} lg={{span:4}}>
-                <div className="gutter-box upload-list-thumb active">
-                  <div className="upload-thumb-body">
-                    <img src="../../assets/images/login_bg.jpg" alt=""/>
-                    <img src="../../assets/images/login_bg.jpg" className="hide" alt=""/>
-                  </div>
-                  <div className="upload-thumb-footer">
-                    <span className="upload-thumb-turn">
-                      <Icon type="reload" />
-                    </span>
-                    <span className="upload-thumb-remove">
-                      <Icon type="minus-circle-o"></Icon>
-                    </span>
-                  </div>
-                </div>
-                <div className="upload-list-title">图片标题</div>
-              </Col>
-            </Row>
+            <Upload className="upload-list-btn" {...uploadListProps}>
+              <Icon type="plus" />
+              <div className="ant-upload-text">点击上传</div>
+            </Upload>
           </div>
         </div>
         <div className="upload-sidebar">

@@ -44,6 +44,10 @@ class UploadImage extends Component {
     return e && e.fileList;
   }
 
+  onSelect(e){
+    console.log(this)
+  }
+
   render() {
     const { getFieldProps } = this.props.form;
 
@@ -69,28 +73,35 @@ class UploadImage extends Component {
     const uploadListProps = {
       action: '/upload.do',
       listType: 'picture-card',
+      multiple: true,
       defaultFileList: [{
         uid: -1,
         name: '图片名字一',
         status: 'done',
-        url: 'https://os.alipayobjects.com/rmsportal/NDbkJhpzmLxtPhB.png',
-        thumbUrl: 'https://os.alipayobjects.com/rmsportal/NDbkJhpzmLxtPhB.png',
+        url: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
+        thumbUrl: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
       }, {
         uid: -2,
         name: '图片名字二',
         status: 'done',
-        url: 'https://os.alipayobjects.com/rmsportal/NDbkJhpzmLxtPhB.png',
-        thumbUrl: 'https://os.alipayobjects.com/rmsportal/NDbkJhpzmLxtPhB.png',
+        url: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
+        thumbUrl: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
       }],
+      onPreview: (file) => {
+        this.setState({
+          priviewImage: file.url,
+          priviewVisible: true,
+        });
+      }
     };
 
     return (
       <div className="upload-container">
         <div className="upload-main">
-          <div className="upload-thumbs">
+          <div className="upload-thumbs" onClick={this.onSelect.bind(this)}>
             <Upload className="upload-list-btn" {...uploadListProps}>
               <Icon type="plus" />
-              <div className="ant-upload-text">上传照片</div>
+              <div className="ant-upload-text">点击上传</div>
             </Upload>
           </div>
         </div>

@@ -1,13 +1,16 @@
+body{
+  background: #ececec;
+}
 .ant-layout-topaside {
-  //height: 100%;
-  //background: #ececec;
+  height: 100%;
 }
 
 .ant-layout-topaside .ant-layout-wrapper {
-  //padding: 0 50px;
+  padding: 0 50px;
 }
 
 .ant-layout-topaside .ant-layout-header {
+  background: #404040;
   //height: 59px;
   //border: none;
   //overflow: hidden;
@@ -35,17 +38,17 @@
 //}
 
 .ant-layout-topaside .ant-layout-breadcrumb {
-  //margin: 7px 0 -17px 24px;
+  margin: 7px 0 -17px 24px;
   //border-bottom: 1px solid #e9e9e9;
-  padding: 8px 24px;
-  background: #e9e9e9;
+  //padding: 15px 0;
+  //background: #e9e9e9;
   overflow: hidden;
 }
 
 .ant-layout-topaside .ant-layout-container {
-  //background: #fff;
-  //margin: 24px 0 0;
-  //position: relative;
+  background: #fff;
+  margin: 24px 0 0;
+  position: relative;
   //padding: 24px 0;
   overflow: hidden;
 }
@@ -62,7 +65,9 @@
 }
 
 .ant-layout-topaside .ant-layout-content {
-  //border-left: 1px solid #e9e9e9;
+  min-height: 800px;
+  border-left: 1px solid #e9e9e9;
+  margin-left: -1px;
   padding:24px;
   overflow: auto;
   position: relative;
@@ -76,6 +81,12 @@
   color: #999;
 }
 
+.ant-layout-topaside{
+  .ant-menu-inline, .ant-menu-vertical{
+    border-right:0;
+  }
+}
+
 .ant{
   &-btn{
     border-radius: 2px
@@ -86,12 +97,12 @@
   &-table{
     &-thead{
       &>tr>th{
-        padding: 11px !important;
+        //padding: 11px !important;
       }
     }
     &-tbody{
       &>tr>td{
-        padding:6px 10px !important;
+        //padding:6px 10px !important;
       }
     }
   }
