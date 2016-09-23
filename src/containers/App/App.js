@@ -39,7 +39,6 @@ class App extends Component {
             <Menu theme="dark" className="menu-primary" mode="horizontal" defaultSelectedKeys={['2']} style={{lineHeight: '60px'}}>
               <Menu.Item key="1"><Link to={'/resource'}><Icon type="folder" />资源库列表</Link></Menu.Item>
               <Menu.Item key="2"><Link to={'/audit'}><Icon type="laptop" />资源审核</Link></Menu.Item>
-              <Menu.Item key="3"><Link to={'/download'}><Icon type="cloud-download" />下载管理</Link></Menu.Item>
               <SubMenu key="sub2" title={<span>
                 <Icon type="user" />用户管理</span>}>
                 <Menu.Item key="5">用户注册</Menu.Item>

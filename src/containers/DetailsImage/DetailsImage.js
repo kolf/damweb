@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Form, Select, Input, DatePicker, Switch, Radio, Cascader, Button, Row, Col, Upload, Icon, Tag, Checkbox} from 'antd';
+import { Form, Select, Input, DatePicker, Switch, Radio, Cascader, Button, Row, Col, Upload, Icon, Tag, Checkbox, Tabs} from 'antd';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import './DetailsImage.scss';
@@ -9,17 +9,31 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
+const TabPane = Tabs.TabPane;
 
 const areaData = [{
-  value: 'shanghai',
-  label: '中国',
+  value: 'zhejiang',
+  label: '浙江',
   children: [{
-    value: 'shanghaishi',
-    label: '上海市',
+    value: 'hangzhou',
+    label: '杭州',
     children: [{
-      value: 'pudongxinqu',
-      label: '浦东新区',
-    }]
+      value: 'xihu',
+      label: '西湖',
+      code: 752100,
+    }],
+  }],
+}, {
+  value: 'jiangsu',
+  label: '江苏',
+  children: [{
+    value: 'nanjing',
+    label: '南京',
+    children: [{
+      value: 'zhonghuamen',
+      label: '中华门',
+      code: 453400,
+    }],
   }],
 }];
 
@@ -85,101 +99,142 @@ class DetailsImage extends Component {
               </div>
             </Col>
             <Col lg={{span: 8}}>
-              <div className="ant-row ant-form-item ant-col-offset-6">
-                <Button size="large" type="primary">保存编辑</Button>
-                <Button size="large" className="gap-left">下载图片</Button>
-              </div>
-              <FormItem
-                {...formItemLayout}
-                label="图片标题"
-                required
-                hasFeedback
-              >
-                <p className="ant-form-text">图片标题</p>
-              </FormItem>
+              <Tabs type="card">
+                <TabPane tab="基本信息" key="1">
+                  <FormItem
+                    {...formItemLayout}
+                    label="图片标题"
+                  >
+                    <p className="ant-form-text">图片标题</p>
+                  </FormItem>
 
-              <FormItem
-                label="说明"
-                {...formItemLayout}
-              >
-                <p className="ant-form-text">图片说明</p>
-              </FormItem>
+                  <FormItem
+                    label="说明"
+                    {...formItemLayout}
+                  >
+                    <p className="ant-form-text">图片说明</p>
+                  </FormItem>
 
-              <FormItem
-                {...formItemLayout}
-                label="图片分类"
-                required
-              >
-                <Select style={{ width: '100%' }} {...getFieldProps('select')}
-                >
-                  <Option value="jack">jack</Option>
-                  <Option value="lucy">lucy</Option>
-                  <Option value="yiminghe">yiminghe</Option>
-                </Select>
-              </FormItem>
+                  <FormItem
+                    {...formItemLayout}
+                    label="图片分类"
+                  >
+                    <Select defaultValue="lucy" disabled style={{ width: '100%' }}>
+                      <Option value="jack">jack</Option>
+                      <Option value="lucy">lucy</Option>
+                      <Option value="yiminghe">yiminghe</Option>
+                    </Select>
+                  </FormItem>
 
-              <FormItem
-                {...formItemLayout}
-                label="标签"
-                required
-                hasFeedback
-              >
-                {tags.map(tag =>
-                  <Tag key={tag.key} closable={tag.key !== 1} afterClose={() => this.handleClose(tag.key)}>
-                    {tag.name}
-                  </Tag>
-                )}
-              </FormItem>
+                  <FormItem
+                    {...formItemLayout}
+                    label="标签"
+                  >
+                    {tags.map(tag =>
+                      <Tag key={tag.key}>
+                        {tag.name}
+                      </Tag>
+                    )}
+                  </FormItem>
 
-              <FormItem
-                {...formItemLayout}
-                label="上传时间"
-              >
-                <p className="ant-form-text">2016-02-26 14:56:51</p>
-              </FormItem>
+                  <FormItem
+                    {...formItemLayout}
+                    label="上传时间"
+                  >
+                    <p className="ant-form-text">2016-02-26 14:56:51</p>
+                  </FormItem>
 
-              <FormItem
-                {...formItemLayout}
-                label="作者"
-                required
-                hasFeedback
-              >
-                <Input {...avatarProps}/>
-              </FormItem>
+                  <FormItem
+                    {...formItemLayout}
+                    label="作者"
+                  >
+                    <p className="ant-form-text">名字</p>
+                  </FormItem>
 
-              <FormItem
-                {...formItemLayout}
-                label="拍摄城市"
-                required
-                hasFeedback
-              >
-                <Cascader options={areaData} {...getFieldProps('area')} />
-              </FormItem>
+                  <FormItem
+                    {...formItemLayout}
+                    label="拍摄城市"
+                  >
+                    <Cascader disabled defaultValue={['zhejiang', 'hangzhou', 'xihu']} options={areaData} {...getFieldProps('area')} />
+                  </FormItem>
 
-              <FormItem
-                {...formItemLayout}
-                label="拍摄地"
-                required
-                hasFeedback
-              >
-                <Input {...addressProps}/>
-              </FormItem>
+                  <FormItem
+                    {...formItemLayout}
+                    label="拍摄地"
+                  >
+                    <p className="ant-form-text">天空门</p>
+                  </FormItem>
 
-              <FormItem
-                {...formItemLayout}
-                label="色彩"
-                required
-                hasFeedback
-              >
-                <RadioGroup disabled onChange={this.onChange} value={this.state.color}>
-                  <Radio value={'colors'}>彩色</Radio>
-                  <Radio value={'gray'}>黑白</Radio>
-                </RadioGroup>
-              </FormItem>
-              <Col xs={{offset: 6}}>
-                <Checkbox>是否在展示平台显示资源</Checkbox>
-              </Col>
+                  <FormItem
+                    {...formItemLayout}
+                    label="色彩"
+                  >
+                    <RadioGroup disabled onChange={this.onChange} value={this.state.color}>
+                      <Radio value={'colors'}>彩色</Radio>
+                      <Radio value={'gray'}>黑白</Radio>
+                    </RadioGroup>
+                  </FormItem>
+                </TabPane>
+                <TabPane tab="版权信息" key="2">
+                  <FormItem
+                    label="版权所属"
+                    {...formItemLayout}
+                  >
+                    <RadioGroup defaultValue="a" disabled size="default">
+                      <RadioButton value="a">无</RadioButton>
+                      <RadioButton value="b">自有</RadioButton>
+                      <RadioButton value="c">第三方</RadioButton>
+                    </RadioGroup>
+                  </FormItem>
 
+                  <FormItem
+                    label="版权授权"
+                    {...formItemLayout}
+                  >
+                    <RadioGroup defaultValue="g" disabled size="default">
+                      <RadioButton value="g">RM</RadioButton>
+                      <RadioButton value="h">RF</RadioButton>
+                    </RadioGroup>
+                  </FormItem>
+
+                  <FormItem
+                    {...formItemLayout}
+                    label="版权授权"
+                    required
+                    hasFeedback
+                  >
+                    <RadioGroup disabled onChange={this.onChange} value={this.state.color}>
+                      <Radio value={'colors'}>肖像权</Radio>
+                      <Radio value={'gray'}>物权</Radio>
+                    </RadioGroup>
+                  </FormItem>
+                  <FormItem
+                    {...formItemLayout}
+                    label="上传时间"
+                  >
+                    <p className="ant-form-text">肖像权授权文件.pdf</p>
+                  </FormItem>
+                  <FormItem
+                    {...formItemLayout}
+                    label="版权时效"
+                  >
+                    <p className="ant-form-text">2016-02-26 14:56:51</p>
+                  </FormItem>
+                  <FormItem
+                    {...formItemLayout}
+                    label="水印位置"
+                  >
+
+                    <div className="btn-abs" style={{marginTop: 3}}>
+                      <Button className="lt">左上</Button>
+                      <Button className="tr">右上</Button>
+                      <Button className="c" type="primary">中间</Button>
+                      <Button className="lb">左下</Button>
+                      <Button className="rb">右下</Button>
+                    </div>
+                  </FormItem>
+                </TabPane>
+              </Tabs>
             </Col>
           </Row>
           <div className="edit-view-exif">

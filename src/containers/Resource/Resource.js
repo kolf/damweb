@@ -47,8 +47,9 @@ class Resource extends Component {
   }
 
   render() {
-    // const { res: { meta, isFetching } } = this.props;
-    const addonBefore = (
+    const { getFieldProps } = this.props.form;
+
+    const selectBefore = (
       <Select defaultValue="全部" className="search-box">
         <Option value="图片">图片</Option>
         <Option value="组图">组图</Option>
@@ -57,132 +58,23 @@ class Resource extends Component {
       </Select>
     );
 
-    const list =[{
-      url: 'http://placehold.it/200x160',
-      name: '假装是图片',
-      tags: '关健字',
-      class: '新闻图片',
-      copyright: 'index.pdf',
-      author: '视觉中国',
-      create_date: '2016-9-21'
-    },{
-      url: 'http://placehold.it/200x160',
-      name: '假装是图片',
-      tags: '关健字',
-      class: '新闻图片',
-      copyright: 'index.pdf',
-      author: '视觉中国',
-      create_date: '2016-9-21'
-    },{
-      url: 'http://placehold.it/200x160',
-      name: '假装是图片',
-      tags: '关健字',
-      class: '新闻图片',
-      copyright: 'index.pdf',
-      author: '视觉中国',
-      create_date: '2016-9-21'
-    },{
-      url: 'http://placehold.it/200x160',
-      name: '假装是图片',
-      tags: '关健字',
-      class: '新闻图片',
-      copyright: 'index.pdf',
-      author: '视觉中国',
-      create_date: '2016-9-21'
-    },{
-      url: 'http://placehold.it/200x160',
-      name: '假装是图片',
-      tags: '关健字',
-      class: '新闻图片',
-      copyright: 'index.pdf',
-      author: '视觉中国',
-      create_date: '2016-9-21'
-    }];
-
-    const isFetching = false;
-    const columns = [{
-      title: "",
-      key: "url",
-      width: 220,
-      render: (list) => <img src={list.url} alt=""/>
-    },{
-      title: "名称",
-      dataIndex: "name",
-      key: "name",
-      sorter: true
-    },{
-      title: "关健字",
-      dataIndex: "tags",
-      key: "tags",
-      sorter: true
-    },{
-      title: "分类",
-      dataIndex: "class",
-      key: "class",
-      sorter: true
-    },{
-      title: "版权信息",
-      dataIndex: "copyright",
-      key: "copyright",
-      sorter: true
-    },{
-      title: "上传人",
-      dataIndex: "author",
-      key: "author",
-      sorter: true
-    },{
-      title: "上传日期",
-      dataIndex: "create_date",
-      key: "create_date",
-      sorter: true
-    },{
-      title: '操作',
-      key: 'operation',
-      render: () => (
-        <div>
-          <Button type="primary">编辑</Button>
-          <Button className="gap-left" type="ghost">下载</Button>
-        </div>
-      )
-    }];
-
-    const rowSelection = {
-      onChange(selectedRowKeys, selectedRows) {
-        console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-      },
-      onSelect(record, selected, selectedRows) {
-        console.log(record, selected, selectedRows);
-      },
-      onSelectAll(selected, selectedRows, changeRows) {
-        console.log(selected, selectedRows, changeRows);
-      },
-    };
-
-    const pagination = {
-      showSizeChanger: true,
-      total: 10,
-      pageSize: 10,
-      pageSizeOptions: ['5','10','20','40']
-    };
-
-    function handleButtonClick(e) {
-      console.log('click left button', e.Target);
-    }
-
-    function handleMenuClick(e) {
-      console.log('click', e);
-    }
-
-    const menu = (
-      <Menu onClick={handleMenuClick}>
-        <Menu.Item key="1"><Link to={'/upload/imageGroup'}>上传组图</Link></Menu.Item>
-        <Menu.Item key="2"><Link to={'/upload/image'}>上传图片</Link></Menu.Item>
-        <Menu.Item key="3"><Link to={'/upload/video'}>上传视频</Link></Menu.Item>
-      </Menu>
-    );
-
     return (
       <div>
+        <div className="text-center">
+          <Form inline className="pad-bottom" onSubmit={this.handleSubmit}>
+            <FormItem>
+              <Input size="large" {...getFieldProps('keyWords')} placeholder="输入您要找的关键词" style={{width: 400}}/>
+            </FormItem>
+            <FormItem>
+              <Select style={{width:60}} size="large" defaultValue="all">
+                <Option value="all">全部</Option>
+                <Option value="video">视频</Option>
+                <Option value="audio">音频</Option>
+              </Select>
+            </FormItem>
+            <Button type="primary" htmlType="submit" size="large">搜索</Button><Button className="gap-left" size="large">清空</Button>
+          </Form>
+        </div>
         <Row className="pad-bottom">
           <Col span={12}>
             <Button type="primary" size="large" className="gap-right"><Link to={'/upload/index'}>上传资源</Link></Button>

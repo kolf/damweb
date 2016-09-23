@@ -39,8 +39,6 @@ class EditImageGroup extends Component {
     this.state = {
       color: 'colors'
     }
-
-    console.log(this.state)
   }
 
   handleSubmit(e){
@@ -207,7 +205,7 @@ class EditImageGroup extends Component {
                         required
                         hasFeedback
                       >
-                        <RadioGroup disabled onChange={this.onChange} value={this.state.color}>
+                        <RadioGroup size="default" disabled onChange={this.onChange} value={this.state.color}>
                           <Radio value={'colors'}>彩色</Radio>
                           <Radio value={'gray'}>黑白</Radio>
                         </RadioGroup>
@@ -218,7 +216,7 @@ class EditImageGroup extends Component {
                         label="版权所属"
                         {...formItemLayout}
                       >
-                        <RadioGroup {...getFieldProps('rg')}>
+                        <RadioGroup size="default" {...getFieldProps('rg')}>
                           <RadioButton value="a">无</RadioButton>
                           <RadioButton value="b">自有</RadioButton>
                           <RadioButton value="c">第三方</RadioButton>
@@ -229,7 +227,7 @@ class EditImageGroup extends Component {
                         label="版权授权"
                         {...formItemLayout}
                       >
-                        <RadioGroup {...getFieldProps('rg')}>
+                        <RadioGroup size="default" {...getFieldProps('rg')}>
                           <RadioButton value="g">RM</RadioButton>
                           <RadioButton value="h">RF</RadioButton>
                         </RadioGroup>
@@ -241,7 +239,7 @@ class EditImageGroup extends Component {
                         required
                         hasFeedback
                       >
-                        <RadioGroup disabled onChange={this.onChange} value={this.state.color}>
+                        <RadioGroup size="default" disabled onChange={this.onChange} value={this.state.color}>
                           <Radio value={'colors'}>肖像权</Radio>
                           <Radio value={'gray'}>物权</Radio>
                         </RadioGroup>
@@ -270,7 +268,6 @@ class EditImageGroup extends Component {
                           <Button className="lb">左下</Button>
                           <Button className="rb">右下</Button>
                         </div>
-
                       </FormItem>
                     </TabPane>
                   </Tabs>
