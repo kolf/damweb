@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Form, Input, Row, Col, Menu, Dropdown, Button, Icon, Select, Card, Tag, Pagination } from 'antd';
 import { Link } from 'react-router';
+import { browserHistory } from 'react-router';
 
 import CustomTable from './../../components/CustomTable';
 
@@ -16,6 +17,7 @@ import './Resource.scss';
 class Resource extends Component {
   constructor(props) {
     super(props);
+    this.handleTableChange = this.handleTableChange.bind(this);
     this.handleTableChange = this.handleTableChange.bind(this);
     this.state = {
       selectedRowKeys: [],
@@ -37,6 +39,11 @@ class Resource extends Component {
   handleTableChange() {
     const { dispatch } = this.props;
     console.log(dispatch)
+  }
+
+  goToEdit(e) {
+    // console.log('click', e);
+    browserHistory.push('/edit/imageGroup')
   }
 
   render() {
@@ -159,14 +166,10 @@ class Resource extends Component {
     };
 
     function handleButtonClick(e) {
-      console.log('click left button', e);
+      console.log('click left button', e.Target);
     }
 
     function handleMenuClick(e) {
-      console.log('click', e);
-    }
-
-    function goToEdit(e) {
       console.log('click', e);
     }
 

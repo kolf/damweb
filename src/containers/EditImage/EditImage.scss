@@ -7,11 +7,7 @@ $primary:#2DB7F5;
     &-img{
       width: 100%;
       padding-top: 80%;
-      background-color: #333;
-      background-position: center;
-      background-repeat: none;
-      //min-width: 500px;
-      //background-size:auto cover;
+      background: #333 url(../../assets/images/logo.svg) center no-repeat;
     }
     &-exif{
       h4{
@@ -23,8 +19,48 @@ $primary:#2DB7F5;
   }
 }
 
+.view{
+  &-thumb{
+    &-list{
+      &-item{
+        background: #ccc url(../../assets/images/logo.svg) center no-repeat;
+        background-size: 80px auto;
+        padding-top:80%;
+        margin-bottom:24px;
+        height: 0;
+        &.active{
+          border: 2px solid $primary
+        }
+      }
+    }
+  }
+}
+
 .list{
   &-v{
     line-height: 1.6;
+  }
+}
+
+.btn-abs{
+  position: relative;
+  width: 200px;
+  height: 100px;
+  &>button{
+    position: absolute;
+  }
+  .tr{
+    right: 0;
+  }
+  .lb{
+    bottom: 0;
+  }
+  .rb{
+    right: 0;
+    bottom: 0;
+  }
+  .c{
+    left: 70px;
+    top: 36px;
   }
 }

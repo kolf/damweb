@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Form, Select, Input, DatePicker, Switch, Radio, Cascader, Button, Row, Col, Upload, Icon, Tag, Checkbox, Tabs } from 'antd';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
-import './EditImageGroup.scss';
+import './EditAudio.scss';
 
 const CreateForm = Form.create;
 const FormItem = Form.Item;

@@ -7,6 +7,8 @@ body{
 
 .ant-layout-topaside .ant-layout-wrapper {
   padding: 0 50px;
+  //width: 960px;
+  margin: 0 auto;
 }
 
 .ant-layout-topaside .ant-layout-header {
@@ -111,6 +113,9 @@ body{
 .text{
   &-center{
     text-align: center;
+    &>*{
+      display: inline-block;
+    }
   }
   &-right{
     text-align: right;
