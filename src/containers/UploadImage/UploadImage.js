@@ -96,6 +96,7 @@ class UploadImage extends Component {
     };
 
     return (
+      <div className="ant-layout-content">
       <div className="upload-container">
         <div className="upload-main">
           <div className="upload-thumbs" onClick={this.onSelect.bind(this)}>
@@ -181,7 +182,7 @@ class UploadImage extends Component {
               {...formItemLayout}
               label="版权所属"
             >
-              <RadioGroup {...getFieldProps('rg')}>
+              <RadioGroup size="default" {...getFieldProps('rg')}>
                 <RadioButton value="a">无</RadioButton>
                 <RadioButton value="b">自有</RadioButton>
                 <RadioButton value="c">第三方</RadioButton>
@@ -192,7 +193,7 @@ class UploadImage extends Component {
               label="版权类型"
               {...formItemLayout}
             >
-              <RadioGroup {...getFieldProps('rg')}>
+              <RadioGroup size="default" {...getFieldProps('rg')}>
                 <RadioButton value="d">RM</RadioButton>
                 <RadioButton value="f">RF</RadioButton>
               </RadioGroup>
@@ -221,7 +222,7 @@ class UploadImage extends Component {
               label="版权授权"
               {...formItemLayout}
             >
-              <RadioGroup {...getFieldProps('rg')}>
+              <RadioGroup size="default" {...getFieldProps('rg')}>
                 <RadioButton value="g">肖像权</RadioButton>
                 <RadioButton value="h">物权</RadioButton>
               </RadioGroup>
@@ -249,6 +250,7 @@ class UploadImage extends Component {
           </Form>
         </div>
       </div>
+        </div>
     );
   }
 }

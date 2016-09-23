@@ -77,6 +77,7 @@ class EditImageGroup extends Component {
 
     return (
       <div>
+        <div className="ant-layout-content">
           <Row gutter={24}>
             <Col lg={{span:6}}>
               <FormItem
@@ -316,6 +317,7 @@ class EditImageGroup extends Component {
               </div>
             </Col>
           </Row>
+      </div>
       </div>
     );
   }

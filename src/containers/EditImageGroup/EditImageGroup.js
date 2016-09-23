@@ -75,6 +75,7 @@ class EditImageGroup extends Component {
 
     return (
       <div>
+        <div className="ant-layout-content">
           <Row gutter={24}>
             <Col lg={{span:6}}>
               <FormItem
@@ -90,6 +91,18 @@ class EditImageGroup extends Component {
                 {...formItemLayout}
               >
                 <Input type="textarea" {...addressProps}/>
+              </FormItem>
+              <FormItem
+                {...formItemLayout}
+                label="组图标签"
+                required
+                hasFeedback
+              >
+                {tags.map(tag =>
+                  <Tag key={tag.key} closable={tag.key !== 1} afterClose={() => this.handleClose(tag.key)}>
+                    {tag.name}
+                  </Tag>
+                )}
               </FormItem>
               <hr/>
               <div className="view-thumb-list">
@@ -132,7 +145,7 @@ class EditImageGroup extends Component {
                       </FormItem>
 
                       <FormItem
-                        label="说明"
+                        label="图片说明"
                         {...formItemLayout}
                       >
                         <Input type="textarea" {...addressProps}/>
@@ -154,7 +167,7 @@ class EditImageGroup extends Component {
 
                       <FormItem
                         {...formItemLayout}
-                        label="标签"
+                        label="图片标签"
                         required
                         hasFeedback
                       >
@@ -314,6 +327,7 @@ class EditImageGroup extends Component {
             </Col>
           </Row>
       </div>
+        </div>
     );
   }
 }

@@ -90,6 +90,7 @@ class DetailsImage extends Component {
 
     return (
       <div>
+        <div className="ant-layout-content">
         <Col xs={{offset: 0, span:24}} lg={{offset:3, span:18}}>
           <Row gutter={24}>
             <Col lg={{span: 16}}>
@@ -272,6 +273,7 @@ class DetailsImage extends Component {
           </div>
         </Col>
       </div>
+        </div>
     );
   }
 }

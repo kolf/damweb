@@ -92,6 +92,7 @@ class Audit extends Component {
 
     return (
       <div>
+        <div className="ant-layout-content">
         <div className="text-center">
           <Form inline className="pad-bottom" onSubmit={this.handleSubmit}>
             <FormItem
@@ -374,6 +375,7 @@ class Audit extends Component {
           <Pagination showQuickJumper defaultCurrent={2} total={500} />
         </div>
       </div>
+        </div>
     )
   }
 }
