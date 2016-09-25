@@ -2,62 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="76e67c47-d7b3-4428-a40b-4cb66015482b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/components/Tags/index.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/containers/Video/Update/style.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/containers/Video/Upload/style.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/containers/ImageGroup/Details/index.js" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/containers/ImageGroup/Dateils/index.js" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/actions/users.spec.js" afterPath="$PROJECT_DIR$/src/actions/users.spec.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/config/api.js" afterPath="$PROJECT_DIR$/src/config/api.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/reducers/users.spec.js" afterPath="$PROJECT_DIR$/src/reducers/users.spec.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/containers/Image/Details/index.js" afterPath="$PROJECT_DIR$/src/containers/Image/Details/index.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/containers/Image/Update/index.js" afterPath="$PROJECT_DIR$/src/containers/Image/Update/index.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/containers/Image/Update/style.scss" afterPath="$PROJECT_DIR$/src/containers/Image/Update/style.scss" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/containers/Image/Upload/index.js" afterPath="$PROJECT_DIR$/src/containers/Image/Upload/index.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/containers/Image/Upload/style.scss" afterPath="$PROJECT_DIR$/src/containers/Image/Upload/style.scss" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/containers/ImageGroup/Update/index.js" afterPath="$PROJECT_DIR$/src/containers/ImageGroup/Update/index.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/containers/ImageGroup/Upload/index.js" afterPath="$PROJECT_DIR$/src/containers/ImageGroup/Upload/index.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/containers/Upload/Index/index.js" afterPath="$PROJECT_DIR$/src/containers/Upload/Index/index.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/containers/Upload/List/index.js" afterPath="$PROJECT_DIR$/src/containers/Upload/List/index.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes.js" afterPath="$PROJECT_DIR$/src/routes.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webpack.config.dev.js" afterPath="$PROJECT_DIR$/webpack.config.dev.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webpack.config.prod.js" afterPath="$PROJECT_DIR$/webpack.config.prod.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/components/NotFound/NotFound.js" afterPath="$PROJECT_DIR$/src/components/NotFound/index.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/components/NotFound/NotFound.scss" afterPath="$PROJECT_DIR$/src/components/NotFound/style.scss" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/components/NotFound/NotFound.spec.js" afterPath="$PROJECT_DIR$/src/components/NotFound/index.spec.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/App/App.js" afterPath="$PROJECT_DIR$/src/containers/App/index.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/App/App.scss" afterPath="$PROJECT_DIR$/src/containers/App/style.scss" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/Audit/Audit.js" afterPath="$PROJECT_DIR$/src/containers/Review/Index/index.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/Audit/Audit.scss" afterPath="$PROJECT_DIR$/src/containers/Download/Index/style.scss" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/DetailsAudio/DetailsAudio.js" afterPath="$PROJECT_DIR$/src/containers/Audio/Details/index.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/DetailsAudio/DetailsAudio.scss" afterPath="$PROJECT_DIR$/src/components/ImageUploadList/index.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/DetailsImage/DetailsImage.js" afterPath="$PROJECT_DIR$/src/containers/Image/Details/index.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/DetailsImage/DetailsImage.scss" afterPath="$PROJECT_DIR$/src/components/ImageUploadList/style.scss" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/DetailsImageGroup/DetailsImageGroup.js" afterPath="$PROJECT_DIR$/src/containers/ImageGroup/Dateils/index.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/DetailsImageGroup/DetailsImageGroup.scss" afterPath="$PROJECT_DIR$/src/containers/Audio/Details/style.scss" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/DetailsVideo/DetailsVideo.js" afterPath="$PROJECT_DIR$/src/containers/Video/Details/index.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/DetailsVideo/DetailsVideo.scss" afterPath="$PROJECT_DIR$/src/containers/Audio/Update/style.scss" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/Download/Download.js" afterPath="$PROJECT_DIR$/src/containers/Download/Index/index.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/Download/Download.scss" afterPath="$PROJECT_DIR$/src/containers/Home/style.scss" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/EditAudio/EditAudio.js" afterPath="$PROJECT_DIR$/src/containers/Audio/Update/index.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/EditAudio/EditAudio.scss" afterPath="$PROJECT_DIR$/src/containers/Audio/Upload/style.scss" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/EditImage/EditImage.js" afterPath="$PROJECT_DIR$/src/containers/Image/Update/index.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/EditImage/EditImage.scss" afterPath="$PROJECT_DIR$/src/containers/Image/Update/style.scss" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/EditImageGroup/EditImageGroup.js" afterPath="$PROJECT_DIR$/src/containers/ImageGroup/Update/index.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/EditImageGroup/EditImageGroup.scss" afterPath="$PROJECT_DIR$/src/containers/Image/Details/style.scss" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/EditVideo/EditVideo.js" afterPath="$PROJECT_DIR$/src/containers/Video/Update/index.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/EditVideo/EditVideo.scss" afterPath="$PROJECT_DIR$/src/containers/ImageGroup/Dateils/style.scss" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/Home/Home.js" afterPath="$PROJECT_DIR$/src/containers/Home/index.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/Home/Home.scss" afterPath="$PROJECT_DIR$/src/containers/Remark/style.scss" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/Login/Login.js" afterPath="$PROJECT_DIR$/src/containers/Login/index.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/Login/Login.scss" afterPath="$PROJECT_DIR$/src/containers/Login/style.scss" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/Resource/Resource.js" afterPath="$PROJECT_DIR$/src/containers/Upload/List/index.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/Resource/Resource.scss" afterPath="$PROJECT_DIR$/src/containers/Upload/List/style.scss" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/UploadAudio/UploadAudio.js" afterPath="$PROJECT_DIR$/src/containers/Audio/Upload/index.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/UploadAudio/UploadAudio.scss" afterPath="$PROJECT_DIR$/src/containers/ImageGroup/Update/style.scss" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/UploadImage/UploadImage.js" afterPath="$PROJECT_DIR$/src/containers/Image/Upload/index.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/UploadImage/UploadImage.scss" afterPath="$PROJECT_DIR$/src/containers/Image/Upload/style.scss" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/UploadImageGroup/UploadImageGroup.js" afterPath="$PROJECT_DIR$/src/containers/ImageGroup/Upload/index.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/UploadImageGroup/UploadImageGroup.scss" afterPath="$PROJECT_DIR$/src/containers/ImageGroup/Upload/style.scss" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/UploadIndex/UploadIndex.js" afterPath="$PROJECT_DIR$/src/containers/Upload/Index/index.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/UploadIndex/UploadIndex.scss" afterPath="$PROJECT_DIR$/src/containers/Upload/Index/style.scss" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/UploadVideo/UploadVideo.js" afterPath="$PROJECT_DIR$/src/containers/Video/Upload/index.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/UploadVideo/UploadVideo.scss" afterPath="$PROJECT_DIR$/src/containers/User/List/style.scss" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/Users/Users.js" afterPath="$PROJECT_DIR$/src/containers/User/List/index.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/Users/Users.scss" afterPath="$PROJECT_DIR$/src/containers/Video/Details/style.scss" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/Users/Users.spec.js" afterPath="$PROJECT_DIR$/src/containers/User/List/index.spec.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/Watermark/Watermark.js" afterPath="$PROJECT_DIR$/src/containers/Remark/index.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/Watermark/Watermark.scss" afterPath="$PROJECT_DIR$/src/containers/Review/Index/style.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/containers/ImageGroup/Dateils/style.scss" afterPath="$PROJECT_DIR$/src/containers/ImageGroup/Details/style.scss" />
     </list>
     <ignored path="damweb.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -81,10 +39,10 @@
   <component name="FileEditorManager">
     <leaf>
       <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/Tags/index.js">
+        <entry file="file://$PROJECT_DIR$/src/containers/Image/Upload/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="429">
-              <caret line="28" column="3" selection-start-line="28" selection-start-column="3" selection-end-line="28" selection-end-column="3" />
+            <state relative-caret-position="596">
+              <caret line="144" column="3" selection-start-line="144" selection-start-column="3" selection-end-line="145" selection-end-column="25" />
               <folding>
                 <element signature="e#0#52#0" expanded="true" />
               </folding>
@@ -93,13 +51,69 @@
         </entry>
       </file>
       <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/containers/Image/Upload/index.js">
+        <entry file="file://$PROJECT_DIR$/src/containers/Image/Details/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="132" column="72" selection-start-line="132" selection-start-column="50" selection-end-line="132" selection-end-column="72" />
+            <state relative-caret-position="476">
+              <caret line="146" column="101" selection-start-line="146" selection-start-column="101" selection-end-line="146" selection-end-column="101" />
+              <folding>
+                <element signature="e#9112#10209#0" expanded="false" />
+                <element signature="e#9185#10192#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/containers/Video/Update/index.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1380">
+              <caret line="127" column="156" selection-start-line="127" selection-start-column="106" selection-end-line="127" selection-end-column="156" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/containers/Upload/Index/index.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="420">
+              <caret line="21" column="26" selection-start-line="21" selection-start-column="26" selection-end-line="21" selection-end-column="26" />
               <folding>
                 <element signature="e#0#52#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/containers/ImageGroup/Update/index.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="424">
+              <caret line="228" column="33" selection-start-line="0" selection-start-column="0" selection-end-line="399" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/containers/ImageGroup/Details/index.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2116">
+              <caret line="394" column="16" selection-start-line="394" selection-start-column="16" selection-end-line="394" selection-end-column="16" />
+              <folding>
+                <element signature="e#0#50#0" expanded="true" />
+                <element signature="e#4735#5304#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="style.scss" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/containers/ImageGroup/Update/style.scss">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -108,53 +122,27 @@
         <entry file="file://$PROJECT_DIR$/src/containers/Image/Upload/style.scss">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="784">
-              <caret line="59" column="19" selection-start-line="59" selection-start-column="19" selection-end-line="59" selection-end-column="19" />
+              <caret line="63" column="15" selection-start-line="63" selection-start-column="15" selection-end-line="63" selection-end-column="15" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="style.scss" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/containers/Image/Update/style.scss">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="489">
+              <caret line="30" column="30" selection-start-line="30" selection-start-column="30" selection-end-line="30" selection-end-column="30" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/containers/ImageGroup/Upload/index.js">
+        <entry file="file://$PROJECT_DIR$/src/containers/Upload/List/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="369">
-              <caret line="125" column="25" selection-start-line="125" selection-start-column="25" selection-end-line="125" selection-end-column="25" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/containers/Upload/Index/index.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="440">
-              <caret line="22" column="4" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="4" />
-              <folding>
-                <element signature="e#0#52#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/containers/Image/Update/index.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="359">
-              <caret line="79" column="0" selection-start-line="79" selection-start-column="0" selection-end-line="217" selection-end-column="16" />
-              <folding>
-                <element signature="e#0#52#0" expanded="true" />
-                <element signature="e#1802#5277#0" expanded="false" />
-                <element signature="e#5290#6436#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/containers/Video/Update/index.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="500">
-              <caret line="161" column="4" selection-start-line="161" selection-start-column="4" selection-end-line="180" selection-end-column="31" />
+            <state relative-caret-position="460">
+              <caret line="29" column="44" selection-start-line="29" selection-start-column="44" selection-end-line="29" selection-end-column="44" />
               <folding />
             </state>
           </provider>
@@ -176,10 +164,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/containers/Home/Home.js" />
-        <option value="$PROJECT_DIR$/src/containers/Users/Users.js" />
-        <option value="$PROJECT_DIR$/src/data/db.json" />
-        <option value="$PROJECT_DIR$/src/actions/users.js" />
         <option value="$PROJECT_DIR$/src/containers/UploadIndex/UploadIndex.scss" />
         <option value="$PROJECT_DIR$/src/containers/UploadImage/UploadImage.scss" />
         <option value="$PROJECT_DIR$/src/containers/EditImageGroup/EditImageGroup.scss" />
@@ -215,18 +199,22 @@
         <option value="$PROJECT_DIR$/src/containers/Home/index.js" />
         <option value="$PROJECT_DIR$/src/containers/Video/Upload/index.js" />
         <option value="$PROJECT_DIR$/src/containers/Audio/Upload/index.js" />
-        <option value="$PROJECT_DIR$/src/containers/Upload/Index/index.js" />
-        <option value="$PROJECT_DIR$/src/containers/Upload/List/index.js" />
         <option value="$PROJECT_DIR$/src/containers/App/index.js" />
         <option value="$PROJECT_DIR$/src/containers/Review/Index/index.js" />
-        <option value="$PROJECT_DIR$/src/containers/Image/Update/style.scss" />
         <option value="$PROJECT_DIR$/src/components/TagList/index.js" />
         <option value="$PROJECT_DIR$/src/components/Tags/index.js" />
+        <option value="$PROJECT_DIR$/src/containers/Video/Update/index.js" />
         <option value="$PROJECT_DIR$/src/containers/Image/Upload/index.js" />
-        <option value="$PROJECT_DIR$/src/containers/Image/Upload/style.scss" />
         <option value="$PROJECT_DIR$/src/containers/ImageGroup/Upload/index.js" />
         <option value="$PROJECT_DIR$/src/containers/Image/Update/index.js" />
-        <option value="$PROJECT_DIR$/src/containers/Video/Update/index.js" />
+        <option value="$PROJECT_DIR$/src/containers/ImageGroup/Update/index.js" />
+        <option value="$PROJECT_DIR$/src/containers/Image/Update/style.scss" />
+        <option value="$PROJECT_DIR$/src/containers/Upload/List/index.js" />
+        <option value="$PROJECT_DIR$/src/containers/ImageGroup/Dateils/index.js" />
+        <option value="$PROJECT_DIR$/src/containers/Image/Upload/style.scss" />
+        <option value="$PROJECT_DIR$/src/containers/ImageGroup/Details/index.js" />
+        <option value="$PROJECT_DIR$/src/containers/Image/Details/index.js" />
+        <option value="$PROJECT_DIR$/src/containers/Upload/Index/index.js" />
       </list>
     </option>
   </component>
@@ -340,7 +328,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Video" />
+              <option name="myItemId" value="Upload" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -362,11 +350,33 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Video" />
+              <option name="myItemId" value="Upload" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Update" />
+              <option name="myItemId" value="Index" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="damweb" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="damweb" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="containers" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ImageGroup" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -414,7 +424,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Update" />
+              <option name="myItemId" value="Details" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -534,12 +544,12 @@
       <workItem from="1474543750799" duration="295000" />
       <workItem from="1474592653734" duration="24065000" />
       <workItem from="1474772261446" duration="180000" />
-      <workItem from="1474772455562" duration="11990000" />
+      <workItem from="1474772455562" duration="19654000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="201933000" />
+    <option name="totallyTimeSpent" value="209597000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -583,13 +593,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/containers/User/List/style.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/utils/cFetch.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="296">
@@ -654,13 +657,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/containers/ImageGroup/Update/style.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/assets/styles/index.scss">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="700">
@@ -707,13 +703,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/containers/ImageGroup/Dateils/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/containers/Video/Details/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -725,13 +714,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="498">
           <caret line="320" column="14" selection-start-line="320" selection-start-column="14" selection-end-line="320" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/containers/ImageGroup/Update/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="327">
-          <caret line="130" column="72" selection-start-line="130" selection-start-column="71" selection-end-line="130" selection-end-column="72" />
         </state>
       </provider>
     </entry>
@@ -805,14 +787,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/containers/Image/Details/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="599">
-          <caret line="92" column="44" selection-start-line="92" selection-start-column="8" selection-end-line="92" selection-end-column="44" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/containers/Home/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="160">
@@ -837,36 +811,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/containers/Upload/List/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="316">
-          <caret line="29" column="43" selection-start-line="29" selection-start-column="43" selection-end-line="29" selection-end-column="43" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="42" column="23" selection-start-line="42" selection-start-column="17" selection-end-line="42" selection-end-column="23" />
-          <folding>
-            <element signature="e#0#26#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/containers/App/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="320">
           <caret line="46" column="47" selection-start-line="46" selection-start-column="47" selection-end-line="46" selection-end-column="47" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/containers/Image/Update/style.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="684">
-          <caret line="71" column="9" selection-start-line="71" selection-start-column="9" selection-end-line="71" selection-end-column="9" />
           <folding />
         </state>
       </provider>
@@ -914,7 +862,7 @@
         <state relative-caret-position="100">
           <caret line="5" column="13" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="13" />
           <folding>
-            <element signature="e#0#52#0" expanded="true" />
+            <element signature="e#0#52#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -930,6 +878,14 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="42" column="23" selection-start-line="42" selection-start-column="17" selection-end-line="42" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/Tags/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="429">
@@ -940,59 +896,123 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/containers/Image/Upload/style.scss">
+    <entry file="file://$PROJECT_DIR$/src/containers/Login/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="784">
-          <caret line="59" column="19" selection-start-line="59" selection-start-column="19" selection-end-line="59" selection-end-column="19" />
-          <folding />
+        <state relative-caret-position="460">
+          <caret line="80" column="77" selection-start-line="80" selection-start-column="60" selection-end-line="80" selection-end-column="77" />
+          <folding>
+            <element signature="e#0#52#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/containers/ImageGroup/Upload/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="369">
-          <caret line="125" column="25" selection-start-line="125" selection-start-column="25" selection-end-line="125" selection-end-column="25" />
+        <state relative-caret-position="-91">
+          <caret line="160" column="25" selection-start-line="160" selection-start-column="25" selection-end-line="160" selection-end-column="25" />
+          <caret line="146" column="25" selection-start-line="146" selection-start-column="25" selection-end-line="146" selection-end-column="25" />
+          <caret line="138" column="25" selection-start-line="138" selection-start-column="25" selection-end-line="138" selection-end-column="25" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/containers/Image/Update/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="359">
-          <caret line="79" column="0" selection-start-line="79" selection-start-column="0" selection-end-line="217" selection-end-column="16" />
+        <state relative-caret-position="276">
+          <caret line="40" column="5" selection-start-line="40" selection-start-column="5" selection-end-line="40" selection-end-column="5" />
           <folding>
             <element signature="e#0#52#0" expanded="true" />
-            <element signature="e#1802#5277#0" expanded="false" />
-            <element signature="e#5290#6436#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/containers/Upload/Index/index.js">
+    <entry file="file://$PROJECT_DIR$/src/containers/Image/Update/style.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="440">
-          <caret line="22" column="4" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="4" />
-          <folding>
-            <element signature="e#0#52#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="489">
+          <caret line="30" column="30" selection-start-line="30" selection-start-column="30" selection-end-line="30" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/containers/Upload/List/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="460">
+          <caret line="29" column="44" selection-start-line="29" selection-start-column="44" selection-end-line="29" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/containers/ImageGroup/Update/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="424">
+          <caret line="228" column="33" selection-start-line="0" selection-start-column="0" selection-end-line="399" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/containers/ImageGroup/Update/style.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/containers/Image/Upload/style.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="784">
+          <caret line="63" column="15" selection-start-line="63" selection-start-column="15" selection-end-line="63" selection-end-column="15" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/containers/Image/Upload/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="132" column="72" selection-start-line="132" selection-start-column="50" selection-end-line="132" selection-end-column="72" />
+        <state relative-caret-position="596">
+          <caret line="144" column="3" selection-start-line="144" selection-start-column="3" selection-end-line="145" selection-end-column="25" />
           <folding>
             <element signature="e#0#52#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/containers/ImageGroup/Details/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2116">
+          <caret line="394" column="16" selection-start-line="394" selection-start-column="16" selection-end-line="394" selection-end-column="16" />
+          <folding>
+            <element signature="e#0#50#0" expanded="true" />
+            <element signature="e#4735#5304#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/containers/Image/Details/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="476">
+          <caret line="146" column="101" selection-start-line="146" selection-start-column="101" selection-end-line="146" selection-end-column="101" />
+          <folding>
+            <element signature="e#9112#10209#0" expanded="false" />
+            <element signature="e#9185#10192#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/containers/Video/Update/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="500">
-          <caret line="161" column="4" selection-start-line="161" selection-start-column="4" selection-end-line="180" selection-end-column="31" />
+        <state relative-caret-position="1380">
+          <caret line="127" column="156" selection-start-line="127" selection-start-column="106" selection-end-line="127" selection-end-column="156" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/containers/Upload/Index/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="21" column="26" selection-start-line="21" selection-start-column="26" selection-end-line="21" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#52#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

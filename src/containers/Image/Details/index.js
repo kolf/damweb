@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Form, Select, Input, DatePicker, Switch, Radio, Cascader, Button, Row, Col, Upload, Icon, Tag, Checkbox, Tabs} from 'antd';
 import { connect } from 'react-redux';
-import { browserHistory } from 'react-router';
+import { browserHistory, Link } from 'react-router';
 import './style.scss';
 
 const CreateForm = Form.create;
@@ -12,28 +12,15 @@ const RadioGroup = Radio.Group;
 const TabPane = Tabs.TabPane;
 
 const areaData = [{
-  value: 'zhejiang',
-  label: '浙江',
+  value: 'shanghai',
+  label: '中国',
   children: [{
-    value: 'hangzhou',
-    label: '杭州',
+    value: 'shanghaishi',
+    label: '上海市',
     children: [{
-      value: 'xihu',
-      label: '西湖',
-      code: 752100,
-    }],
-  }],
-}, {
-  value: 'jiangsu',
-  label: '江苏',
-  children: [{
-    value: 'nanjing',
-    label: '南京',
-    children: [{
-      value: 'zhonghuamen',
-      label: '中华门',
-      code: 453400,
-    }],
+      value: 'pudongxinqu',
+      label: '浦东新区',
+    }]
   }],
 }];
 
@@ -46,18 +33,11 @@ const tags =[
 class DetailsImage extends Component {
   constructor(props) {
     super(props);
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
 
     this.state = {
       color: 'colors'
     }
-
-    console.log(this.state)
-  }
-
-  handleSubmit(e){
-    e.preventDefault();
   }
 
   onChange(e){
@@ -69,18 +49,81 @@ class DetailsImage extends Component {
   render() {
     const { getFieldProps } = this.props.form;
 
-    const addressProps = getFieldProps('address', {
+    const titleProps = getFieldProps('title', {
       rules: [
-        { required: true, min: 2, message: '拍摄地至少为 2 个字符' },
+        { required: true, message: '图片标题不能为空' },
         { validator: this.userExists },
-      ]
+      ],
+      initialValue: '图片标题'
     });
 
-    const avatarProps = getFieldProps('avatar', {
+    const imgClassifyProps = getFieldProps('imgClassify', {
       rules: [
-        { required: true, min: 2, message: '拍摄地至少为 2 个字符' },
+        { required: true, message: '图片标题不能为空' },
         { validator: this.userExists },
-      ]
+      ],
+      initialValue: 'jack'
+    });
+
+    const imgTagsProps = getFieldProps('imgTags', {
+      rules: [
+        { required: true, message: '图片标签不能为空' },
+        { validator: this.userExists },
+      ],
+      initialValue: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6']
+    });
+
+    const descProps = getFieldProps('desc', {
+      rules: [
+        { required: true, message: '图片说明不能为空' },
+        { validator: this.userExists },
+      ],
+      initialValue: '图片说明说明说明说明说明说明说明说明说明说明说明说明说明说明说明说明说明说明说明说明'
+    });
+
+    const authorProps = getFieldProps('author', {
+      rules: [
+        { required: true, message: '作者不能为空' },
+        { validator: this.userExists },
+      ],
+      initialValue: '视觉中国'
+    });
+
+    const addressProps = getFieldProps('address', {
+      rules: [
+        { required: true, message: '拍摄地至少为 2 个字符' },
+        { validator: this.userExists },
+      ],
+      initialValue: '天安门广场'
+    });
+
+    const cityProps = getFieldProps('city', {
+      rules: [
+        { required: true, message: '拍摄城市不能为空' },
+        { validator: this.userExists },
+      ],
+      initialValue: ['shanghai', 'shanghaishi']
+    });
+
+    const copyrightProps = getFieldProps('copyright', {
+      rules: [
+        { validator: this.userExists },
+      ],
+      initialValue: ['a']
+    });
+
+    const copyrightTypeProps = getFieldProps('copyrightType', {
+      rules: [
+        { validator: this.userExists },
+      ],
+      initialValue: ['rf']
+    });
+
+    const authorizedProps = getFieldProps('authorizedProps', {
+      rules: [
+        { validator: this.userExists },
+      ],
+      initialValue: ['d']
     });
 
     const formItemLayout = {
@@ -100,6 +143,10 @@ class DetailsImage extends Component {
               </div>
             </Col>
             <Col lg={{span: 8}}>
+              <div className="ant-row ant-form-item ant-col-offset-6">
+                <Button htmlType="submit" size="large" type="primary"><Link to={'/image/update'}>编辑图片</Link></Button>
+                <Button size="large" className="gap-left">下载图片</Button>
+              </div>
               <Tabs type="card">
                 <TabPane tab="基本信息" key="1">
                   <FormItem
@@ -110,7 +157,7 @@ class DetailsImage extends Component {
                   </FormItem>
 
                   <FormItem
-                    label="说明"
+                    label="图片说明"
                     {...formItemLayout}
                   >
                     <p className="ant-form-text">图片说明</p>
@@ -127,16 +174,17 @@ class DetailsImage extends Component {
                     </Select>
                   </FormItem>
 
-                  <FormItem
-                    {...formItemLayout}
-                    label="标签"
-                  >
-                    {tags.map(tag =>
-                      <Tag key={tag.key}>
-                        {tag.name}
-                      </Tag>
-                    )}
-                  </FormItem>
+                        <FormItem
+                          {...formItemLayout}
+                          label="图片标签"
+                        >
+                          <Tag>成人</Tag>
+                          <Tag>广角拍摄</Tag>
+                          <Tag>寒冷</Tag>
+                          <Tag>创造力</Tag>
+                          <Tag>活动中</Tag>
+                          <Tag>人</Tag>
+                        </FormItem>
 
                   <FormItem
                     {...formItemLayout}
@@ -149,34 +197,34 @@ class DetailsImage extends Component {
                     {...formItemLayout}
                     label="作者"
                   >
-                    <p className="ant-form-text">名字</p>
+                          <p className="ant-form-text">视觉中国</p>
                   </FormItem>
 
                   <FormItem
                     {...formItemLayout}
                     label="拍摄城市"
                   >
-                    <Cascader disabled defaultValue={['zhejiang', 'hangzhou', 'xihu']} options={areaData} {...getFieldProps('area')} />
+                          <Cascader disabled options={areaData} {...cityProps} />
                   </FormItem>
 
                   <FormItem
                     {...formItemLayout}
                     label="拍摄地"
                   >
-                    <p className="ant-form-text">天空门</p>
+                          <p className="ant-form-text">天安门广场</p>
                   </FormItem>
 
                   <FormItem
                     {...formItemLayout}
                     label="色彩"
                   >
-                    <RadioGroup disabled onChange={this.onChange} value={this.state.color}>
+                          <RadioGroup disabled>
                       <Radio value={'colors'}>彩色</Radio>
                       <Radio value={'gray'}>黑白</Radio>
                     </RadioGroup>
                   </FormItem>
                 </TabPane>
-                <TabPane tab="版权信息" key="2">
+                <TabPane tab="版权信息" key="Tab_2">
                   <FormItem
                     label="版权所属"
                     {...formItemLayout}
@@ -188,32 +236,30 @@ class DetailsImage extends Component {
                     </RadioGroup>
                   </FormItem>
 
-                  <FormItem
-                    label="版权授权"
-                    {...formItemLayout}
-                  >
-                    <RadioGroup defaultValue="g" disabled size="default">
-                      <RadioButton value="g">RM</RadioButton>
-                      <RadioButton value="h">RF</RadioButton>
-                    </RadioGroup>
-                  </FormItem>
+                        <FormItem
+                          label="版权类型"
+                          {...formItemLayout}
+                        >
+                          <RadioGroup disabled size="default" {...copyrightTypeProps}>
+                            <RadioButton value="rm">RM</RadioButton>
+                            <RadioButton value="fr">RF</RadioButton>
+                          </RadioGroup>
+                        </FormItem>
 
                   <FormItem
                     {...formItemLayout}
                     label="版权授权"
-                    required
-                    hasFeedback
                   >
-                    <RadioGroup disabled onChange={this.onChange} value={this.state.color}>
-                      <Radio value={'colors'}>肖像权</Radio>
-                      <Radio value={'gray'}>物权</Radio>
+                          <RadioGroup disabled size="default" {...authorizedProps}>
+                            <Radio value={'d'}>肖像权</Radio>
+                            <Radio value={'e'}>物权</Radio>
                     </RadioGroup>
                   </FormItem>
                   <FormItem
                     {...formItemLayout}
                     label="上传时间"
                   >
-                    <p className="ant-form-text">肖像权授权文件.pdf</p>
+                          <p className="ant-form-text"><a href="https://www.baidu.com">肖像权授权文件.pdf</a></p>
                   </FormItem>
                   <FormItem
                     {...formItemLayout}
@@ -236,6 +282,9 @@ class DetailsImage extends Component {
                   </FormItem>
                 </TabPane>
               </Tabs>
+              <Col xs={{offset: 6}}>
+                <Checkbox>是否在展示平台显示资源</Checkbox>
+              </Col>
             </Col>
           </Row>
           <div className="edit-view-exif">
@@ -268,7 +317,8 @@ class DetailsImage extends Component {
                 <li>原始高度: 索尼</li>
                 <li>光圈: 索尼</li>
                 <li>曝光模式: 索尼</li>
-              </ul></Col>
+              </ul>
+              </Col>
             </Row>
           </div>
         </Col>

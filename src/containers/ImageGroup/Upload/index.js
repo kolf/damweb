@@ -136,7 +136,7 @@ class UploadImageGroup extends Component {
               </Row>
 
               <FormItem
-                label="说明"
+                label="图片说明"
                 {...formItemLayout}
               >
                 <Input type="textarea" {...addressProps}/>
@@ -144,7 +144,7 @@ class UploadImageGroup extends Component {
 
               <FormItem
                 {...formItemLayout}
-                label="分类"
+                label="图片分类"
                 required
               >
                 <Select {...getFieldProps('select')}
@@ -158,7 +158,7 @@ class UploadImageGroup extends Component {
 
               <FormItem
                 {...formItemLayout}
-                label="标签"
+                label="图片标签"
                 required
                 hasFeedback
               >

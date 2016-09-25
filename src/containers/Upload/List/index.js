@@ -26,8 +26,8 @@ class Resource extends Component {
     const { dispatch } = this.props;
   }
 
-  goToEdit(e) {
-    browserHistory.push('/imageGroup/Update')
+  goToDetails(e) {
+    browserHistory.push('/imageGroup/details')
   }
 
   render() {
@@ -69,7 +69,7 @@ class Resource extends Component {
                   <h3>图片标题，超出隐藏...</h3>
                   <p><Tag>图片</Tag><Tag color="red">RM</Tag>
                     <ButtonGroup size="small" className="pull-right">
-                    <Button type="ghost" icon="edit" onClick={this.goToEdit}/>
+                    <Button type="ghost" icon="eye-o" onClick={this.goToDetails}/>
                     <Button type="ghost" icon="download"/>
                   </ButtonGroup>
                   </p>
@@ -84,7 +84,7 @@ class Resource extends Component {
                   <h3>图片标题，超出隐藏...</h3>
                   <p><Tag>图片</Tag><Tag color="red">RM</Tag>
                     <ButtonGroup size="small" className="pull-right">
-                    <Button type="ghost" icon="edit" onClick={this.goToEdit}/>
+                    <Button type="ghost" icon="eye-o" onClick={this.goToDetails}/>
                     <Button type="ghost" icon="download"/>
                   </ButtonGroup>
                   </p>
@@ -98,7 +98,7 @@ class Resource extends Component {
                   <h3>图片标题，超出隐藏...</h3>
                   <p><Tag>图片</Tag><Tag color="red">RM</Tag>
                     <ButtonGroup size="small" className="pull-right">
-                    <Button type="ghost" icon="edit" onClick={this.goToEdit}/>
+                    <Button type="ghost" icon="eye-o" onClick={this.goToDetails}/>
                     <Button type="ghost" icon="download"/>
                   </ButtonGroup>
                   </p>
@@ -112,7 +112,7 @@ class Resource extends Component {
                   <h3>图片标题，超出隐藏...</h3>
                   <p><Tag>图片</Tag><Tag color="red">RM</Tag>
                     <ButtonGroup size="small" className="pull-right">
-                    <Button type="ghost" icon="edit" onClick={this.goToEdit}/>
+                    <Button type="ghost" icon="eye-o" onClick={this.goToDetails}/>
                     <Button type="ghost" icon="download"/>
                   </ButtonGroup>
                   </p>
@@ -126,7 +126,7 @@ class Resource extends Component {
                   <h3>图片标题，超出隐藏...</h3>
                   <p><Tag>图片</Tag><Tag color="red">RM</Tag>
                     <ButtonGroup size="small" className="pull-right">
-                    <Button type="ghost" icon="edit" onClick={this.goToEdit}/>
+                    <Button type="ghost" icon="eye-o" onClick={this.goToDetails}/>
                     <Button type="ghost" icon="download"/>
                   </ButtonGroup>
                   </p>
@@ -140,7 +140,7 @@ class Resource extends Component {
                   <h3>图片标题，超出隐藏...</h3>
                   <p><Tag>图片</Tag><Tag color="red">RM</Tag>
                     <ButtonGroup size="small" className="pull-right">
-                    <Button type="ghost" icon="edit" onClick={this.goToEdit}/>
+                    <Button type="ghost" icon="eye-o" onClick={this.goToDetails}/>
                     <Button type="ghost" icon="download"/>
                   </ButtonGroup>
                   </p>
@@ -154,7 +154,7 @@ class Resource extends Component {
                   <h3>图片标题，超出隐藏...</h3>
                   <p><Tag>视频</Tag><Tag color="red">RM</Tag>
                     <ButtonGroup size="small" className="pull-right">
-                    <Button type="ghost" icon="edit" onClick={this.goToEdit}/>
+                    <Button type="ghost" icon="eye-o" onClick={this.goToDetails}/>
                     <Button type="ghost" icon="download"/>
                   </ButtonGroup>
                   </p>
@@ -168,7 +168,7 @@ class Resource extends Component {
                   <h3>图片标题，超出隐藏...</h3>
                   <p><Tag>音频</Tag>
                     <ButtonGroup size="small" className="pull-right">
-                    <Button type="ghost" icon="edit" onClick={this.goToEdit}/>
+                    <Button type="ghost" icon="eye-o" onClick={this.goToDetails}/>
                     <Button type="ghost" icon="download"/>
                   </ButtonGroup>
                   </p>
@@ -182,7 +182,7 @@ class Resource extends Component {
                   <h3>图片标题，超出隐藏...</h3>
                   <p><Tag>图片</Tag><Tag color="red">RM</Tag>
                     <ButtonGroup size="small" className="pull-right">
-                    <Button type="ghost" icon="edit" onClick={this.goToEdit}/>
+                    <Button type="ghost" icon="eye-o" onClick={this.goToDetails}/>
                     <Button type="ghost" icon="download"/>
                   </ButtonGroup>
                   </p>
@@ -196,7 +196,7 @@ class Resource extends Component {
                   <h3>Lorem ipsum dolor</h3>
                   <p><Tag>图片</Tag><Tag color="red">RM</Tag>
                     <ButtonGroup size="small" className="pull-right">
-                    <Button type="ghost" icon="edit" onClick={this.goToEdit}/>
+                    <Button type="ghost" icon="eye-o" onClick={this.goToDetails}/>
                     <Button type="ghost" icon="download"/>
                   </ButtonGroup>
                   </p>
@@ -210,7 +210,7 @@ class Resource extends Component {
                   <h3>图片标题，超出隐藏...</h3>
                   <p><Tag>图片</Tag><Tag color="red">RM</Tag>
                     <ButtonGroup size="small" className="pull-right">
-                    <Button type="ghost" icon="edit" onClick={this.goToEdit}/>
+                    <Button type="ghost" icon="eye-o" onClick={this.goToDetails}/>
                     <Button type="ghost" icon="download"/>
                   </ButtonGroup>
                   </p>
@@ -224,7 +224,7 @@ class Resource extends Component {
                   <h3>图片标题，超出隐藏...</h3>
                   <p><Tag>图片</Tag><Tag color="red">RM</Tag>
                     <ButtonGroup size="small" className="pull-right">
-                    <Button type="ghost" icon="edit" onClick={this.goToEdit}/>
+                    <Button type="ghost" icon="eye-o" onClick={this.goToDetails}/>
                     <Button type="ghost" icon="download"/>
                   </ButtonGroup>
                   </p>
@@ -238,7 +238,7 @@ class Resource extends Component {
                   <h3>图片标题，超出隐藏...</h3>
                   <p><Tag>图片</Tag><Tag color="red">RM</Tag>
                     <ButtonGroup size="small" className="pull-right">
-                    <Button type="ghost" icon="edit" onClick={this.goToEdit}/>
+                    <Button type="ghost" icon="eye-o" onClick={this.goToDetails}/>
                     <Button type="ghost" icon="download"/>
                   </ButtonGroup>
                   </p>
@@ -252,7 +252,7 @@ class Resource extends Component {
                   <h3>图片标题，超出隐藏...</h3>
                   <p><Tag>图片</Tag><Tag color="red">RM</Tag>
                     <ButtonGroup size="small" className="pull-right">
-                    <Button type="ghost" icon="edit" onClick={this.goToEdit}/>
+                    <Button type="ghost" icon="eye-o" onClick={this.goToDetails}/>
                     <Button type="ghost" icon="download"/>
                   </ButtonGroup>
                   </p>
@@ -266,7 +266,7 @@ class Resource extends Component {
                   <h3>图片标题，超出隐藏...</h3>
                   <p><Tag>视频</Tag><Tag color="red">RM</Tag>
                     <ButtonGroup size="small" className="pull-right">
-                    <Button type="ghost" icon="edit" onClick={this.goToEdit}/>
+                    <Button type="ghost" icon="eye-o" onClick={this.goToDetails}/>
                     <Button type="ghost" icon="download"/>
                   </ButtonGroup>
                   </p>
@@ -280,7 +280,7 @@ class Resource extends Component {
                   <h3>图片标题，超出隐藏...</h3>
                   <p><Tag>音频</Tag>
                     <ButtonGroup size="small" className="pull-right">
-                    <Button type="ghost" icon="edit" onClick={this.goToEdit}/>
+                    <Button type="ghost" icon="eye-o" onClick={this.goToDetails}/>
                     <Button type="ghost" icon="download"/>
                   </ButtonGroup>
                   </p>

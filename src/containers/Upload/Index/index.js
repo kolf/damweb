@@ -19,7 +19,7 @@ class UploadIndex extends Component {
   handleSubmit(e){
     e.preventDefault();
     let type = this.props.form.getFieldsValue().type;
-    browserHistory.push(`${type}/upload/`)
+    browserHistory.push(`/${type}/upload/`)
   };
 
   render() {

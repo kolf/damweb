@@ -22,7 +22,7 @@ import ImageDetails from './containers/Image/Details/index';
 
 import ImageGroupUpload from './containers/ImageGroup/Upload/index';
 import ImageGroupUpdate from './containers/ImageGroup/Update/index';
-import ImageGroupDetails from './containers/ImageGroup/Dateils/index';
+import ImageGroupDetails from './containers/ImageGroup/Details/index';
 
 import VideoUpload from './containers/Video/Upload/index';
 import VideoUpdate from './containers/Video/Update/index';
