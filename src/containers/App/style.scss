@@ -1,0 +1,155 @@
+body{
+  background: #ececec;
+}
+.ant-layout-topaside {
+  height: 100%;
+}
+
+.ant-layout-topaside .ant-layout-wrapper {
+  padding: 0 50px;
+  //width: 1140px;
+  margin: 0 auto;
+}
+
+.ant-layout-topaside .ant-layout-header {
+  background: #404040;
+  //height: 59px;
+  //border: none;
+  //overflow: hidden;
+  //background: #2db7f5;
+  //height: 60px;
+  .menu-primary{
+    border: 0;
+  }
+}
+
+.ant-layout-topaside .ant-layout-logo {
+  font-size: 18px;
+  line-height:58px;
+  padding:0 20px;
+  color: #fff;
+  //background: url('../');
+  float: left;
+}
+//
+//.ant-layout-topaside .ant-layout-subheader {
+//  height: 48px;
+//  border-bottom: 1px solid #e9e9e9;
+//  text-align: center;
+//  background: #fff;
+//}
+
+.ant-layout-topaside .ant-layout-breadcrumb {
+  margin: 7px 0 -17px 24px;
+  //border-bottom: 1px solid #e9e9e9;
+  //padding: 15px 0;
+  //background: #e9e9e9;
+  overflow: hidden;
+}
+
+.ant-layout-topaside .ant-layout-container {
+  background: #fff;
+  margin: 24px 0 0;
+  position: relative;
+  //padding: 24px 0;
+  overflow: hidden;
+}
+
+.ant-layout-topaside .ant-layout-sider {
+  width: 224px;
+  float: left;
+  &>ul{
+    padding:24px 0;
+  }
+  //height: 800px;
+  //background: #404040;
+  //padding:24px 0;
+}
+
+.ant-layout-topaside .ant-layout-content {
+  min-height: 800px;
+  border-left: 1px solid #e9e9e9;
+  margin-left: -1px;
+  padding:24px;
+  overflow: auto;
+  position: relative;
+}
+
+.ant-layout-topaside .ant-layout-footer {
+  height: 60px;
+  line-height: 60px;
+  text-align: center;
+  font-size: 12px;
+  color: #999;
+}
+
+.ant-layout-topaside{
+  .ant-menu-inline, .ant-menu-vertical{
+    border-right:0;
+  }
+}
+
+.ant{
+  &-btn{
+    border-radius: 2px
+  }
+  &-input{
+    border-radius: 2px
+  }
+  &-table{
+    &-thead{
+      &>tr>th{
+        //padding: 11px !important;
+      }
+    }
+    &-tbody{
+      &>tr>td{
+        //padding:6px 10px !important;
+      }
+    }
+  }
+}
+
+.text{
+  &-center{
+    text-align: center;
+    &>*{
+      display: inline-block;
+    }
+  }
+  &-right{
+    text-align: right;
+  }
+}
+
+.pad{
+  &-bottom{
+    padding-bottom: 20px;
+  }
+  &-top{
+    padding-top: 20px;
+  }
+}
+
+.pull{
+  &-left{
+    float: left !important;
+  }
+  &-right{
+    float: right !important;
+  }
+}
+
+.btn{
+  &-block{
+    width: 100%;
+  }
+}
+
+hr{
+  height: 0;
+  width: 100%;
+  border:none;
+  border-bottom: 1px solid #e9e9e9;
+  margin: 24px 0;
+}

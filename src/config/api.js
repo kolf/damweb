@@ -5,7 +5,7 @@ const baseUri = host + "/";
 export const API_CONFIG = {
   host: host,
   baseUri: baseUri,
-  auth: 'damSys/syslogin',
+  auth: 'damSys/userlogin',
   queryUser: 'damUser/pageList',          //查询用户
   createUser: 'damUser/create',           //创建用户
   productsOpts: 'damProduct/list',        //查询产品

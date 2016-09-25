@@ -1,56 +1,70 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 
-import Home from './containers/Home/Home';
-import App from './containers/App/App';
-import Resource from './containers/Resource/Resource';
-import Audit from './containers/Audit/Audit';
-import Download from './containers/Download/Download';
-import Watermark from './containers/Watermark/Watermark';
-import User from './containers/Users/Users';
+import App from './containers/App/index';
 
-import UploadIndex from './containers/UploadIndex/UploadIndex';
-import UploadImage from './containers/UploadImage/UploadImage';
-import UploadImageGroup from './containers/UploadImageGroup/UploadImageGroup';
-import UploadVideo from './containers/UploadVideo/UploadVideo';
-import UploadAudio from './containers/UploadAudio/UploadAudio';
+import Home from './containers/Home/index';
 
-import EditImage from './containers/EditImage/EditImage';
-import EditImageGroup from './containers/EditImageGroup/EditImageGroup';
-import EditVideo from './containers/EditVideo/EditVideo';
-import EditAudio from './containers/EditAudio/EditAudio';
+import ReviewIndex from './containers/Review/Index/index';
 
-import DetailsImage from './containers/DetailsImage/DetailsImage';
-import DetailsImageGroup from './containers/DetailsImageGroup/DetailsImageGroup';
-import DetailsVideo from './containers/DetailsVideo/DetailsVideo';
-import DetailsAudio from './containers/DetailsAudio/DetailsAudio';
+import DownloadIndex from './containers/Download/Index/index';
 
-import NotFound from './components/NotFound/NotFound';
+import RemarkIndex from './containers/Remark/index';
+
+import UserList from './containers/User/List/index';
+
+import UploadIndex from './containers/Upload/Index/index';
+import UploadList from './containers/Upload/List/index';
+
+import ImageUpload from './containers/Image/Upload/index';
+import ImageUpdate from './containers/Image/Update/index';
+import ImageDetails from './containers/Image/Details/index';
+
+import ImageGroupUpload from './containers/ImageGroup/Upload/index';
+import ImageGroupUpdate from './containers/ImageGroup/Update/index';
+import ImageGroupDetails from './containers/ImageGroup/Dateils/index';
+
+import VideoUpload from './containers/Video/Upload/index';
+import VideoUpdate from './containers/Video/Update/index';
+import VideoDetails from './containers/Video/Details/index';
+
+import AudioUpload from './containers/Audio/Upload/index';
+import AudioUpdate from './containers/Audio/Update/index';
+import AudioDetails from './containers/Audio/Details/index';
+
+import NotFound from './components/NotFound/index';
 
 export default (
   <Route path="/" component={App}>
     <IndexRoute component={Home}/>
-    <Route path="resource" breadcrumbName="资源库列表" component={Resource}/>
-    <Route path="audit" component={Audit}/>
-    <Route path="download" component={Download}/>
-    <Route path="watermark" component={Watermark}/>
-    <Route path="user" component={User}/>
+
+    <Route path="resource" breadcrumbName="资源库列表" component={UploadList}/>
+
+    <Route path="review" component={ReviewIndex}/>
+
+    <Route path="download" component={DownloadIndex}/>
+
+    <Route path="remark" component={RemarkIndex}/>
+
+    <Route path="users" component={UserList}/>
 
     <Route path="upload/index" component={UploadIndex}/>
-    <Route path="upload/image" component={UploadImage}/>
-    <Route path="upload/imageGroup" component={UploadImageGroup}/>
-    <Route path="upload/video" component={UploadVideo}/>
-    <Route path="upload/audio" component={UploadAudio}/>
 
-    <Route path="edit/image" component={EditImage}/>
-    <Route path="edit/imageGroup" component={EditImageGroup}/>
-    <Route path="edit/video" component={EditVideo}/>
-    <Route path="edit/audio" component={EditAudio}/>
+    <Route path="image/upload" component={ImageUpload}/>
+    <Route path="image/update" component={ImageUpdate}/>
+    <Route path="image/details" component={ImageDetails}/>
 
-    <Route path="details/image" component={DetailsImage}/>
-    <Route path="details/imageGroup" component={DetailsImageGroup}/>
-    <Route path="details/video" component={DetailsVideo}/>
-    <Route path="details/audio" component={DetailsAudio}/>
+    <Route path="imageGroup/upload" component={ImageGroupUpload}/>
+    <Route path="imageGroup/update" component={ImageGroupUpdate}/>
+    <Route path="imageGroup/details" component={ImageGroupDetails}/>
+
+    <Route path="video/upload" component={VideoUpload}/>
+    <Route path="video/update" component={VideoUpdate}/>
+    <Route path="video/details" component={VideoDetails}/>
+
+    <Route path="audio/upload" component={AudioUpload}/>
+    <Route path="audio/update" component={AudioUpdate}/>
+    <Route path="audio/details" component={AudioDetails}/>
 
     <Route path="*" component={NotFound}/>
   </Route>
