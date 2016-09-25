@@ -30,7 +30,7 @@ const tags =[
   { key: 3, name: '春夏' }
 ];
 
-class DetailsImage extends Component {
+class ImageDetails extends Component {
   constructor(props) {
     super(props);
     this.onChange = this.onChange.bind(this);
@@ -328,7 +328,7 @@ class DetailsImage extends Component {
   }
 }
 
-DetailsImage.propTypes = {
+ImageDetails.propTypes = {
   form: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired
 };
@@ -338,4 +338,4 @@ function mapStateToProps() {
   };
 }
 
-export default connect(mapStateToProps)(CreateForm()(DetailsImage));
+export default connect(mapStateToProps)(CreateForm()(ImageDetails));

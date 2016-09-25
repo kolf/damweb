@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './style.scss';
 
-class HomePage extends Component {
+class Home extends Component {
   constructor(props) {
     super(props);
   }
@@ -13,7 +13,7 @@ class HomePage extends Component {
   }
 }
 
-HomePage.propTypes = {
+Home.propTypes = {
 };
 
 function mapStateToProps() {
@@ -21,4 +21,4 @@ function mapStateToProps() {
   };
 }
 
-export default connect(mapStateToProps)(HomePage);
+export default connect(mapStateToProps)(Home);

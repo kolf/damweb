@@ -30,7 +30,7 @@ const tags =[
   { key: 3, name: '春夏' }
 ];
 
-class EditImageGroup extends Component {
+class ImageGroupUpdate extends Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -386,7 +386,7 @@ class EditImageGroup extends Component {
   }
 }
 
-EditImageGroup.propTypes = {
+ImageGroupUpdate.propTypes = {
   form: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired
 };
@@ -396,4 +396,4 @@ function mapStateToProps() {
   };
 }
 
-export default connect(mapStateToProps)(CreateForm()(EditImageGroup));
+export default connect(mapStateToProps)(CreateForm()(ImageGroupUpdate));

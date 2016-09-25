@@ -19,10 +19,12 @@ import UploadList from './containers/Upload/List/index';
 import ImageUpload from './containers/Image/Upload/index';
 import ImageUpdate from './containers/Image/Update/index';
 import ImageDetails from './containers/Image/Details/index';
+import ImageReview from './containers/Image/Review/index';
 
 import ImageGroupUpload from './containers/ImageGroup/Upload/index';
 import ImageGroupUpdate from './containers/ImageGroup/Update/index';
 import ImageGroupDetails from './containers/ImageGroup/Details/index';
+import ImageGroupReview from './containers/ImageGroup/Review/index';
 
 import VideoUpload from './containers/Video/Upload/index';
 import VideoUpdate from './containers/Video/Update/index';
@@ -53,10 +55,12 @@ export default (
     <Route path="image/upload" component={ImageUpload}/>
     <Route path="image/update" component={ImageUpdate}/>
     <Route path="image/details" component={ImageDetails}/>
+    <Route path="image/review" component={ImageReview}/>
 
     <Route path="imageGroup/upload" component={ImageGroupUpload}/>
     <Route path="imageGroup/update" component={ImageGroupUpdate}/>
     <Route path="imageGroup/details" component={ImageGroupDetails}/>
+    <Route path="imageGroup/review" component={ImageGroupReview}/>
 
     <Route path="video/upload" component={VideoUpload}/>
     <Route path="video/update" component={VideoUpdate}/>

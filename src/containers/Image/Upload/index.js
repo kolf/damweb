@@ -29,7 +29,7 @@ const tags =[
   { key: 3, name: '春夏' }
 ];
 
-class UploadImage extends Component {
+class ImageUpload extends Component {
   constructor(props) {
     super(props);
   }
@@ -254,7 +254,7 @@ class UploadImage extends Component {
   }
 }
 
-UploadImage.propTypes = {
+ImageUpload.propTypes = {
   form: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired
 };
@@ -264,4 +264,4 @@ function mapStateToProps() {
   };
 }
 
-export default connect(mapStateToProps)(CreateForm()(UploadImage));
+export default connect(mapStateToProps)(CreateForm()(ImageUpload));

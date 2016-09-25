@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import './style.scss';
 
-class Page extends Component {
+class VideoDetails extends Component {
     constructor(props) {
         super(props);
     }
@@ -13,10 +13,10 @@ class Page extends Component {
     }
 }
 
-Page.propTypes = {};
+VideoDetails.propTypes = {};
 
 function mapStateToProps() {
     return {};
 }
 
-export default connect(mapStateToProps)(Page);
+export default connect(mapStateToProps)(VideoDetails);

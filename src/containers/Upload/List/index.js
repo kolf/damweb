@@ -14,7 +14,7 @@ const InputGroup = Input.Group;
 
 import './style.scss';
 
-class Resource extends Component {
+class UploadList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -297,7 +297,7 @@ class Resource extends Component {
   }
 }
 
-Resource.propTypes = {
+UploadList.propTypes = {
   form: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired
 };
@@ -309,4 +309,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(CreateForm()(Resource));
+export default connect(mapStateToProps)(CreateForm()(UploadList));

@@ -30,7 +30,7 @@ const tags =[
   { key: 3, name: '春夏' }
 ];
 
-class ImageUpdate extends Component {
+class ImageReview extends Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -152,8 +152,8 @@ class ImageUpdate extends Component {
               <Col lg={{span: 8}}>
                 <Form>
                   <div className="ant-row ant-form-item ant-col-offset-6">
-                    <Button htmlType="submit" size="large" type="primary">保存编辑</Button>
-                    <Button size="large" className="gap-left">下载图片</Button>
+                    <Button htmlType="submit" size="large" type="primary">审核通过</Button>
+                    <Button size="large" className="gap-left">审核拒绝</Button>
                   </div>
                   <Tabs type="card">
                     <TabPane tab="基本信息" key="Tab_1">
@@ -327,7 +327,7 @@ class ImageUpdate extends Component {
   }
 }
 
-ImageUpdate.propTypes = {
+ImageReview.propTypes = {
   form: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired
 };
@@ -337,4 +337,4 @@ function mapStateToProps() {
   };
 }
 
-export default connect(mapStateToProps)(CreateForm()(ImageUpdate));
+export default connect(mapStateToProps)(CreateForm()(ImageReview));

@@ -13,7 +13,7 @@ const TabPane = Tabs.TabPane;
 
 import './style.scss';
 
-class Audit extends Component {
+class Review extends Component {
   constructor(props) {
     super(props);
     this.handleTableChange = this.handleTableChange.bind(this);
@@ -36,7 +36,7 @@ class Audit extends Component {
 
   goToReview(e) {
     console.log('click', e);
-    browserHistory.push('/image/details')
+    browserHistory.push('/imageGroup/review')
   }
 
   disabledStartDate(startValue) {
@@ -381,7 +381,7 @@ class Audit extends Component {
   }
 }
 
-Audit.propTypes = {
+Review.propTypes = {
   form: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired
 };
@@ -393,4 +393,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(CreateForm()(Audit));
+export default connect(mapStateToProps)(CreateForm()(Review));

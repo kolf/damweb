@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './style.scss';
 
-class Download extends Component {
+class DownloadIndex extends Component {
   constructor(props) {
     super(props);
   }
@@ -13,7 +13,7 @@ class Download extends Component {
   }
 }
 
-Download.propTypes = {
+DownloadIndex.propTypes = {
 };
 
 function mapStateToProps() {
@@ -21,4 +21,4 @@ function mapStateToProps() {
   };
 }
 
-export default connect(mapStateToProps)(Download);
+export default connect(mapStateToProps)(DownloadIndex);

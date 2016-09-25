@@ -2,6 +2,11 @@
 $lightGrey: #e9e9e9;
 
 .client-info {
+  &-container{
+    width:100%;
+    margin:0px;
+    height:auto;
+  }
   .ant-row {
     height: 30px;
     line-height: 30px;
@@ -17,5 +22,65 @@ $lightGrey: #e9e9e9;
         border-right: 1px solid $lightGrey;
       }
     }
+  }
+}
+
+.btnMargin{
+  margin-left:30px;
+}
+
+.tablealign{
+  margin:0 auto;
+}
+
+
+.pic-box{
+  position: relative;
+}
+.markPosition{
+  position:absolute;
+  z-index: 10;
+  width: 150px;
+  img{
+    max-width:100%;
+  }
+
+  &.lt{
+    left: 24px;
+    top: 24px;
+  }
+  &.ct{
+    left:250px;
+    top:24px;
+  }
+  &.rt{
+    right:24px;
+    top:24px;
+  }
+  &.lc{
+    left:24px;
+    top:300px;
+  }
+
+  &.cc{
+    left:250px;
+    top:300px;
+  }
+  &.rc{
+    right:24px;
+    top:300px;
+  }
+
+  &.lb{
+    left:24px;
+    bottom:24px;
+  }
+  &.cb{
+    left:250px;
+    bottom:24px;
+  }
+  &.rb{
+    right:24px;
+    bottom:24px;
   }
 }

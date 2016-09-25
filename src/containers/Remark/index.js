@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
 import { API_CONFIG } from './../../config/api';
 import { connect } from 'react-redux';
-<<<<<<< HEAD:src/containers/Remark/index.js
-import './style.scss';
-=======
 import cs from 'classnames';
 import { Form,Button, Row, Col, Upload, Icon, Tag,message} from 'antd';
-import './Watermark.scss';
->>>>>>> 3b4ee9eb7231cd6f0669c354fe7bcb0383c6525a:src/containers/Watermark/Watermark.js
+import './style.scss';
 
-class Watermark extends Component {
+class Remark extends Component {
   constructor(props) {
     super(props);
     this.state= {
@@ -38,9 +34,6 @@ class Watermark extends Component {
   }
 
   render() {
-<<<<<<< HEAD:src/containers/Remark/index.js
-    return <div><div className="ant-layout-content">水印管理</div></div>;
-=======
     const uploadWarterMarkImg = {
       name: 'file',
       action: API_CONFIG.baseUri+API_CONFIG.uploadWaterprint,
@@ -111,11 +104,10 @@ class Watermark extends Component {
         </tr>
       </table>
     </div>;
->>>>>>> 3b4ee9eb7231cd6f0669c354fe7bcb0383c6525a:src/containers/Watermark/Watermark.js
   }
 }
 
-Watermark.propTypes = {
+Remark.propTypes = {
 };
 
 function mapStateToProps() {
@@ -123,4 +115,4 @@ function mapStateToProps() {
   };
 }
 
-export default connect(mapStateToProps)(Watermark);
+export default connect(mapStateToProps)(Remark);

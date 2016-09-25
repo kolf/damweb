@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Form, Select, Input, DatePicker, Switch, Radio, Cascader, Button, Row, Col, Upload, Icon, Tag, Checkbox, Tabs} from 'antd';
+import { Form, Select, Input, DatePicker, Switch, Radio, Cascader, Button, Row, Col, Upload, Icon, Tag, Checkbox, Tabs } from 'antd';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import './style.scss';
@@ -30,7 +30,7 @@ const tags =[
   { key: 3, name: '春夏' }
 ];
 
-class ImageUpdate extends Component {
+class ImageGroupReview extends Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -39,8 +39,6 @@ class ImageUpdate extends Component {
     this.state = {
       color: 'colors'
     }
-
-    console.log(this.state)
   }
 
   handleSubmit(e){
@@ -133,6 +131,30 @@ class ImageUpdate extends Component {
       initialValue: ['d']
     });
 
+    const imgGroupTitleProps = getFieldProps('imgGroupTitle', {
+      rules: [
+        { required: true, message: '组图标题不能为空' },
+        { validator: this.userExists },
+      ],
+      initialValue: '标题标题标题标题标题标题标题标题标题标题标题标题'
+    });
+
+    const imgGroupDescProps = getFieldProps('imgGroupDesc', {
+      rules: [
+        { required: true, message: '组图说明不能为空' },
+        { validator: this.userExists },
+      ],
+      initialValue: '重度雾霾盘踞 消散唯等风来重度雾霾盘踞 消散唯等风来重度雾霾盘踞 消散唯等风来重度雾霾盘踞 消散唯等风来'
+    });
+
+    const imgGroupTagsProps = getFieldProps('imgGroupTags', {
+      rules: [
+        { required: true, message: '图片标签不能为空' },
+        { validator: this.userExists },
+      ],
+      initialValue: ['T1', 'T2', 'T3']
+    });
+
     const formItemLayout = {
       labelCol: { span: 6 },
       wrapperCol: { span: 18 }
@@ -141,8 +163,44 @@ class ImageUpdate extends Component {
     return (
       <div>
         <div className="ant-layout-content">
-          <Col xs={{offset: 0, span:24}} lg={{offset:3, span:18}}>
-            <Row gutter={24}>
+          <Row gutter={24}>
+            <Col lg={{span:6}}>
+              <FormItem {...formItemLayout} label="组图标题">
+                <Input {...imgGroupTitleProps}/>
+              </FormItem>
+              <FormItem label="组图说明" {...formItemLayout}>
+                <Input type="textarea" {...imgGroupDescProps}/>
+              </FormItem>
+              <FormItem
+                {...formItemLayout}
+                label="组图标签"
+              >
+                <Select tags style={{ width: '100%' }} placeholder="请添加标签" {...imgGroupTagsProps}>
+                  <Option key="T1">成人</Option>
+                  <Option key="T2">广角拍摄</Option>
+                  <Option key="T3">寒冷</Option>
+                  <Option key="T4">创造力</Option>
+                  <Option key="T5">活动中</Option>
+                  <Option key="T6">人</Option>
+                </Select>
+              </FormItem>
+              <hr/>
+              <div className="view-thumb-list">
+                <Row gutter={24}>
+                  <Col lg={{span:12}}>
+                    <div className='view-thumb-list-item active'></div>
+                  </Col><Col lg={{span:12}}>
+                    <div className='view-thumb-list-item'></div>
+                  </Col><Col lg={{span:12}}>
+                    <div className='view-thumb-list-item'></div>
+                  </Col><Col lg={{span:12}}>
+                    <div className='view-thumb-list-item'></div>
+                  </Col>
+                </Row>
+              </div>
+            </Col>
+            <Col lg={{span: 18}}>
+              <Row gutter={24}>
               <Col lg={{span: 16}}>
                 <div className="edit-view">
                   <div className="edit-view-img" style={{backgroundImage:'url(https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png)'}}>
@@ -152,8 +210,8 @@ class ImageUpdate extends Component {
               <Col lg={{span: 8}}>
                 <Form>
                   <div className="ant-row ant-form-item ant-col-offset-6">
-                    <Button htmlType="submit" size="large" type="primary">保存编辑</Button>
-                    <Button size="large" className="gap-left">下载图片</Button>
+                    <Button htmlType="submit" size="large" type="primary">审核通过</Button>
+                    <Button size="large" className="gap-left">审核拒绝</Button>
                   </div>
                   <Tabs type="card">
                     <TabPane tab="基本信息" key="Tab_1">
@@ -287,47 +345,48 @@ class ImageUpdate extends Component {
                 </Form>
               </Col>
             </Row>
-            <div className="edit-view-exif">
-              <h4>EXIF信息</h4>
-              <Row gutter={24}>
-                <Col xs={{span: 6}}>
-                  <ul className="list-v">
-                    <li>拍摄时间: 索尼</li>
-                    <li>制造商: 索尼</li>
-                    <li>测光模式: 索尼</li>
-                    <li>白平衡: 索尼</li>
-                  </ul>
-                </Col>
-                <Col xs={{span: 6}}>
-                  <ul className="list-v">
-                    <li>图片格式: 索尼</li>
-                    <li>曝光时间: 索尼</li>
-                    <li>焦距: 索尼</li>
-                    <li>曝光程序: 索尼</li>
-                  </ul>
-                </Col>
-                <Col xs={{span: 6}}><ul className="list-v">
-                  <li>原始宽度: 索尼</li>
-                  <li>相机型号: 索尼</li>
-                  <li>闪光灯: 索尼</li>
-                  <li>曝光补偿: 索尼</li>
-                </ul></Col>
-                <Col xs={{span: 6}}><ul className="list-v">
-                  <li>ISO: 索尼</li>
-                  <li>原始高度: 索尼</li>
-                  <li>光圈: 索尼</li>
-                  <li>曝光模式: 索尼</li>
-                </ul></Col>
-              </Row>
-            </div>
-          </Col>
+              <div className="edit-view-exif">
+                <h4>EXIF信息</h4>
+                <Row gutter={24}>
+                  <Col xs={{span: 6}}>
+                    <ul className="list-v">
+                      <li>拍摄时间: 索尼</li>
+                      <li>制造商: 索尼</li>
+                      <li>测光模式: 索尼</li>
+                      <li>白平衡: 索尼</li>
+                    </ul>
+                  </Col>
+                  <Col xs={{span: 6}}>
+                    <ul className="list-v">
+                      <li>图片格式: 索尼</li>
+                      <li>曝光时间: 索尼</li>
+                      <li>焦距: 索尼</li>
+                      <li>曝光程序: 索尼</li>
+                    </ul>
+                  </Col>
+                  <Col xs={{span: 6}}><ul className="list-v">
+                    <li>原始宽度: 索尼</li>
+                    <li>相机型号: 索尼</li>
+                    <li>闪光灯: 索尼</li>
+                    <li>曝光补偿: 索尼</li>
+                  </ul></Col>
+                  <Col xs={{span: 6}}><ul className="list-v">
+                    <li>ISO: 索尼</li>
+                    <li>原始高度: 索尼</li>
+                    <li>光圈: 索尼</li>
+                    <li>曝光模式: 索尼</li>
+                  </ul></Col>
+                </Row>
+              </div>
+            </Col>
+          </Row>
+         </div>
         </div>
-      </div>
     );
   }
 }
 
-ImageUpdate.propTypes = {
+ImageGroupReview.propTypes = {
   form: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired
 };
@@ -337,4 +396,4 @@ function mapStateToProps() {
   };
 }
 
-export default connect(mapStateToProps)(CreateForm()(ImageUpdate));
+export default connect(mapStateToProps)(CreateForm()(ImageGroupReview));
