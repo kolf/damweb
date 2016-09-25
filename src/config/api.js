@@ -13,4 +13,16 @@ export const API_CONFIG = {
   createProduct: 'damProduct/create',     //创建产品
   querySysRes: 'damRes/listSysRes',       //查询系统功能
   queryRes: 'damRes/listNoneSysRes',      //查询功能
+  uploadWaterprint: 'orgWaterprint/uploadWaterprint',  //上传水印
+  updateWaterPosition:'orgWaterprint/updatePosition',  //修改水印位置
+  searchAudio:'audio2016/pageList',       //音频资源查询分页显示
+  listAudio:'audio2016/pageList',         //音频列表分页显示
+  uploadAudio:'audio2016/upload',         //上传音频资源详情
+  audioDetail:'audio2016/view',           //音频详情
+  audioUpdate:'audio2016/update',           //音频修改
+  searchVideo:'video2016/pageList',       //视频资源查询分页显示
+  listVideo:'video2016/pageList',        //视频列表分页显示
+  uploadVideo:'video2016/upload',        //上传频资源视
+  videoDetail:'video2016/view',           //视频详情
+  videoUpdate:'video2016/update',          //视频修改
 };
