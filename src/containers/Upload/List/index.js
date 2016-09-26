@@ -30,6 +30,13 @@ class UploadList extends Component {
     browserHistory.push('/imageGroup/details')
   }
 
+  goToAudioDetails(e) {
+    browserHistory.push('/audio/details')
+  }
+  goToVideoDetails(e) {
+    browserHistory.push('/video/details')
+  }
+
   render() {
     const { getFieldProps } = this.props.form;
 
@@ -154,7 +161,7 @@ class UploadList extends Component {
                   <h3>图片标题，超出隐藏...</h3>
                   <p><Tag>视频</Tag><Tag color="red">RM</Tag>
                     <ButtonGroup size="small" className="pull-right">
-                    <Button type="ghost" icon="eye-o" onClick={this.goToDetails}/>
+                    <Button type="ghost" icon="eye-o" onClick={this.goToVideoDetails}/>
                     <Button type="ghost" icon="download"/>
                   </ButtonGroup>
                   </p>
@@ -168,7 +175,7 @@ class UploadList extends Component {
                   <h3>图片标题，超出隐藏...</h3>
                   <p><Tag>音频</Tag>
                     <ButtonGroup size="small" className="pull-right">
-                    <Button type="ghost" icon="eye-o" onClick={this.goToDetails}/>
+                    <Button type="ghost" icon="eye-o" onClick={this.goToAudioDetails}/>
                     <Button type="ghost" icon="download"/>
                   </ButtonGroup>
                   </p>
@@ -266,7 +273,7 @@ class UploadList extends Component {
                   <h3>图片标题，超出隐藏...</h3>
                   <p><Tag>视频</Tag><Tag color="red">RM</Tag>
                     <ButtonGroup size="small" className="pull-right">
-                    <Button type="ghost" icon="eye-o" onClick={this.goToDetails}/>
+                    <Button type="ghost" icon="eye-o" onClick={this.goToVideoDetails}/>
                     <Button type="ghost" icon="download"/>
                   </ButtonGroup>
                   </p>
@@ -280,7 +287,7 @@ class UploadList extends Component {
                   <h3>图片标题，超出隐藏...</h3>
                   <p><Tag>音频</Tag>
                     <ButtonGroup size="small" className="pull-right">
-                    <Button type="ghost" icon="eye-o" onClick={this.goToDetails}/>
+                    <Button type="ghost" icon="eye-o" onClick={this.goToAudioDetails}/>
                     <Button type="ghost" icon="download"/>
                   </ButtonGroup>
                   </p>
