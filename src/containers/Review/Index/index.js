@@ -39,6 +39,14 @@ class Review extends Component {
     browserHistory.push('/imageGroup/review')
   }
 
+  goToVideoReview(e) {
+    console.log('click', e);
+    browserHistory.push('/video/details')
+  }
+  goToAudioReview(e) {
+    console.log('click', e);
+    browserHistory.push('/audio/details')
+  }
   disabledStartDate(startValue) {
     if (!startValue || !this.state.endValue) {
       return false;
@@ -238,7 +246,7 @@ class Review extends Component {
                 <h3>图片标题，超出隐藏...</h3>
                 <p><Tag>视频</Tag><Tag color="red">RM</Tag>
                   <ButtonGroup size="small" className="pull-right">
-                    <Button type="ghost" icon="eye-o" onClick={this.goToReview}/>
+                    <Button type="ghost" icon="eye-o" onClick={this.goToVideoReview}/>
                     <Button type="ghost" icon="download"/>
                   </ButtonGroup>
                 </p>
@@ -252,7 +260,7 @@ class Review extends Component {
                 <h3>图片标题，超出隐藏...</h3>
                 <p><Tag>音频</Tag>
                   <ButtonGroup size="small" className="pull-right">
-                    <Button type="ghost" icon="eye-o" onClick={this.goToReview}/>
+                    <Button type="ghost" icon="eye-o" onClick={this.goToAudioReview}/>
                     <Button type="ghost" icon="download"/>
                   </ButtonGroup>
                 </p>
