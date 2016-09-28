@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 import { browserHistory } from 'react-router';
 
 import ClassifyMenu from '../../../components/ClassifyMenu';
-import {queryUsers} from '../../../actions/users';
+import {queryResource} from '../../../actions/queryResource';
 
 const CreateForm = Form.create;
 const FormItem = Form.Item;
@@ -18,22 +18,17 @@ import './style.scss';
 class UploadList extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-
-    };
   }
 
   componentDidMount() {
     const { dispatch } = this.props;
 
-    dispatch(queryUsers())
+    dispatch(queryResource())
   }
 
   goToDetails(e) {
     browserHistory.push('/imageGroup/details')
   }
-
-
 
   render() {
     const { getFieldProps } = this.props.form;
@@ -50,16 +45,18 @@ class UploadList extends Component {
           <div className="text-center">
             <Form inline className="pad-bottom search-box" onSubmit={this.handleSubmit}>
               <FormItem>
-                <Input size="large" {...getFieldProps('keyWords')} placeholder="输入您要找的关键词" style={{width: 400}}/>
+                <Input size="large" {...getFieldProps('phrase')} placeholder="输入您要找的关键词" style={{width: 400}}/>
               </FormItem>
               <FormItem>
                 <Button type="primary" htmlType="submit" size="large"><Icon type="search" /> 搜索</Button>
               </FormItem>
               <FormItem>
-                <Select style={{width:70}} size="large" defaultValue="all" {...getFieldProps('type', {initialValue: 'all'})}>
-                  <Option value="all">全部</Option>
-                  <Option value="video">视频</Option>
-                  <Option value="audio">音频</Option>
+                <Select style={{width:70}} size="large" defaultValue="all" {...getFieldProps('phrase', {initialValue: ''})}>
+                  <Option value="">全部</Option>
+                  <Option value="1">图片</Option>
+                  <Option value="2">音频</Option>
+                  <Option value="3">视频</Option>
+                  <Option value="4">组图</Option>
                 </Select>
               </FormItem>
               <FormItem>
@@ -113,7 +110,7 @@ class UploadList extends Component {
               </div>
             </Col>
             <Col {...thumbItemLayout}>
-              <div className="thumb-list-item active">
+              <div className="thumb-list-item">
                 <div className="thumb-list-item-img">
                   <p>
                     <img src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" className="hidden"/>
@@ -168,9 +165,9 @@ UploadList.propTypes = {
 };
 
 function mapStateToProps(state) {
-  const { res } = state;
+  const { resources } = state;
   return {
-    res
+    resources
   };
 }
 

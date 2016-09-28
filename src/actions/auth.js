@@ -47,6 +47,7 @@ function receiveLogout() {
     type: LOGOUT_SUCCESS,
     isFetching: false,
     isAuthenticated: false
+
   };
 }
 

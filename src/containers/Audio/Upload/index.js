@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Form, Select, Input, DatePicker, Switch, Radio, Cascader, Button, Row, Col, Upload, Icon, Tag} from 'antd';
+import { Form, Select, Input, DatePicker, Switch, Radio, Cascader, Button, Row, Col, Upload, Icon, Tag, message} from 'antd';
 import cookie from 'js-cookie';
 
 const CreateForm = Form.create;
@@ -8,8 +8,6 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
-
-const token = cookie.get('token');
 
 import { API_CONFIG } from '../../../config/api';
 import { updateAudio } from '../../../actions/updateAudio';
@@ -32,30 +30,39 @@ const areaData = [{
 class AudioUpload extends Component {
   constructor(props) {
     super(props);
+    this.state= {
+      fileList: [],
+      curFile: null
+    };
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentDidMount(){
+
   }
 
   handleSubmit(e) {
     e.preventDefault();
     const { dispatch } = this.props;
-    const { cruFile } = this.state;
+    const { curFile} = this.state;
 
-    console.log(cruFile);
+    if(!curFile){
+      message.warning('请先上传文件');
+      return false;
+    }
 
     this.props.form.validateFields((errors) => {
       if (errors) {
         return false;
       }
       const creds = (this.props.form.getFieldsValue());
+      let id = curFile.id;
+      Object.assign(creds, {
+        id: id,
+        tags: creds.tags.join(',')
+      });
       dispatch(updateAudio(creds));
     });
-  }
-
-  normFile(e) {
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e && e.fileList;
   }
 
   render() {
@@ -63,21 +70,18 @@ class AudioUpload extends Component {
 
     const displayNameProps = getFieldProps('displayName', {
       rules: [
-        { required: true, min: 2, message: '请填写标题' },
-        { validator: this.fileExists },
+        { required: true, message: '请填写标题' }
       ]
     });
 
     const remarkProps = getFieldProps('remark', {
       rules: [
-        { required: true, min: 2, message: '请填写描述' },
-        { validator: this.fileExists },
+        { required: true, message: '请填写描述' }
       ]
     });
     const categoryProps = getFieldProps('category', {
       rules: [
-        { required: true, message: '请选择分类' },
-        { validator: this.fileExists },
+        { required: true, message: '请选择分类' }
       ],
       initialValue: 'jack'
   });
@@ -88,23 +92,25 @@ class AudioUpload extends Component {
     });
     const authorProps = getFieldProps('author', {
       rules: [
-        { required: true, min: 2, message: '请填写作者' },
-        { validator: this.fileExists },
+        { required: true, message: '请填写作者' }
       ]
+    });
+
+    const expireProps = getFieldProps('objrights_expire_years', {
+      getValueFromEvent: (value, timeString) => timeString
     });
 
     const formItemLayout = {
       labelCol: { span: 6 },
       wrapperCol: { span: 18 }
     };
-
     const thumbItemLayout = {
       xs: { span: 6 },
       lg: { span: 4 }
     };
 
     const uploadListProps = {
-      action: API_CONFIG.baseUri + API_CONFIG.uploadAudio + '?token='+ token,
+      action: API_CONFIG.baseUri + API_CONFIG.uploadAudio,
       listType: 'picture-card',
       accept:'audio/*',
       multiple: true,
@@ -116,15 +122,29 @@ class AudioUpload extends Component {
       },
       onSelect: (file) => {
         this.setState({
-          cruFile: file.response.data
-        })
+          curFile: file.response.data
+        });
+      },
+      onChange: ({file, fileList}) => {
+        if(file.status === 'done'){
+          this.setState({
+            fileList: fileList,
+            curFile: file.response.data
+          });
+        }else if(file.status === 'removed'){
+          this.setState({
+            fileList: fileList,
+            curFile: file.response.data
+          });
+        }
       }
     };
-
     const cpAttachProps = {
-      action: API_CONFIG.baseUri + API_CONFIG.uploadAudio + '?token='+ token,
+      action: API_CONFIG.baseUri + API_CONFIG.audioUploadAttach+'&audioId='+ this.state.curFile.id,
       accept:'application/*',
-      multiple: true
+      onChange: (file) => {
+        console.log(file);
+      }
     };
 
     return (
@@ -182,7 +202,7 @@ class AudioUpload extends Component {
               </FormItem>
 
               <FormItem label="版权时效" {...formItemLayout}>
-                <DatePicker placeholder="版权有效期" {...getFieldProps('objrights_expire_years')} />
+                <DatePicker placeholder="版权有效期" {...expireProps} />
               </FormItem>
 
               <FormItem label="授权文件" {...formItemLayout}>

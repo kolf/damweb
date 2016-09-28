@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Form, Select, Input, DatePicker, Switch, Radio, Cascader, Button, Row, Col, Upload, Icon, Tag} from 'antd';
+import { Form, Select, Input, DatePicker, Switch, Radio, Cascader, Button, Row, Col, Upload, Icon, Tag, message} from 'antd';
 import cookie from 'js-cookie';
 
 const CreateForm = Form.create;
@@ -8,7 +8,6 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
-const token = cookie.get('token');
 
 
 import {API_CONFIG} from '../../../config/api';
@@ -32,26 +31,41 @@ const areaData = [{
 class ImageUpload extends Component {
   constructor(props) {
     super(props);
+    this.state= {
+      fileList: [],
+      curFile: {
+      	id: 0
+      }
+    };
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentDidMount(){
+
   }
 
   handleSubmit(e) {
     e.preventDefault();
     const { dispatch } = this.props;
+    const { curFile} = this.state;
+
+    if(!curFile){
+      message.warning('请先上传文件');
+      return false;
+    }
+
     this.props.form.validateFields((errors) => {
       if (errors) {
         return false;
       }
       const creds = (this.props.form.getFieldsValue());
+      let id = curFile.id;
+      Object.assign(creds, {
+        id: id,
+        tags: creds.tags.join(',')
+      });
       dispatch(updateImage(creds));
     });
-  }
-
-  normFile(e) {
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e && e.fileList;
   }
 
   render() {
@@ -59,21 +73,18 @@ class ImageUpload extends Component {
 
     const displayNameProps = getFieldProps('displayName', {
       rules: [
-        { required: true, min: 2, message: '请填写标题' },
-        { validator: this.userExists },
+        { required: true, message: '请填写标题' }
       ]
     });
 
     const remarkProps = getFieldProps('remark', {
       rules: [
-        { required: true, min: 2, message: '请填写描述' },
-        { validator: this.userExists },
+        { required: true, message: '请填写描述' }
       ]
     });
     const categoryProps = getFieldProps('category', {
       rules: [
-        { required: true, message: '请选择分类' },
-        { validator: this.userExists },
+        { required: true, message: '请选择分类' }
       ],
       initialValue: 'jack'
   });
@@ -84,9 +95,16 @@ class ImageUpload extends Component {
     });
     const authorProps = getFieldProps('author', {
       rules: [
-        { required: true, min: 2, message: '请填写作者' },
-        { validator: this.userExists },
+        { required: true, message: '请填写作者' }
       ]
+    });
+    const addressProps = getFieldProps('address', {
+      rules: [
+        { required: true, message: '请填写拍摄地' }
+      ]
+    });
+    const expireProps = getFieldProps('objrights_expire_years', {
+      getValueFromEvent: (value, timeString) => timeString
     });
 
     const formItemLayout = {
@@ -100,7 +118,7 @@ class ImageUpload extends Component {
     };
 
     const uploadListProps = {
-      action: API_CONFIG.baseUri + API_CONFIG.uploadImg + '?token='+ token,
+      action: API_CONFIG.baseUri + API_CONFIG.uploadImg,
       listType: 'picture-card',
       accept:'image/*',
       multiple: true,
@@ -111,22 +129,32 @@ class ImageUpload extends Component {
         });
       },
       onSelect: (file) => {
-        console.log(file)
-      }
-    };
-
-    const cpAttachProps = {
-      action: API_CONFIG.baseUri + API_CONFIG.uploadAudio + '?token='+ token,
-      accept:'application/*',
-      multiple: true,
-      onPreview: (file) => {
         this.setState({
-          priviewImage: file.url,
-          priviewVisible: true,
+          curFile: file.response.data
         });
       },
-      onSelect: (file) => {
-        console.log(file)
+      onChange: ({file, fileList}) => {
+        if(file.status === 'done'){
+          this.setState({
+            fileList: fileList,
+            curFile: file.response.data
+          });
+        }else if(file.status === 'removed'){
+          this.setState({
+            fileList: fileList,
+            curFile: file.response.data
+          });
+        }
+      }
+    };
+    const cpAttachProps = {
+      action: API_CONFIG.baseUri + API_CONFIG.uploadImgAttach,
+      accept:'application/*',
+      data:{
+        imgId: this.state.curFile.id
+      },
+      onChange: (file) => {
+        console.log(file);
       }
     };
 
@@ -172,37 +200,19 @@ class ImageUpload extends Component {
                 </Select>
               </FormItem>
 
-            <FormItem
-              {...formItemLayout}
-              label="作者"
-              required
-              hasFeedback
-            >
-              <Input {...avatarProps}/>
-            </FormItem>
+              <FormItem label="作者" {...formItemLayout}>
+                <Input {...authorProps}/>
+              </FormItem>
 
-            <FormItem
-              {...formItemLayout}
-              label="拍摄城市"
-              required
-              hasFeedback
-            >
+            <FormItem {...formItemLayout} label="拍摄城市" >
               <Cascader options={areaData} {...getFieldProps('area')} />
             </FormItem>
 
-            <FormItem
-              {...formItemLayout}
-              label="拍摄地"
-              required
-              hasFeedback
-            >
+            <FormItem {...formItemLayout} label="拍摄地" >
               <Input {...addressProps}/>
             </FormItem>
 
-            <FormItem
-              {...formItemLayout}
-              label="版权所属"
-            >
+            <FormItem {...formItemLayout} label="版权所属" >
               <RadioGroup size="default" {...getFieldProps('rg')}>
                 <RadioButton value="a">无</RadioButton>
                 <RadioButton value="b">自有</RadioButton>
@@ -210,34 +220,15 @@ class ImageUpload extends Component {
               </RadioGroup>
             </FormItem>
 
-            <FormItem
-              label="版权类型"
-              {...formItemLayout}
-            >
+            <FormItem label="版权类型" {...formItemLayout} >
               <RadioGroup size="default" {...getFieldProps('rg')}>
-                <RadioButton value="d">RM</RadioButton>
-                <RadioButton value="f">RF</RadioButton>
+                <RadioButton value="rm">RM</RadioButton>
+                <RadioButton value="rf">RF</RadioButton>
               </RadioGroup>
             </FormItem>
-
-            <FormItem
-              label="版权时效"
-              {...formItemLayout}
-            >
-              <Col span="11">
-                <FormItem>
-                  <DatePicker placeholder="起始日期" {...getFieldProps('startDate')} />
-                </FormItem>
-              </Col>
-              <Col span="2">
-                <p className="ant-form-split">-</p>
-              </Col>
-              <Col span="11">
-                <FormItem>
-                  <DatePicker placeholder="结束日期" {...getFieldProps('endDate')} />
-                </FormItem>
-              </Col>
-            </FormItem>
+              <FormItem label="版权时效" {...formItemLayout}>
+                <DatePicker placeholder="版权有效期" {...expireProps} />
+              </FormItem>
 
               <FormItem label="授权文件" {...formItemLayout}>
                 <Upload {...cpAttachProps}>
@@ -247,13 +238,13 @@ class ImageUpload extends Component {
                 </Upload>
               </FormItem>
 
-            <FormItem>
-              <Button className="btn-block" type="primary" htmlType="submit">资源入库</Button>
-            </FormItem>
-          </Form>
+              <FormItem>
+                <Button className="btn-block" type="primary" htmlType="submit">资源入库</Button>
+              </FormItem>
+            </Form>
+          </div>
         </div>
       </div>
-        </div>
     );
   }
 }
