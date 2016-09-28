@@ -10,13 +10,24 @@ const CreateForm = Form.create;
 const FormItem = Form.Item;
 const ButtonGroup = Button.Group;
 
-import './style.scss';
+import './Users.scss';
 
 class Users extends Component {
   constructor(props) {
     super(props);
     this.handleTableChange = this.handleTableChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
+
+  handleSubmit(e) {
+    e.preventDefault();
+
+    const { dispatch } = this.props;
+    const creds = (this.props.form.getFieldsValue());
+      dispatch(queryUsers(creds));
+
+  }
+
 
   componentDidMount() {
     const { dispatch } = this.props;
@@ -116,7 +127,7 @@ class Users extends Component {
 
     return (
       <div>
-        <Form horizontal className="ant-advanced-search-form">
+        <Form horizontal className="ant-advanced-search-form" onSubmit={this.handleSubmit}>
           <Row gutter={16}>
             <Col sm={8}>
               <FormItem label="用户帐号" {...formItemLayout} >
