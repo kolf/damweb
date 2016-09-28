@@ -32,6 +32,8 @@ class UploadList extends Component {
 
   render() {
     const { getFieldProps } = this.props.form;
+    const { resources:{data, meta:{pageSize, pageNum, total}} } = this.props;
+    // const { resources: {data, meta:{ pageSize, pageNum, total}}} = this.state;
 
     const thumbItemLayout = {
       xs: { span: 6 },
@@ -69,89 +71,32 @@ class UploadList extends Component {
             <Button type="ghost" size="large"><Link to={'/imageGroup/upload'}><Icon type="hdd" /> 合并组照</Link></Button>
           </div>
           <Row gutter={24}>
-            <Col {...thumbItemLayout}>
-              <div className="thumb-list-item">
-                <div className="thumb-list-item-img">
-                  <p>
-                    <img src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" className="hidden"/>
-                    <img src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" alt=""/>
-                  </p>
+            {data.map(item =>
+              <Col {...thumbItemLayout}>
+                <div className="thumb-list-item">
+                  <div className="thumb-list-item-img">
+                    <p>
+                      <img src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" className="hidden"/>
+                      <img src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" alt=""/>
+                    </p>
+                  </div>
+                  <div className="thumb-list-item-text">
+                    {item.displayName}
+                  </div>
+                  <div className="thumb-list-item-btns">
+                    <Link className="ant-btn ant-btn-primary ant-btn-icon-only" to={'/image/details'}><Icon type="eye-o" /></Link>
+                    <Link className="ant-btn ant-btn-icon-only" to={'/image/details'}><Icon type="download" /></Link>
+                  </div>
+                  <div className="thumb-list-item-badges">
+                    <Tag color="red">RM</Tag>
+                    <Tag>{item.assetType}</Tag>
+                  </div>
                 </div>
-                <div className="thumb-list-item-text">
-                  图片标题
-                </div>
-                <div className="thumb-list-item-btns">
-                  <Link className="ant-btn ant-btn-primary ant-btn-icon-only" to={'/image/details'}><Icon type="eye-o" /></Link>
-                  <Link className="ant-btn ant-btn-icon-only" to={'/image/details'}><Icon type="download" /></Link>
-                </div>
-                <div className="thumb-list-item-badges">
-                  <Tag color="red">RM</Tag><Tag>图片</Tag>
-                </div>
-              </div>
-            </Col>
-            <Col {...thumbItemLayout}>
-              <div className="thumb-list-item">
-                <div className="thumb-list-item-img">
-                  <p>
-                    <img src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" className="hidden"/>
-                    <img src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" alt=""/>
-                  </p>
-                </div>
-                <div className="thumb-list-item-text">
-                  图片标题
-                </div>
-                <div className="thumb-list-item-btns">
-                  <Tooltip placement="topLeft" title="查看"><Link className="ant-btn ant-btn-primary ant-btn-icon-only" to={'/imageGroup/details'}><Icon type="eye-o" /></Link></Tooltip>
-                  <Tooltip placement="topLeft" title="下载"><Link className="ant-btn ant-btn-icon-only" to={'/image/details'}><Icon type="download" /></Link></Tooltip>
-                </div>
-                <div className="thumb-list-item-badges">
-                  <Tag color="red">RM</Tag><Tag>组图</Tag>
-                </div>
-              </div>
-            </Col>
-            <Col {...thumbItemLayout}>
-              <div className="thumb-list-item">
-                <div className="thumb-list-item-img">
-                  <p>
-                    <img src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" className="hidden"/>
-                    <img src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" alt=""/>
-                  </p>
-                </div>
-                <div className="thumb-list-item-text">
-                  图片标题
-                </div>
-                <div className="thumb-list-item-btns">
-                  <Link className="ant-btn ant-btn-primary ant-btn-icon-only" to={'/video/details'}><Icon type="eye-o" /></Link>
-                  <Link className="ant-btn ant-btn-icon-only" to={'/image/details'}><Icon type="download" /></Link>
-                </div>
-                <div className="thumb-list-item-badges">
-                  <Tag color="red">RF</Tag><Tag>视频</Tag>
-                </div>
-              </div>
-            </Col>
-            <Col {...thumbItemLayout}>
-              <div className="thumb-list-item">
-                <div className="thumb-list-item-img">
-                  <p>
-                    <img src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" className="hidden"/>
-                    <img src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" alt=""/>
-                  </p>
-                </div>
-                <div className="thumb-list-item-text">
-                  图片标题
-                </div>
-                <div className="thumb-list-item-btns">
-                  <Link className="ant-btn ant-btn-primary ant-btn-icon-only" to={'/audio/details'}><Icon type="eye-o" /></Link>
-                  <Link className="ant-btn ant-btn-icon-only" to={'/image/details'}><Icon type="download" /></Link>
-                </div>
-                <div className="thumb-list-item-badges">
-                  <Tag color="red">RM</Tag><Tag>音频</Tag>
-                </div>
-              </div>
-            </Col>
+              </Col>
+            )}
           </Row>
           <div className="pager pad-v text-right">
-            <Pagination showQuickJumper defaultCurrent={2} total={500} />
+            <Pagination showQuickJumper pageSize={pageSize} defaultCurrent={pageNum} total={total} />
           </div>
         </div>
       </div>

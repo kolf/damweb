@@ -10,8 +10,17 @@ export default {
     isFetching: false,
     meta: {
       total: 0,
-      perPage: 10,
-      page: 1
+      pageSize: 10,
+      pageNum: 1
+    },
+    data: []
+  },
+  resources: {
+    isFetching: false,
+    meta: {
+      total: 0,
+      pageSize: 10,
+      pageNum: 1
     },
     data: []
   }

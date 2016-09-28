@@ -18,7 +18,7 @@ export default function resources(state = initialState.resources, action) {
           pageSize: action.resources.data.pageSize,
           pageNum: action.resources.data.pageNum
         },
-        data: action.resources.data
+        data: action.resources.data.list
       });
     case QUERY_RESOURCE_FAILURE:
       return Object.assign({}, state, {
