@@ -95,7 +95,8 @@ class DetailsImage extends Component {
             <Row gutter={24}>
               <Col lg={{span: 16}}>
                 <div className="edit-view">
-                  <div className="edit-view-img" style={{backgroundImage:'url(https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png)'}}>
+                  <div className="edit-view-img" style={{backgroundImage:'url(./../../../assets/images/music.png)'}}>
+
                   </div>
                 </div>
               </Col>
@@ -151,40 +152,6 @@ class DetailsImage extends Component {
                       <p className="ant-form-text">publisher</p>
                     </FormItem>
 
-
-                    <FormItem
-                      {...formItemLayout}
-                      label="分类"
-                    >
-                      <Select name="category" defaultValue="song"  style={{ width: '100%' }}>
-                        <Option value="music">分类1</Option>
-                        <Option value="song">分类2</Option>
-                        <Option value="a">分类3</Option>
-                      </Select>
-                    </FormItem>
-
-                    <FormItem
-                      {...formItemLayout}
-                      label="类别"
-                    >
-                      <Select name="vcg_category" defaultValue="b"  style={{ width: '100%' }}>
-                        <Option value="b">vcg_category类别２</Option>
-                        <Option value="c">vcg_category类别３</Option>
-                        <Option value="d">vcg_category类别４</Option>
-                      </Select>
-                    </FormItem>
-
-
-
-
-
-
-
-
-
-
-
-
                     <FormItem
                       {...formItemLayout}
                       label="内容类别"
@@ -232,24 +199,7 @@ class DetailsImage extends Component {
                     >
                       <p className="ant-form-text">中文</p>
                     </FormItem>
-                    <FormItem
-                      {...formItemLayout}
-                      label="编审状态"
-                    >
-                      <RadioGroup disabled onChange={this.onChange} value={this.state.color}>
-                        <Radio value={'colors'}>已审核</Radio>
-                        <Radio value={'gray'}>待审核</Radio>
-                      </RadioGroup>
-                    </FormItem>
-                    <FormItem
-                      {...formItemLayout}
-                      label="上线状态"
-                    >
-                      <RadioGroup disabled onChange={this.onChange} value={this.state.color}>
-                        <Radio value={'colors'}>已上线</Radio>
-                        <Radio value={'gray'}>待上线</Radio>
-                      </RadioGroup>
-                    </FormItem>
+
                   </TabPane>
                   <TabPane tab="版权信息" key="2">
                     <FormItem
