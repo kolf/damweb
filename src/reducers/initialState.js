@@ -4,7 +4,7 @@ import cookie from 'js-cookie';
 export default {
   auth: {
     isFetching: false,
-    isAuthenticated: cookie.get('access_token') ? true : false
+    isAuthenticated: cookie.get('token') ? true : false
   },
   users: {
     isFetching: false,

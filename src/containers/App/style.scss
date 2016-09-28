@@ -12,7 +12,7 @@ body{
 }
 
 .ant-layout-topaside .ant-layout-header {
-  background: #404040;
+  background-color: #404040;
   //height: 59px;
   //border: none;
   //overflow: hidden;
@@ -26,9 +26,10 @@ body{
 .ant-layout-topaside .ant-layout-logo {
   font-size: 18px;
   line-height:58px;
-  padding:0 20px;
+  padding:0 20px 0 70px;
   color: #fff;
-  //background: url('../');
+  background: url(../../assets/images/logo.svg) left center no-repeat;
+  background-size:70px auto;
   float: left;
 }
 //

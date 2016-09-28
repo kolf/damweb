@@ -4,7 +4,7 @@ import sinonChai from "sinon-chai";
 
 import React from 'react';
 import { mount, shallow } from 'enzyme';
-import { UsersPage } from './index';
+import { Users } from './index';
 import { Col } from 'antd';
 
 const db = require('./../../../data/db.json');
@@ -26,8 +26,8 @@ function setup() {
     }
   };
 
-  const enzymeWrapper = shallow(<UsersPage {...props} />);
-  const mountWrapper = mount(<UsersPage {...props} />);
+  const enzymeWrapper = shallow(<Users {...props} />);
+  const mountWrapper = mount(<Users {...props} />);
 
   return {
     props,

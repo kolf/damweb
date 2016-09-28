@@ -15,7 +15,7 @@ function check401(res) {
       title: "登陆验证过期",
       content: "您的登陆验证已过期，请重新登陆",
       onOk: () => {
-        cookie.remove('access_token');
+        cookie.remove('token');
         location.href = '/';
       }
     });
@@ -107,12 +107,14 @@ function cFetch(url, options) {
 
   // add query params to url when method is GET
   if (opts && opts.method == "GET" && opts['params']) {
-    mergeUrl = mergeUrl + '?' + toQueryString(opts['params']);
+    if(mergeUrl.indexOf('?')!==-1){
+      mergeUrl = mergeUrl + '&' + toQueryString(opts['params']);
+    }
   }
 
   opts.headers = {
     ...opts.headers,
-    'Authorization': cookie.get('access_token') || ''
+    'Authorization': cookie.get('token') || ''
   };
 
   return fetch(mergeUrl, opts)

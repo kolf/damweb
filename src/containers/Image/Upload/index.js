@@ -1,12 +1,18 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Form, Select, Input, DatePicker, Switch, Radio, Cascader, Button, Row, Col, Upload, Icon, Tag} from 'antd';
+import cookie from 'js-cookie';
 
 const CreateForm = Form.create;
 const FormItem = Form.Item;
 const Option = Select.Option;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
+const token = cookie.get('token');
+
+
+import {API_CONFIG} from '../../../config/api';
+import { updateImage } from '../../../actions/updateImage';
 
 import './style.scss';
 
@@ -23,19 +29,22 @@ const areaData = [{
   }],
 }];
 
-const tags =[
-  { key: 1, name: '娱乐' },
-  { key: 2, name: '明星动态' },
-  { key: 3, name: '春夏' }
-];
-
 class ImageUpload extends Component {
   constructor(props) {
     super(props);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleSubmit(e) {
     e.preventDefault();
+    const { dispatch } = this.props;
+    this.props.form.validateFields((errors) => {
+      if (errors) {
+        return false;
+      }
+      const creds = (this.props.form.getFieldsValue());
+      dispatch(updateImage(creds));
+    });
   }
 
   normFile(e) {
@@ -45,23 +54,37 @@ class ImageUpload extends Component {
     return e && e.fileList;
   }
 
-  onSelect(e){
-    console.log(this)
-  }
-
   render() {
     const { getFieldProps } = this.props.form;
 
-    const addressProps = getFieldProps('address', {
+    const displayNameProps = getFieldProps('displayName', {
       rules: [
-        { required: true, min: 2, message: '拍摄地至少为 2 个字符' },
+        { required: true, min: 2, message: '请填写标题' },
         { validator: this.userExists },
       ]
     });
 
-    const avatarProps = getFieldProps('avatar', {
+    const remarkProps = getFieldProps('remark', {
       rules: [
-        { required: true, min: 2, message: '拍摄地至少为 2 个字符' },
+        { required: true, min: 2, message: '请填写描述' },
+        { validator: this.userExists },
+      ]
+    });
+    const categoryProps = getFieldProps('category', {
+      rules: [
+        { required: true, message: '请选择分类' },
+        { validator: this.userExists },
+      ],
+      initialValue: 'jack'
+  });
+    const tagsProps = getFieldProps('tags', {
+      rules: [
+        { required: true, message: '请选择标签', type: 'array' }
+      ]
+    });
+    const authorProps = getFieldProps('author', {
+      rules: [
+        { required: true, min: 2, message: '请填写作者' },
         { validator: this.userExists },
       ]
     });
@@ -71,28 +94,39 @@ class ImageUpload extends Component {
       wrapperCol: { span: 18 }
     };
 
+    const thumbItemLayout = {
+      xs: { span: 6 },
+      lg: { span: 4 }
+    };
+
     const uploadListProps = {
-      action: '/upload.do',
+      action: API_CONFIG.baseUri + API_CONFIG.uploadImg + '?token='+ token,
       listType: 'picture-card',
+      accept:'image/*',
       multiple: true,
-      defaultFileList: [{
-        uid: -1,
-        name: '图片名字一',
-        status: 'done',
-        url: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
-        thumbUrl: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
-      }, {
-        uid: -2,
-        name: '图片名字二',
-        status: 'done',
-        url: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
-        thumbUrl: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
-      }],
       onPreview: (file) => {
         this.setState({
           priviewImage: file.url,
           priviewVisible: true,
         });
+      },
+      onSelect: (file) => {
+        console.log(file)
+      }
+    };
+
+    const cpAttachProps = {
+      action: API_CONFIG.baseUri + API_CONFIG.uploadAudio + '?token='+ token,
+      accept:'application/*',
+      multiple: true,
+      onPreview: (file) => {
+        this.setState({
+          priviewImage: file.url,
+          priviewVisible: true,
+        });
+      },
+      onSelect: (file) => {
+        console.log(file)
       }
     };
 
@@ -100,7 +134,7 @@ class ImageUpload extends Component {
       <div className="ant-layout-content">
       <div className="upload-container">
         <div className="upload-main">
-          <div className="upload-thumbs" onClick={this.onSelect.bind(this)}>
+          <div className="upload-thumbs">
             <Upload className="upload-list-btn" {...uploadListProps}>
               <Icon type="plus" />
               <div className="ant-upload-text">点击上传</div>
@@ -114,41 +148,29 @@ class ImageUpload extends Component {
                 <span></span>
               </Col>
               <Col className="gutter-row" span={18}>
-                <div className="gutter-box"><Input placeholder="请输入标题" type="textarea" {...addressProps}/></div>
+                  <FormItem>
+                    <Input placeholder="请输入标题" type="textarea" {...displayNameProps}/>
+                  </FormItem>
               </Col>
             </Row>
 
-            <FormItem
-              label="图片说明"
-              {...formItemLayout}
-            >
-              <Input type="textarea" {...addressProps}/>
-            </FormItem>
+              <FormItem label="音频说明" {...formItemLayout}>
+                <Input type="textarea" {...remarkProps}/>
+              </FormItem>
 
-            <FormItem
-              {...formItemLayout}
-              label="图片分类"
-              required
-            >
-              <Select {...getFieldProps('select', {initialValue: 'jack'})}
-              >
-                <Option value="jack">jack</Option>
-                <Option value="lucy">lucy</Option>
-                <Option value="disabled" disabled>disabled</Option>
-                <Option value="yiminghe">yiminghe</Option>
-              </Select>
-            </FormItem>
+              <FormItem label="音频分类" {...formItemLayout}>
+                <Select {...categoryProps}>
+                  <Option value="jack">jack</Option>
+                  <Option value="lucy">lucy</Option>
+                  <Option value="yiminghe">yiminghe</Option>
+                </Select>
+              </FormItem>
 
-            <FormItem
-              {...formItemLayout}
-              label="图片标签"
-              required
-              hasFeedback
-            >
-              <Select tags placeholder="请添加标签">
-                <Option key="P1">风景</Option>
-              </Select>
-            </FormItem>
+              <FormItem label="音频标签" {...formItemLayout}>
+                <Select tags placeholder="请添加标签"  {...tagsProps}>
+                  <Option value="1">风景</Option>
+                </Select>
+              </FormItem>
 
             <FormItem
               {...formItemLayout}
@@ -217,31 +239,13 @@ class ImageUpload extends Component {
               </Col>
             </FormItem>
 
-            <FormItem
-              label="版权授权"
-              {...formItemLayout}
-            >
-              <RadioGroup size="default" {...getFieldProps('rg')}>
-                <RadioButton value="g">肖像权</RadioButton>
-                <RadioButton value="h">物权</RadioButton>
-              </RadioGroup>
-            </FormItem>
-
-            <FormItem
-              label="授权文件"
-              {...formItemLayout}
-            >
-              <Upload name="logo" action="/upload.do" listType="picture" onChange={this.handleUpload}
-                      {...getFieldProps('upload', {
-                        valuePropName: 'fileList',
-                        normalize: this.normFile,
-                      })}
-              >
-                <Button type="ghost" size="large">
-                  <Icon type="upload" /> 点击上传
-                </Button>
-              </Upload>
-            </FormItem>
+              <FormItem label="授权文件" {...formItemLayout}>
+                <Upload {...cpAttachProps}>
+                  <Button type="ghost" size="large">
+                    <Icon type="upload" /> 点击上传
+                  </Button>
+                </Upload>
+              </FormItem>
 
             <FormItem>
               <Button className="btn-block" type="primary" htmlType="submit">资源入库</Button>

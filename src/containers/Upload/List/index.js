@@ -1,10 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Form, Input, Row, Col, Menu, Dropdown, Button, Icon, Select, Card, Tag, Pagination } from 'antd';
+import { Form, Input, Row, Col, Menu, Dropdown, Button, Icon, Select, Card, Tag, Pagination, Tooltip } from 'antd';
 import { Link } from 'react-router';
 import { browserHistory } from 'react-router';
 
 import ClassifyMenu from '../../../components/ClassifyMenu';
+import {queryUsers} from '../../../actions/users';
 
 const CreateForm = Form.create;
 const FormItem = Form.Item;
@@ -24,14 +25,23 @@ class UploadList extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
+
+    dispatch(queryUsers())
   }
 
   goToDetails(e) {
     browserHistory.push('/imageGroup/details')
   }
 
+
+
   render() {
     const { getFieldProps } = this.props.form;
+
+    const thumbItemLayout = {
+      xs: { span: 6 },
+      lg: { span: 4 }
+    };
 
     return (
       <div>
@@ -62,230 +72,85 @@ class UploadList extends Component {
             <Button type="ghost" size="large"><Link to={'/imageGroup/upload'}><Icon type="hdd" /> 合并组照</Link></Button>
           </div>
           <Row gutter={24}>
-            <Col xs={{ span: 6}} lg={{ span: 4 }} className="thumb-list-item">
-              <Card bodyStyle={{ padding: 6 }}>
-                <div className="custom-image" style={{backgroundImage: 'url(https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png)'}}></div>
-                <div className="custom-card">
-                  <h3>图片标题，超出隐藏...</h3>
-                  <p><Tag>图片</Tag><Tag color="red">RM</Tag>
-                    <ButtonGroup size="small" className="pull-right">
-                    <Button type="ghost" icon="eye-o" onClick={this.goToDetails}/>
-                    <Button type="ghost" icon="download"/>
-                  </ButtonGroup>
+            <Col {...thumbItemLayout}>
+              <div className="thumb-list-item">
+                <div className="thumb-list-item-img">
+                  <p>
+                    <img src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" className="hidden"/>
+                    <img src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" alt=""/>
                   </p>
                 </div>
-              </Card>
+                <div className="thumb-list-item-text">
+                  图片标题
+                </div>
+                <div className="thumb-list-item-btns">
+                  <Link className="ant-btn ant-btn-primary ant-btn-icon-only" to={'/image/details'}><Icon type="eye-o" /></Link>
+                  <Link className="ant-btn ant-btn-icon-only" to={'/image/details'}><Icon type="download" /></Link>
+                </div>
+                <div className="thumb-list-item-badges">
+                  <Tag color="red">RM</Tag><Tag>图片</Tag>
+                </div>
+              </div>
             </Col>
-
-            <Col xs={{ span: 6}} lg={{ span: 4 }} className="thumb-list-item">
-              <Card bodyStyle={{ padding: 6 }}>
-                <div className="custom-image" style={{backgroundImage: 'url(https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png)'}}></div>
-                <div className="custom-card">
-                  <h3>图片标题，超出隐藏...</h3>
-                  <p><Tag>图片</Tag><Tag color="red">RM</Tag>
-                    <ButtonGroup size="small" className="pull-right">
-                    <Button type="ghost" icon="eye-o" onClick={this.goToDetails}/>
-                    <Button type="ghost" icon="download"/>
-                  </ButtonGroup>
+            <Col {...thumbItemLayout}>
+              <div className="thumb-list-item">
+                <div className="thumb-list-item-img">
+                  <p>
+                    <img src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" className="hidden"/>
+                    <img src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" alt=""/>
                   </p>
                 </div>
-              </Card>
+                <div className="thumb-list-item-text">
+                  图片标题
+                </div>
+                <div className="thumb-list-item-btns">
+                  <Tooltip placement="topLeft" title="查看"><Link className="ant-btn ant-btn-primary ant-btn-icon-only" to={'/imageGroup/details'}><Icon type="eye-o" /></Link></Tooltip>
+                  <Tooltip placement="topLeft" title="下载"><Link className="ant-btn ant-btn-icon-only" to={'/image/details'}><Icon type="download" /></Link></Tooltip>
+                </div>
+                <div className="thumb-list-item-badges">
+                  <Tag color="red">RM</Tag><Tag>组图</Tag>
+                </div>
+              </div>
             </Col>
-            <Col xs={{ span: 6}} lg={{ span: 4 }} className="thumb-list-item">
-              <Card bodyStyle={{ padding: 6 }}>
-                <div className="custom-image" style={{backgroundImage: 'url(https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png)'}}></div>
-                <div className="custom-card">
-                  <h3>图片标题，超出隐藏...</h3>
-                  <p><Tag>图片</Tag><Tag color="red">RM</Tag>
-                    <ButtonGroup size="small" className="pull-right">
-                    <Button type="ghost" icon="eye-o" onClick={this.goToDetails}/>
-                    <Button type="ghost" icon="download"/>
-                  </ButtonGroup>
+            <Col {...thumbItemLayout}>
+              <div className="thumb-list-item active">
+                <div className="thumb-list-item-img">
+                  <p>
+                    <img src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" className="hidden"/>
+                    <img src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" alt=""/>
                   </p>
                 </div>
-              </Card>
+                <div className="thumb-list-item-text">
+                  图片标题
+                </div>
+                <div className="thumb-list-item-btns">
+                  <Link className="ant-btn ant-btn-primary ant-btn-icon-only" to={'/video/details'}><Icon type="eye-o" /></Link>
+                  <Link className="ant-btn ant-btn-icon-only" to={'/image/details'}><Icon type="download" /></Link>
+                </div>
+                <div className="thumb-list-item-badges">
+                  <Tag color="red">RF</Tag><Tag>视频</Tag>
+                </div>
+              </div>
             </Col>
-            <Col xs={{ span: 6}} lg={{ span: 4 }} className="thumb-list-item active">
-              <Card bodyStyle={{ padding: 6 }}>
-                <div className="custom-image" style={{backgroundImage: 'url(https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png)'}}></div>
-                <div className="custom-card">
-                  <h3>图片标题，超出隐藏...</h3>
-                  <p><Tag>图片</Tag><Tag color="red">RM</Tag>
-                    <ButtonGroup size="small" className="pull-right">
-                    <Button type="ghost" icon="eye-o" onClick={this.goToDetails}/>
-                    <Button type="ghost" icon="download"/>
-                  </ButtonGroup>
+            <Col {...thumbItemLayout}>
+              <div className="thumb-list-item">
+                <div className="thumb-list-item-img">
+                  <p>
+                    <img src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" className="hidden"/>
+                    <img src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" alt=""/>
                   </p>
                 </div>
-              </Card>
-            </Col>
-            <Col xs={{ span: 6}} lg={{ span: 4 }} className="thumb-list-item">
-              <Card bodyStyle={{ padding: 6 }}>
-                <div className="custom-image" style={{backgroundImage: 'url(https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png)'}}></div>
-                <div className="custom-card">
-                  <h3>图片标题，超出隐藏...</h3>
-                  <p><Tag>图片</Tag><Tag color="red">RM</Tag>
-                    <ButtonGroup size="small" className="pull-right">
-                    <Button type="ghost" icon="eye-o" onClick={this.goToDetails}/>
-                    <Button type="ghost" icon="download"/>
-                  </ButtonGroup>
-                  </p>
+                <div className="thumb-list-item-text">
+                  图片标题
                 </div>
-              </Card>
-            </Col>
-            <Col xs={{ span: 6}} lg={{ span: 4 }} className="thumb-list-item">
-              <Card bodyStyle={{ padding: 6 }}>
-                <div className="custom-image" style={{backgroundImage: 'url(https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png)'}}></div>
-                <div className="custom-card">
-                  <h3>图片标题，超出隐藏...</h3>
-                  <p><Tag>图片</Tag><Tag color="red">RM</Tag>
-                    <ButtonGroup size="small" className="pull-right">
-                    <Button type="ghost" icon="eye-o" onClick={this.goToDetails}/>
-                    <Button type="ghost" icon="download"/>
-                  </ButtonGroup>
-                  </p>
+                <div className="thumb-list-item-btns">
+                  <Link className="ant-btn ant-btn-primary ant-btn-icon-only" to={'/audio/details'}><Icon type="eye-o" /></Link>
+                  <Link className="ant-btn ant-btn-icon-only" to={'/image/details'}><Icon type="download" /></Link>
                 </div>
-              </Card>
-            </Col>
-            <Col xs={{ span: 6}} lg={{ span: 4 }} className="thumb-list-item">
-              <Card bodyStyle={{ padding: 6 }}>
-                <div className="custom-image" style={{backgroundImage: 'url(https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png)'}}></div>
-                <div className="custom-card">
-                  <h3>图片标题，超出隐藏...</h3>
-                  <p><Tag>视频</Tag><Tag color="red">RM</Tag>
-                    <ButtonGroup size="small" className="pull-right">
-                    <Button type="ghost" icon="eye-o" onClick={this.goToDetails}/>
-                    <Button type="ghost" icon="download"/>
-                  </ButtonGroup>
-                  </p>
+                <div className="thumb-list-item-badges">
+                  <Tag color="red">RM</Tag><Tag>音频</Tag>
                 </div>
-              </Card>
-            </Col>
-            <Col xs={{ span: 6}} lg={{ span: 4 }} className="thumb-list-item">
-              <Card bodyStyle={{ padding: 6 }}>
-                <div className="custom-image" style={{backgroundImage: 'url(https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png)'}}></div>
-                <div className="custom-card">
-                  <h3>图片标题，超出隐藏...</h3>
-                  <p><Tag>音频</Tag>
-                    <ButtonGroup size="small" className="pull-right">
-                    <Button type="ghost" icon="eye-o" onClick={this.goToDetails}/>
-                    <Button type="ghost" icon="download"/>
-                  </ButtonGroup>
-                  </p>
-                </div>
-              </Card>
-            </Col>
-            <Col xs={{ span: 6}} lg={{ span: 4 }} className="thumb-list-item">
-              <Card bodyStyle={{ padding: 6 }}>
-                <div className="custom-image" style={{backgroundImage: 'url(https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png)'}}></div>
-                <div className="custom-card">
-                  <h3>图片标题，超出隐藏...</h3>
-                  <p><Tag>图片</Tag><Tag color="red">RM</Tag>
-                    <ButtonGroup size="small" className="pull-right">
-                    <Button type="ghost" icon="eye-o" onClick={this.goToDetails}/>
-                    <Button type="ghost" icon="download"/>
-                  </ButtonGroup>
-                  </p>
-                </div>
-              </Card>
-            </Col>
-            <Col xs={{ span: 6}} lg={{ span: 4 }} className="thumb-list-item">
-              <Card bodyStyle={{ padding: 6 }}>
-                <div className="custom-image" style={{backgroundImage: 'url(https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png)'}}></div>
-                <div className="custom-card">
-                  <h3>Lorem ipsum dolor</h3>
-                  <p><Tag>图片</Tag><Tag color="red">RM</Tag>
-                    <ButtonGroup size="small" className="pull-right">
-                    <Button type="ghost" icon="eye-o" onClick={this.goToDetails}/>
-                    <Button type="ghost" icon="download"/>
-                  </ButtonGroup>
-                  </p>
-                </div>
-              </Card>
-            </Col>
-            <Col xs={{ span: 6}} lg={{ span: 4 }} className="thumb-list-item">
-              <Card bodyStyle={{ padding: 6 }}>
-                <div className="custom-image" style={{backgroundImage: 'url(https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png)'}}></div>
-                <div className="custom-card">
-                  <h3>图片标题，超出隐藏...</h3>
-                  <p><Tag>图片</Tag><Tag color="red">RM</Tag>
-                    <ButtonGroup size="small" className="pull-right">
-                    <Button type="ghost" icon="eye-o" onClick={this.goToDetails}/>
-                    <Button type="ghost" icon="download"/>
-                  </ButtonGroup>
-                  </p>
-                </div>
-              </Card>
-            </Col>
-            <Col xs={{ span: 6}} lg={{ span: 4 }} className="thumb-list-item">
-              <Card bodyStyle={{ padding: 6 }}>
-                <div className="custom-image" style={{backgroundImage: 'url(https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png)'}}></div>
-                <div className="custom-card">
-                  <h3>图片标题，超出隐藏...</h3>
-                  <p><Tag>图片</Tag><Tag color="red">RM</Tag>
-                    <ButtonGroup size="small" className="pull-right">
-                    <Button type="ghost" icon="eye-o" onClick={this.goToDetails}/>
-                    <Button type="ghost" icon="download"/>
-                  </ButtonGroup>
-                  </p>
-                </div>
-              </Card>
-            </Col>
-            <Col xs={{ span: 6}} lg={{ span: 4 }} className="thumb-list-item">
-              <Card bodyStyle={{ padding: 6 }}>
-                <div className="custom-image" style={{backgroundImage: 'url(https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png)'}}></div>
-                <div className="custom-card">
-                  <h3>图片标题，超出隐藏...</h3>
-                  <p><Tag>图片</Tag><Tag color="red">RM</Tag>
-                    <ButtonGroup size="small" className="pull-right">
-                    <Button type="ghost" icon="eye-o" onClick={this.goToDetails}/>
-                    <Button type="ghost" icon="download"/>
-                  </ButtonGroup>
-                  </p>
-                </div>
-              </Card>
-            </Col>
-            <Col xs={{ span: 6}} lg={{ span: 4 }} className="thumb-list-item">
-              <Card bodyStyle={{ padding: 6 }}>
-                <div className="custom-image" style={{backgroundImage: 'url(https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png)'}}></div>
-                <div className="custom-card">
-                  <h3>图片标题，超出隐藏...</h3>
-                  <p><Tag>图片</Tag><Tag color="red">RM</Tag>
-                    <ButtonGroup size="small" className="pull-right">
-                    <Button type="ghost" icon="eye-o" onClick={this.goToDetails}/>
-                    <Button type="ghost" icon="download"/>
-                  </ButtonGroup>
-                  </p>
-                </div>
-              </Card>
-            </Col>
-            <Col xs={{ span: 6}} lg={{ span: 4 }} className="thumb-list-item">
-              <Card bodyStyle={{ padding: 6 }}>
-                <div className="custom-image" style={{backgroundImage: 'url(https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png)'}}></div>
-                <div className="custom-card">
-                  <h3>图片标题，超出隐藏...</h3>
-                  <p><Tag>视频</Tag><Tag color="red">RM</Tag>
-                    <ButtonGroup size="small" className="pull-right">
-                    <Button type="ghost" icon="eye-o" onClick={this.goToDetails}/>
-                    <Button type="ghost" icon="download"/>
-                  </ButtonGroup>
-                  </p>
-                </div>
-              </Card>
-            </Col>
-            <Col xs={{ span: 6}} lg={{ span: 4 }} className="thumb-list-item">
-              <Card bodyStyle={{ padding: 6 }}>
-                <div className="custom-image" style={{backgroundImage: 'url(https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png)'}}></div>
-                <div className="custom-card">
-                  <h3>图片标题，超出隐藏...</h3>
-                  <p><Tag>音频</Tag>
-                    <ButtonGroup size="small" className="pull-right">
-                    <Button type="ghost" icon="eye-o" onClick={this.goToDetails}/>
-                    <Button type="ghost" icon="download"/>
-                  </ButtonGroup>
-                  </p>
-                </div>
-              </Card>
+              </div>
             </Col>
           </Row>
           <div className="pager pad-v text-right">

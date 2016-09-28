@@ -35,8 +35,8 @@ class UploadIndex extends Component {
                 <RadioGroup {...getFieldProps('type', { initialValue: 'image' })}>
                   <Radio value={'image'}>图片</Radio>
                   <Radio value={'imageGroup'}>组照</Radio>
-                  <Radio value={'video'}>视频</Radio>
                   <Radio value={'audio'}>音频</Radio>
+                  <Radio value={'video'}>视频</Radio>
                 </RadioGroup>
               </FormItem>
               <Button type="primary" size="large" htmlType="submit">确定</Button>

@@ -1,0 +1,10 @@
+.upload{
+  &-thumb{
+    &-audio{
+      span{
+        background:#ccc url("../../../assets/images/audioThumb.png") no-repeat;
+        background-size: cover;
+      }
+    }
+  }
+}

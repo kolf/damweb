@@ -55,7 +55,7 @@ export function loginUser(creds, cbk) {
     dispatch(requestLogin(creds));
     cFetch(API_CONFIG.auth, { method: "POST", body: JSON.stringify(creds) }).then((response) => {
       if (response.jsonResult.returnCode === '1') {
-        cookie.set('access_token', response.jsonResult.access_token);
+        cookie.set('token', response.jsonResult.data.token);
         dispatch(receiveLogin(response.jsonResult));
       } else {
         dispatch(loginError(response.jsonResult.msg));
@@ -68,7 +68,7 @@ export function loginUser(creds, cbk) {
 export function logoutUser() {
   return dispatch => {
     dispatch(requestLogout());
-    cookie.remove('access_token');
+    cookie.remove('token');
     dispatch(receiveLogout());
   };
 }
