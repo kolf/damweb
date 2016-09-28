@@ -39,6 +39,14 @@ class Review extends Component {
     browserHistory.push('/imageGroup/review')
   }
 
+  goToVideoReview(e) {
+    console.log('click', e);
+    browserHistory.push('/video/details')
+  }
+  goToAudioReview(e) {
+    console.log('click', e);
+    browserHistory.push('/audio/details')
+  }
   disabledStartDate(startValue) {
     if (!startValue || !this.state.endValue) {
       return false;
@@ -148,65 +156,7 @@ class Review extends Component {
           </Select>
         </div>
         <Row gutter={24}>
-          <Col {...thumbItemLayout}>
-            <div className="thumb-list-item">
-              <div className="thumb-list-item-img">
-                <p>
-                  <img src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" className="hidden"/>
-                  <img src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" alt=""/>
-                </p>
-              </div>
-              <div className="thumb-list-item-text">
-                图片标题
-              </div>
-              <div className="thumb-list-item-btns">
-                <Link className="ant-btn ant-btn-primary ant-btn-icon-only" to={'/image/review'}><Icon type="check" /></Link>
-                <Link style={{background:'#f50',color:'#fff'}} className="ant-btn ant-btn-icon-only" to={'/image/review'}><Icon type="cross" /></Link>
-              </div>
-              <div className="thumb-list-item-badges">
-                <Tag color="red">RM</Tag><Tag>图片</Tag>
-              </div>
-            </div>
-          </Col><Col {...thumbItemLayout}>
-          <div className="thumb-list-item">
-            <div className="thumb-list-item-img">
-              <p>
-                <img src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" className="hidden"/>
-                <img src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" alt=""/>
-              </p>
-            </div>
-            <div className="thumb-list-item-text">
-              图片标题
-            </div>
-            <div className="thumb-list-item-btns">
-              <Link className="ant-btn ant-btn-primary ant-btn-icon-only" to={'/image/review'}><Icon type="check" /></Link>
-              <Link style={{background:'#f50',color:'#fff'}} className="ant-btn ant-btn-icon-only" to={'/image/review'}><Icon type="cross" /></Link>
-            </div>
-            <div className="thumb-list-item-badges">
-              <Tag color="red">RM</Tag><Tag>图片</Tag>
-            </div>
-          </div>
-        </Col>
-          <Col {...thumbItemLayout}>
-            <div className="thumb-list-item">
-              <div className="thumb-list-item-img">
-                <p>
-                  <img src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" className="hidden"/>
-                  <img src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" alt=""/>
-                </p>
-              </div>
-              <div className="thumb-list-item-text">
-                图片标题
-              </div>
-              <div className="thumb-list-item-btns">
-                <Link className="ant-btn ant-btn-primary ant-btn-icon-only" to={'/image/review'}><Icon type="check" /></Link>
-                <Link style={{background:'#f50',color:'#fff'}} className="ant-btn ant-btn-icon-only" to={'/image/review'}><Icon type="cross" /></Link>
-              </div>
-              <div className="thumb-list-item-badges">
-                <Tag color="red">RM</Tag><Tag>图片</Tag>
-              </div>
-            </div>
-          </Col><Col {...thumbItemLayout}>
+    <Col {...thumbItemLayout}>
             <div className="thumb-list-item">
               <div className="thumb-list-item-img">
                 <p>
