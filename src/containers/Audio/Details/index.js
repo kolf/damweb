@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Form, Select, Input, DatePicker, Switch, Radio, Cascader, Button, Row, Col, Upload, Icon, Tag, Checkbox, Tabs} from 'antd';
+import { Form, Select, Radio, Row, Col, Tag, Tabs} from 'antd';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import './style.scss';
@@ -10,32 +10,6 @@ const Option = Select.Option;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const TabPane = Tabs.TabPane;
-
-const areaData = [{
-  value: 'zhejiang',
-  label: '浙江',
-  children: [{
-    value: 'hangzhou',
-    label: '杭州',
-    children: [{
-      value: 'xihu',
-      label: '西湖',
-      code: 752100,
-    }],
-  }],
-}, {
-  value: 'jiangsu',
-  label: '江苏',
-  children: [{
-    value: 'nanjing',
-    label: '南京',
-    children: [{
-      value: 'zhonghuamen',
-      label: '中华门',
-      code: 453400,
-    }],
-  }],
-}];
 
 const tags =[
   { key: 1, name: '娱乐' },
@@ -51,9 +25,7 @@ class DetailsImage extends Component {
 
     this.state = {
       color: 'colors'
-    }
-
-    console.log(this.state)
+    };
   }
 
   handleSubmit(e){

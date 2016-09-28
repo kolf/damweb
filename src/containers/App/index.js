@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Login from '../Login/index';
 import { Link } from 'react-router';
 import './style.scss';
-import { Menu, Breadcrumb, Icon, Dropdown } from 'antd';
+import { Menu, Breadcrumb, Icon } from 'antd';
 const SubMenu = Menu.SubMenu;
 
 import { logoutUser } from './../../actions/auth';

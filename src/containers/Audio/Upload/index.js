@@ -32,7 +32,9 @@ class AudioUpload extends Component {
     super(props);
     this.state= {
       fileList: [],
-      curFile: null
+      curFile: {
+        id: 0
+      }
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -140,8 +142,11 @@ class AudioUpload extends Component {
       }
     };
     const cpAttachProps = {
-      action: API_CONFIG.baseUri + API_CONFIG.audioUploadAttach+'&audioId='+ this.state.curFile.id,
+      action: API_CONFIG.baseUri + API_CONFIG.audioUploadAttach,
       accept:'application/*',
+      data:{
+        audioId: this.state.curFile.id
+      },
       onChange: (file) => {
         console.log(file);
       }

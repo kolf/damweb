@@ -1,5 +1,5 @@
-import React, { Component, PropTypes } from 'react';
-import { Upload, Tag, Button } from 'antd';
+import React, { Component } from 'react';
+import {Tag, Button } from 'antd';
 
 let index = 9;
 
@@ -10,7 +10,11 @@ export default class UploadList extends Component {
     this.handleClose = this.handleClose.bind(this);
 
     this.state = {
-      tags: []
+      tags: [
+        { key: 1, name: 'Unremovable' },
+        { key: 2, name: 'Tag 2' },
+        { key: 3, name: 'Tag 3' },
+      ]
     }
   }
 

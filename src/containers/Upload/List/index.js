@@ -6,6 +6,7 @@ import { browserHistory } from 'react-router';
 
 import ClassifyMenu from '../../../components/ClassifyMenu';
 import {queryResource} from '../../../actions/queryResource';
+import HoverScrub from "react-hover-scrub";
 
 const CreateForm = Form.create;
 const FormItem = Form.Item;
@@ -33,7 +34,6 @@ class UploadList extends Component {
   render() {
     const { getFieldProps } = this.props.form;
     const { resources:{data, meta:{pageSize, pageNum, total}} } = this.props;
-    // const { resources: {data, meta:{ pageSize, pageNum, total}}} = this.state;
 
     const thumbItemLayout = {
       xs: { span: 6 },
@@ -53,7 +53,7 @@ class UploadList extends Component {
                 <Button type="primary" htmlType="submit" size="large"><Icon type="search" /> 搜索</Button>
               </FormItem>
               <FormItem>
-                <Select style={{width:70}} size="large" defaultValue="all" {...getFieldProps('phrase', {initialValue: ''})}>
+                <Select style={{width:70}} size="large" {...getFieldProps('phrase', {initialValue: ''})}>
                   <Option value="">全部</Option>
                   <Option value="1">图片</Option>
                   <Option value="2">音频</Option>
@@ -76,19 +76,16 @@ class UploadList extends Component {
                 <div className="thumb-list-item">
                   <div className="thumb-list-item-img">
                     <p>
-                      <img src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" className="hidden"/>
-                      <img src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" alt=""/>
+                      <HoverScrub video="http://trevligheten.se/react-hover-scrub/example.mp4" />
                     </p>
                   </div>
-                  <div className="thumb-list-item-text">
-                    {item.displayName}
-                  </div>
-                  <div className="thumb-list-item-btns">
+                  <div className="thumb-list-item-text">{item.displayName}<div className="thumb-list-item-btns ant-btn-group ant-btn-group-sm">
                     <Link className="ant-btn ant-btn-primary ant-btn-icon-only" to={'/image/details'}><Icon type="eye-o" /></Link>
-                    <Link className="ant-btn ant-btn-icon-only" to={'/image/details'}><Icon type="download" /></Link>
-                  </div>
+                    <a className="ant-btn ant-btn-icon-only" target="_block" href={item.ossId}><Icon type="download" /></a>
+                  </div></div>
+
                   <div className="thumb-list-item-badges">
-                    <Tag color="red">RM</Tag>
+                    {item.conType ? <Tag color="red">RM</Tag> : ''}
                     <Tag>{item.assetType}</Tag>
                   </div>
                 </div>
