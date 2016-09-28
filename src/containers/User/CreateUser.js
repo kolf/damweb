@@ -73,7 +73,7 @@ class CreateUser extends Component {
       trigger: 'onBlur',
     });
 
-    const passwordProps = getFieldProps('password', {
+    const passwordProps = getFieldProps('damPasswd', {
       rules: [
         { required: true, min: 6, message: '密码至少为 6 个字符' },
         { validator: this.userExists },
@@ -97,7 +97,7 @@ class CreateUser extends Component {
       trigger: 'onBlur',
     });
 
-    const emailProps = getFieldProps('email', {
+    const emailProps = getFieldProps('mail', {
       validate: [{
         rules: [
           { required: true, message: '邮箱为必填项' },
