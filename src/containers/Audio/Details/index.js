@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
-import { Form, Select, Radio, Row, Col, Tag, Tabs} from 'antd';
+import { Form, Select, Input, DatePicker, Switch, Radio, Cascader, Button, Row, Col, Upload, Icon, Tag, Checkbox, Tabs} from 'antd';
 import { connect } from 'react-redux';
-import { browserHistory } from 'react-router';
+import { browserHistory, Link } from 'react-router';
 import './style.scss';
 
 const CreateForm = Form.create;
@@ -17,7 +17,7 @@ const tags =[
   { key: 3, name: '春夏' }
 ];
 
-class DetailsImage extends Component {
+class AudioDetails extends Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -40,6 +40,8 @@ class DetailsImage extends Component {
 
   render() {
     const { getFieldProps } = this.props.form;
+
+    console.log(this);
 
     const addressProps = getFieldProps('address', {
       rules: [
@@ -73,6 +75,10 @@ class DetailsImage extends Component {
                 </div>
               </Col>
               <Col lg={{span: 8}}>
+              <div className="ant-row ant-form-item ant-col-offset-6">
+                <Button htmlType="submit" size="large" type="primary"><Link to={`/audio/update/${this.props.routeParams.id}`}>编辑音频</Link></Button>
+                <Button size="large" className="gap-left">下载音频</Button>
+              </div>
                 <Tabs type="card">
                   <TabPane tab="基本信息" key="1">
                     <FormItem
@@ -93,7 +99,7 @@ class DetailsImage extends Component {
                       {...formItemLayout}
                       label="音频分类"
                     >
-                      <Select name="audio_type" defaultValue="lucy"  style={{ width: '100%' }}>
+                      <Select disabled defaultValue="lucy"  style={{ width: '100%' }}>
                         <Option value="jack" selected>创意类</Option>
                         <Option value="lucy">编辑类</Option>
                       </Select>
@@ -128,7 +134,7 @@ class DetailsImage extends Component {
                       {...formItemLayout}
                       label="内容类别"
                     >
-                      <Select name="descrip" defaultValue="b"  style={{ width: '100%' }}>
+                      <Select disabled defaultValue="b"  style={{ width: '100%' }}>
                         <Option value="music">音乐</Option>
                         <Option value="song">歌曲</Option>
                         <Option value="a">原创</Option>
@@ -142,7 +148,7 @@ class DetailsImage extends Component {
                       {...formItemLayout}
                       label="风格"
                     >
-                      <Select defaultValue="h"  style={{ width: '100%' }}>
+                      <Select disabled defaultValue="h"  style={{ width: '100%' }}>
                         <Option value="jack" selected>摇滚</Option>
                         <Option value="a">乡村</Option>
                         <Option value="b">民谣</Option>
@@ -158,7 +164,7 @@ class DetailsImage extends Component {
                       {...formItemLayout}
                       label="声音"
                     >
-                      <Select name="vocal" defaultValue="a"  style={{ width: '100%' }}>
+                      <Select disabled defaultValue="a"  style={{ width: '100%' }}>
                         <Option value="man">男声</Option>
                         <Option value="a">女声</Option>
                         <Option value="b">混合</Option>
@@ -263,7 +269,7 @@ class DetailsImage extends Component {
   }
 }
 
-DetailsImage.propTypes = {
+AudioDetails.propTypes = {
   form: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired
 };
@@ -273,4 +279,4 @@ function mapStateToProps() {
   };
 }
 
-export default connect(mapStateToProps)(CreateForm()(DetailsImage));
+export default connect(mapStateToProps)(CreateForm()(AudioDetails));

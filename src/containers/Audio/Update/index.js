@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Form, Select, Input, DatePicker, Switch, Radio, Cascader, Button, Row, Col, Upload, Icon, Tag, Checkbox, Tabs } from 'antd';
 import { connect } from 'react-redux';
-import { browserHistory } from 'react-router';
+import { browserHistory,Link } from 'react-router';
 import './style.scss';
 
 const CreateForm = Form.create;
@@ -78,56 +78,25 @@ class AudioUpdate extends Component {
     return (
       <div>
         <div className="ant-layout-content">
-          <Row gutter={24}>
-            <Col lg={{span:6}}>
-              <FormItem
-                {...formItemLayout}
-                label="组图标题"
-                required
-                hasFeedback
-              >
-                <Input {...avatarProps}/>
-              </FormItem>
-              <FormItem
-                label="组图说明"
-                {...formItemLayout}
-              >
-                <Input type="textarea" {...addressProps}/>
-              </FormItem>
-              <hr/>
-              <div className="view-thumb-list">
-                <Row gutter={24}>
-                  <Col lg={{span:12}}>
-                    <div className='view-thumb-list-item'></div>
-                  </Col><Col lg={{span:12}}>
-                    <div className='view-thumb-list-item'></div>
-                  </Col><Col lg={{span:12}}>
-                    <div className='view-thumb-list-item active'></div>
-                  </Col><Col lg={{span:12}}>
-                    <div className='view-thumb-list-item'></div>
-                  </Col>
-                </Row>
-              </div>
-            </Col>
-            <Col lg={{span: 18}}>
-              <Row gutter={24}>
-                <Col lg={{span: 16}}>
-                  <div className="edit-view">
-                    <div className="edit-view-img" style={{backgroundImage:'url(https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png)'}}>
-                    </div>
+          <Col xs={{offset: 0, span:24}} lg={{offset:3, span:18}}>
+            <Row gutter={24}>
+              <Col lg={{span: 16}}>
+                <div className="edit-view">
+                  <div className="edit-view-img" style={{backgroundImage:'url(https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png)'}}>
                   </div>
-                </Col>
-                <Col lg={{span: 8}}>
-                  <div className="ant-row ant-form-item ant-col-offset-6">
-                    <Button size="large" type="primary">保存编辑</Button>
-                    <Button size="large" className="gap-left">下载图片</Button>
-                  </div>
+                </div>
+              </Col>
+              <Col lg={{span: 8}}>
+                <div className="ant-row ant-form-item ant-col-offset-6">
+                  <Button size="large" type="primary"><Link to={'/audio/details'}>保存编辑</Link></Button>
+                  <Button size="large" className="gap-left">下载音频</Button>
+                </div>
 
-                  <Tabs type="card" style={{height: 526}}>
+                  <Tabs type="card">
                     <TabPane tab="基本信息" key="Tab_1">
                       <FormItem
                         {...formItemLayout}
-                        label="图片标题"
+                        label="音频标题"
                         required
                         hasFeedback
                       >
@@ -143,7 +112,7 @@ class AudioUpdate extends Component {
 
                       <FormItem
                         {...formItemLayout}
-                        label="图片分类"
+                        label="音频分类"
                         required
                       >
                         <Select style={{ width: '100%' }} {...getFieldProps('select')}
@@ -155,18 +124,20 @@ class AudioUpdate extends Component {
                         </Select>
                       </FormItem>
 
-                      <FormItem
-                        {...formItemLayout}
-                        label="标签"
-                        required
-                        hasFeedback
-                      >
-                        {tags.map(tag =>
-                          <Tag key={tag.key} closable={tag.key !== 1} afterClose={() => this.handleClose(tag.key)}>
-                            {tag.name}
-                          </Tag>
-                        )}
-                      </FormItem>
+                    <FormItem
+                      {...formItemLayout}
+                      label="标签"
+                      required
+                    >
+                      <Select tags placeholder="请添加标签" style={{width: '100%'}} {...getFieldProps('tag1', {initialValue: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6']})}>
+                        <Option key="T1">成人</Option>
+                        <Option key="T2">广角拍摄</Option>
+                        <Option key="T3">寒冷</Option>
+                        <Option key="T4">创造力</Option>
+                        <Option key="T5">活动中</Option>
+                        <Option key="T6">人</Option>
+                      </Select>
+                    </FormItem>
 
                       <FormItem
                         {...formItemLayout}
@@ -208,7 +179,7 @@ class AudioUpdate extends Component {
                         required
                         hasFeedback
                       >
-                        <RadioGroup disabled onChange={this.onChange} value={this.state.color}>
+                        <RadioGroup size="default" disabled onChange={this.onChange} value={this.state.color}>
                           <Radio value={'colors'}>彩色</Radio>
                           <Radio value={'gray'}>黑白</Radio>
                         </RadioGroup>
@@ -219,7 +190,7 @@ class AudioUpdate extends Component {
                         label="版权所属"
                         {...formItemLayout}
                       >
-                        <RadioGroup {...getFieldProps('rg')}>
+                        <RadioGroup size="default" {...getFieldProps('rg')}>
                           <RadioButton value="a">无</RadioButton>
                           <RadioButton value="b">自有</RadioButton>
                           <RadioButton value="c">第三方</RadioButton>
@@ -230,7 +201,7 @@ class AudioUpdate extends Component {
                         label="版权授权"
                         {...formItemLayout}
                       >
-                        <RadioGroup {...getFieldProps('rg')}>
+                        <RadioGroup size="default" {...getFieldProps('rg')}>
                           <RadioButton value="g">RM</RadioButton>
                           <RadioButton value="h">RF</RadioButton>
                         </RadioGroup>
@@ -242,7 +213,7 @@ class AudioUpdate extends Component {
                         required
                         hasFeedback
                       >
-                        <RadioGroup disabled onChange={this.onChange} value={this.state.color}>
+                        <RadioGroup size="default" disabled onChange={this.onChange} value={this.state.color}>
                           <Radio value={'colors'}>肖像权</Radio>
                           <Radio value={'gray'}>物权</Radio>
                         </RadioGroup>
@@ -280,45 +251,44 @@ class AudioUpdate extends Component {
                     <Checkbox>是否在展示平台显示资源</Checkbox>
                   </Col>
 
+              </Col>
+            </Row>
+            <div className="edit-view-exif">
+              <h4>EXIF信息</h4>
+              <Row gutter={24}>
+                <Col xs={{span: 6}}>
+                  <ul className="list-v">
+                    <li>拍摄时间: 索尼</li>
+                    <li>制造商: 索尼</li>
+                    <li>测光模式: 索尼</li>
+                    <li>白平衡: 索尼</li>
+                  </ul>
                 </Col>
+                <Col xs={{span: 6}}>
+                  <ul className="list-v">
+                    <li>音频格式: 索尼</li>
+                    <li>曝光时间: 索尼</li>
+                    <li>焦距: 索尼</li>
+                    <li>曝光程序: 索尼</li>
+                  </ul>
+                </Col>
+                <Col xs={{span: 6}}><ul className="list-v">
+                  <li>原始宽度: 索尼</li>
+                  <li>相机型号: 索尼</li>
+                  <li>闪光灯: 索尼</li>
+                  <li>曝光补偿: 索尼</li>
+                </ul></Col>
+                <Col xs={{span: 6}}><ul className="list-v">
+                  <li>ISO: 索尼</li>
+                  <li>原始高度: 索尼</li>
+                  <li>光圈: 索尼</li>
+                  <li>曝光模式: 索尼</li>
+                </ul></Col>
               </Row>
-              <div className="edit-view-exif">
-                <h4>EXIF信息</h4>
-                <Row gutter={24}>
-                  <Col xs={{span: 6}}>
-                    <ul className="list-v">
-                      <li>拍摄时间: 索尼</li>
-                      <li>制造商: 索尼</li>
-                      <li>测光模式: 索尼</li>
-                      <li>白平衡: 索尼</li>
-                    </ul>
-                  </Col>
-                  <Col xs={{span: 6}}>
-                    <ul className="list-v">
-                      <li>图片格式: 索尼</li>
-                      <li>曝光时间: 索尼</li>
-                      <li>焦距: 索尼</li>
-                      <li>曝光程序: 索尼</li>
-                    </ul>
-                  </Col>
-                  <Col xs={{span: 6}}><ul className="list-v">
-                    <li>原始宽度: 索尼</li>
-                    <li>相机型号: 索尼</li>
-                    <li>闪光灯: 索尼</li>
-                    <li>曝光补偿: 索尼</li>
-                  </ul></Col>
-                  <Col xs={{span: 6}}><ul className="list-v">
-                    <li>ISO: 索尼</li>
-                    <li>原始高度: 索尼</li>
-                    <li>光圈: 索尼</li>
-                    <li>曝光模式: 索尼</li>
-                  </ul></Col>
-                </Row>
-              </div>
+            </div>
             </Col>
-          </Row>
-      </div>
         </div>
+      </div>
     );
   }
 }

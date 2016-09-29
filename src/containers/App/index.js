@@ -25,9 +25,11 @@ class App extends Component {
 
   }
 
-  handleLogout() {
+  handleLogout({key}) {
     const { dispatch } = this.props;
-    dispatch(logoutUser())
+    if(key === 'mail'){
+      dispatch(logoutUser())
+    }
   }
 
   renderAuthenticatedPage() {
@@ -36,7 +38,7 @@ class App extends Component {
         <div className="ant-layout-header">
           <div className="ant-layout-wrapper">
             <div className="ant-layout-logo">DAM数字资产管理系统</div>
-            <Menu theme="dark" className="menu-primary" mode="horizontal" defaultSelectedKeys={['2']} style={{lineHeight: '60px'}}>
+            <Menu theme="dark" className="menu-primary" mode="horizontal" defaultSelectedKeys={['2']} style={{lineHeight: '60px'}} onClick={this.handleLogout}>
               <Menu.Item key="1"><Link to={'/resource'}><Icon type="folder" />资源库列表</Link></Menu.Item>
               <Menu.Item key="2"><Link to={'/review'}><Icon type="laptop" />资源审核</Link></Menu.Item>
               <SubMenu key="sub2" title={<span>
@@ -47,7 +49,7 @@ class App extends Component {
               <Menu.Item key="7"><Link to={'/remark'}><Icon type="pushpin-o" />水印管理</Link></Menu.Item>
 
               <Menu.Item key="mail" className="pull-right">
-                <Icon type="question" />帮助
+                <Icon type="question" />退出登陆
               </Menu.Item>
             </Menu>
           </div>

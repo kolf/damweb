@@ -6,7 +6,7 @@ import { browserHistory } from 'react-router';
 
 import ClassifyMenu from '../../../components/ClassifyMenu';
 import {queryResource} from '../../../actions/queryResource';
-import HoverScrub from "react-hover-scrub";
+import Video from 'react-html5video';
 
 const CreateForm = Form.create;
 const FormItem = Form.Item;
@@ -19,25 +19,59 @@ import './style.scss';
 class UploadList extends Component {
   constructor(props) {
     super(props);
+    this.state={
+      pageNum: 1,
+      pageSize: 18
+    }
   }
 
   componentDidMount() {
-    const { dispatch } = this.props;
-
-    dispatch(queryResource())
+    this.queryList({
+      pageNum: this.state.pageNum,
+      pageSize: this.state.pageSize
+    });
   }
 
   goToDetails(e) {
     browserHistory.push('/imageGroup/details')
   }
 
+  queryList (params) {
+    const { dispatch } = this.props;
+    dispatch(queryResource(params));
+  }
+
+  refresh(pager, {pageNum, pageSize}){
+    this.setState({pageNum, pageSize});
+    this.queryList({pageNum, pageSize});
+  }
+
   render() {
+    const _this =this;
     const { getFieldProps } = this.props.form;
-    const { resources:{data, meta:{pageSize, pageNum, total}} } = this.props;
+    const { resources:{data, meta:{total}} } = this.props;
 
     const thumbItemLayout = {
       xs: { span: 6 },
       lg: { span: 4 }
+    };
+
+    const pager ={
+      "page": this.state.pageNum,
+      "pageSize": '18',
+      "total": total,
+      "showSizeChanger": true,
+      "showQuickJumper": true,
+      "pageSizeOptions": ['18', '36'],
+      "showTotal": () => {
+        return '共 '+total+' 条';
+      },
+      onShowSizeChange(pageNum, pageSize) {
+        _this.refresh("pager",{"pageNum":pageNum,"pageSize":pageSize});
+      },
+      onChange(pageNum) {
+        _this.refresh("pager",{"pageNum":pageNum});
+      }
     };
 
     return (
@@ -53,7 +87,7 @@ class UploadList extends Component {
                 <Button type="primary" htmlType="submit" size="large"><Icon type="search" /> 搜索</Button>
               </FormItem>
               <FormItem>
-                <Select style={{width:70}} size="large" {...getFieldProps('phrase', {initialValue: ''})}>
+                <Select style={{width:70}} size="large" defaultValue="all" {...getFieldProps('phrase', {initialValue: ''})}>
                   <Option value="">全部</Option>
                   <Option value="1">图片</Option>
                   <Option value="2">音频</Option>
@@ -73,11 +107,22 @@ class UploadList extends Component {
           <Row gutter={24}>
             {data.map(item =>
               <Col {...thumbItemLayout}>
+                <Link to={'/'+(()=>{
+                  switch (item.assetType) {
+                    case 1: return `image/details/${item.id}`;
+                    case 2: return `audio/details/${item.id}`;
+                    case 3: return `video/details/${item.id}`;
+                  }
+                })()}>
                 <div className="thumb-list-item">
                   <div className="thumb-list-item-img">
-                    <p>
-                      <HoverScrub video="http://trevligheten.se/react-hover-scrub/example.mp4" />
-                    </p>
+                    {(() => {
+                      switch (item.assetType) {
+                        case 1: return <p><img src={item.ossId2} className="hidden"/><img src={item.ossId2} alt="item.name"/></p>;
+                        case 2: return <p><img src={item.ossid3} className="hidden"/><img src={item.ossid3} alt="item.name"/></p>;
+                        case 3: return <Video controls muted><source src="http://kmg.oss-cn-beijing.aliyuncs.com/dam/v/c52f5e37-a2f9-4805-887d-52c6cb0d7830.mp4?Expires=1475506208&OSSAccessKeyId=LTAId4pMnCWmqJnP&Signature=qz394GbQkwr1Lv4gl81uiVdGeSk%3D" type="video/mp4" /></Video>;
+                      }
+                    })()}
                   </div>
                   <div className="thumb-list-item-text">{item.displayName}<div className="thumb-list-item-btns ant-btn-group ant-btn-group-sm">
                     <Link className="ant-btn ant-btn-primary ant-btn-icon-only" to={'/image/details'}><Icon type="eye-o" /></Link>
@@ -86,14 +131,22 @@ class UploadList extends Component {
 
                   <div className="thumb-list-item-badges">
                     {item.conType ? <Tag color="red">RM</Tag> : ''}
-                    <Tag>{item.assetType}</Tag>
+                    <Tag>{(() => {
+                      switch (item.assetType) {
+                        case 1: return "图片";
+                        case 2: return "音频";
+                        case 3: return "视频";
+                      }
+                    })()}
+                    </Tag>
                   </div>
                 </div>
+                </Link>
               </Col>
             )}
           </Row>
           <div className="pager pad-v text-right">
-            <Pagination showQuickJumper pageSize={pageSize} defaultCurrent={pageNum} total={total} />
+            <Pagination {...pager}/>
           </div>
         </div>
       </div>

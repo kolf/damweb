@@ -80,6 +80,7 @@ $primary: #2db7f5;
         top: 0;
         height: 100%;
         width: 100%;
+        background: #333;
         p{
           position:absolute;
           top:50%;
@@ -168,6 +169,16 @@ $primary: #2db7f5;
 
 .ant-upload-list-item-done{
   &.active{
-    border-color:$primary;
+    border: 2px solid $primary;
+    position: relative;
+    &:after{
+      //content: '';
+      position: absolute;
+      right: 0;
+      top: 0;
+      width:20px;
+      height:20px;
+      background: $primary;
+    }
   }
 }

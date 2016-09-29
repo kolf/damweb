@@ -53,22 +53,24 @@ export default (
     <Route path="upload/index" component={UploadIndex}/>
 
     <Route path="image/upload" component={ImageUpload}/>
-    <Route path="image/update" component={ImageUpdate}/>
-    <Route path="image/details" component={ImageDetails}/>
-    <Route path="image/review" component={ImageReview}/>
+    <Route path="image/update/:id" component={ImageUpdate}/>
+    <Route path="image/details/:id" component={ImageDetails}/>
+    <Route path="image/review/:id" component={ImageReview}/>
 
     <Route path="imageGroup/upload" component={ImageGroupUpload}/>
-    <Route path="imageGroup/update" component={ImageGroupUpdate}/>
-    <Route path="imageGroup/details" component={ImageGroupDetails}/>
-    <Route path="imageGroup/review" component={ImageGroupReview}/>
+    <Route path="imageGroup/update/:id" component={ImageGroupUpdate}/>
+    <Route path="imageGroup/details/:id" component={ImageGroupDetails}/>
+    <Route path="imageGroup/review/:id" component={ImageGroupReview}/>
 
     <Route path="video/upload" component={VideoUpload}/>
-    <Route path="video/update" component={VideoUpdate}/>
-    <Route path="video/details" component={VideoDetails}/>
+    <Route path="video/update/:id" component={VideoUpdate}/>
+    <Route path="video/details/:id" component={VideoDetails}/>
+    <Route path="video/review/:id" component={VideoDetails}/>
 
     <Route path="audio/upload" component={AudioUpload}/>
-    <Route path="audio/update" component={AudioUpdate}/>
-    <Route path="audio/details" component={AudioDetails}/>
+    <Route path="audio/update/:id" component={AudioUpdate}/>
+    <Route path="audio/details/:id" component={AudioDetails}/>
+    <Route path="audio/review/:id" component={AudioDetails}/>
 
     <Route path="*" component={NotFound}/>
   </Route>

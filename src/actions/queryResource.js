@@ -29,15 +29,16 @@ function resourceError(message) {
   };
 }
 
-export function queryResource(params = {pageNum: 1, pageSize: 18}) {
+export function queryResource(params) {
   return dispatch => {
     dispatch(requestResource());
     return cFetch(API_CONFIG.queryResource, { method: "GET", params: params }).then((res) => {
       if (res.jsonResult.returnCode === '1') {
         dispatch(receiveResource(res.jsonResult));
       } else {
-        dispatch(resourceError(res.jsonResult.msg));
-        message.error(res.jsonResult.msg);
+        let msg = res.jsonResult.msg || '请求失败，请稍候重试...';
+        dispatch(resourceError(msg));
+        message.error(msg);
       }
     });
   };

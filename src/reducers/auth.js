@@ -14,10 +14,11 @@ export default function auth(state = initialState.auth, action) {
         user: action.creds
       });
     case LOGIN_SUCCESS:
+      console.log(action.user);
       return Object.assign({}, state, {
         isFetching: false,
         isAuthenticated: true,
-        user: action.user,
+        user: action.user.data,
         errorMessage: ''
       });
     case LOGIN_FAILURE:

@@ -10,8 +10,10 @@ const RadioGroup = Radio.Group;
 
 import { API_CONFIG } from '../../../config/api';
 import { updateVideo } from '../../../actions/updateVideo';
+require('../../../assets/images/audioThumb.gif');
 
 import './style.scss';
+import Video from "react-h5-video";
 
 const areaData = [{
   value: 'shanghai',
@@ -31,9 +33,9 @@ class VideoUpload extends Component {
     super(props);
     this.state= {
       fileList: [],
-      curFile: {
-        id: 0
-      }
+      attachList: [],
+      videoId: '',
+      thumbUrl: '../../../assets/images/audioThumb.gif'
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -45,9 +47,9 @@ class VideoUpload extends Component {
   handleSubmit(e) {
     e.preventDefault();
     const { dispatch } = this.props;
-    const { curFile} = this.state;
+    const { videoId} = this.state;
 
-    if(!curFile){
+    if(!videoId){
       message.warning('请先上传文件');
       return false;
     }
@@ -57,9 +59,8 @@ class VideoUpload extends Component {
         return false;
       }
       const creds = (this.props.form.getFieldsValue());
-      // let id = curFile.id;
       Object.assign(creds, {
-        // id: id,
+        id: videoId,
         tags: creds.tags.join(',')
       });
       dispatch(updateVideo(creds));
@@ -67,41 +68,97 @@ class VideoUpload extends Component {
   }
 
   render() {
-    const { getFieldProps } = this.props.form;
+    const { getFieldProps, setFieldsValue, getFieldValue } = this.props.form;
 
     const displayNameProps = getFieldProps('displayName', {
       rules: [
         { required: true, message: '请填写标题' }
-      ]
+      ],
+      onChange:() =>{
+        const {fileList} = this.state;
+        fileList.forEach((item) => {
+          if(item.selected){
+            item.name=getFieldValue('displayName');
+          }
+        });
+      }
     });
 
     const remarkProps = getFieldProps('remark', {
       rules: [
         { required: true, message: '请填写描述' }
-      ]
+      ],
+      onChange:() =>{
+        const {fileList} = this.state;
+        fileList.forEach((item) => {
+          if(item.selected){
+            item.remark=getFieldValue('remark');
+          }
+        });
+      }
     });
     const categoryProps = getFieldProps('category', {
       rules: [
         { required: true, message: '请选择分类' }
       ],
-      initialValue: 'jack'
-  });
+      onChange:() =>{
+        const {fileList} = this.state;
+        fileList.forEach((item) => {
+          if(item.selected){
+            item.category=getFieldValue('category');
+          }
+        });
+      }
+    });
+
     const tagsProps = getFieldProps('tags', {
       rules: [
         { required: true, message: '请选择标签', type: 'array' }
-      ]
+      ],
+      onChange:() =>{
+        const {fileList} = this.state;
+        fileList.forEach((item) => {
+          if(item.selected){
+            item.tags=getFieldValue('tags');
+          }
+        });
+      }
     });
     const authorProps = getFieldProps('author', {
       rules: [
         { required: true, message: '请填写作者' }
-      ]
+      ],
+      onChange:() =>{
+        const {fileList} = this.state;
+        fileList.forEach((item) => {
+          if(item.selected){
+            item.author=getFieldValue('author');
+          }
+        });
+      }
+    });
+
+    const licenseTypeProps = getFieldProps('license_type', {
+      onChange:() =>{
+        const {fileList} = this.state;
+        fileList.forEach((item) => {
+          if(item.selected){
+            item.license_type=getFieldValue('license_type');
+          }
+        });
+      }
     });
 
     const expireProps = getFieldProps('objrights_expire_years', {
       getValueFromEvent: (value, timeString) => timeString,
-      rules: [
-        { required: true, message: '请选择版权有效期' }
-      ]
+      onChange:() =>{
+        const {fileList} = this.state;
+        fileList.forEach((item) => {
+          if(item.selected){
+            item.objrights_expire_years=getFieldValue('objrights_expire_years');
+          }
+        });
+      }
     });
 
     const formItemLayout = {
@@ -126,28 +183,54 @@ class VideoUpload extends Component {
         });
       },
       onSelect: (file) => {
-        this.setState({
-          curFile: file.response.data
+        this.state.fileList.forEach((item) => {
+          if(item.selected){
+            console.log(item);
+            setFieldsValue({
+              displayName: item.name,
+              remark: item.remark,
+              category: item.category,
+              tags: item.tags,
+              author: item.author,
+              license_type: item.license_type,
+            })
+          }
         });
+
+        this.setState({
+          fileList: this.state.fileList,
+          videoId: file.response.data.id
+        })
       },
       onChange: ({file, fileList}) => {
         if(file.status === 'done'){
           this.setState({
-            fileList: fileList,
-            curFile: file.response.data
+            fileList: fileList
           });
+          message.success(`${file.name} 上传成功`);
         }else if(file.status === 'removed'){
           this.setState({
-            fileList: fileList,
-            curFile: file.response.data
+            fileList: fileList
           });
+          message.success(`${file.name} 删除成功`);
+        } else if(file.status === 'error') {
+          message.error(`${file.name} 上传失败`);
         }
       }
     };
 
     const cpAttachProps = {
-      action: API_CONFIG.baseUri + API_CONFIG.videoUploadAttach + '&videoId='+this.state.curFile.id,
+      action: API_CONFIG.baseUri + API_CONFIG.videoUploadAttach,
       accept:'application/*',
+      disabled: this.state.videoId?false:true,
+      handleChange(info) {
+        let fileList = info.fileList;
+        attachList = fileList.slice(-1);
+        this.setState({ attachList });
+      },
+      data:{
+        videoId: this.state.videoId
+      },
       onChange: (file) => {
         console.log(file);
       }
@@ -166,26 +249,19 @@ class VideoUpload extends Component {
           </div>
           <div className="upload-sidebar">
             <Form horizontal onSubmit={this.handleSubmit} >
-              <Row>
-                <Col className="gutter-row upload-thumb upload-thumb-video" span={6}>
-                  <span></span>
-                </Col>
-                <Col className="gutter-row" span={18}>
-                  <FormItem>
-                    <Input placeholder="请输入标题" type="textarea" {...displayNameProps}/>
-                  </FormItem>
-                </Col>
-              </Row>
+              <FormItem label="视频标题" {...formItemLayout}>
+                <Input type="textarea" {...displayNameProps}/>
+              </FormItem>
 
               <FormItem label="视频说明" {...formItemLayout}>
                 <Input type="textarea" {...remarkProps}/>
               </FormItem>
 
               <FormItem label="视频分类" {...formItemLayout}>
-                <Select {...categoryProps}>
-                  <Option value="jack">jack</Option>
-                  <Option value="lucy">lucy</Option>
-                  <Option value="yiminghe">yiminghe</Option>
+                <Select placeholder="请选择视频分类" {...categoryProps}>
+                  <Option value="1">流行</Option>
+                  <Option value="2">古典</Option>
+                  <Option value="3">欧美</Option>
                 </Select>
               </FormItem>
 
@@ -200,7 +276,7 @@ class VideoUpload extends Component {
               </FormItem>
 
               <FormItem {...formItemLayout} label="版权所属">
-                <RadioGroup size="default" {...getFieldProps('license_type')}>
+                <RadioGroup size="default" {...licenseTypeProps}>
                   <RadioButton value="a">无</RadioButton>
                   <RadioButton value="b">自有</RadioButton>
                   <RadioButton value="c">第三方</RadioButton>

@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Form, Select, Input, DatePicker, Switch, Radio, Cascader, Button, Row, Col, Upload, Icon, Tag, message} from 'antd';
-import cookie from 'js-cookie';
 
 const CreateForm = Form.create;
 const FormItem = Form.Item;
@@ -11,6 +10,7 @@ const RadioGroup = Radio.Group;
 
 import { API_CONFIG } from '../../../config/api';
 import { updateAudio } from '../../../actions/updateAudio';
+require('../../../assets/images/audioThumb.gif');
 
 import './style.scss';
 
@@ -32,9 +32,9 @@ class AudioUpload extends Component {
     super(props);
     this.state= {
       fileList: [],
-      curFile: {
-        id: 0
-      }
+      attachList: [],
+      audioId: '',
+      thumbUrl: '../../../assets/images/audioThumb.gif'
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -46,9 +46,9 @@ class AudioUpload extends Component {
   handleSubmit(e) {
     e.preventDefault();
     const { dispatch } = this.props;
-    const { curFile} = this.state;
+    const { audioId} = this.state;
 
-    if(!curFile){
+    if(!audioId){
       message.warning('请先上传文件');
       return false;
     }
@@ -58,9 +58,8 @@ class AudioUpload extends Component {
         return false;
       }
       const creds = (this.props.form.getFieldsValue());
-      let id = curFile.id;
       Object.assign(creds, {
-        id: id,
+        id: audioId,
         tags: creds.tags.join(',')
       });
       dispatch(updateAudio(creds));
@@ -68,44 +67,106 @@ class AudioUpload extends Component {
   }
 
   render() {
-    const { getFieldProps } = this.props.form;
+    const { getFieldProps, setFieldsValue, getFieldValue } = this.props.form;
 
     const displayNameProps = getFieldProps('displayName', {
       rules: [
         { required: true, message: '请填写标题' }
-      ]
+      ],
+      onChange:() =>{
+        const {fileList} = this.state;
+        fileList.forEach((item) => {
+          if(item.selected){
+            item.name=getFieldValue('displayName');
+          }
+        });
+      }
     });
 
     const remarkProps = getFieldProps('remark', {
       rules: [
         { required: true, message: '请填写描述' }
-      ]
+      ],
+      onChange:() =>{
+        const {fileList} = this.state;
+        fileList.forEach((item) => {
+          if(item.selected){
+            item.remark=getFieldValue('remark');
+          }
+        });
+      }
     });
+
     const categoryProps = getFieldProps('category', {
       rules: [
         { required: true, message: '请选择分类' }
       ],
-      initialValue: 'jack'
-  });
+      onChange:() =>{
+        const {fileList} = this.state;
+        fileList.forEach((item) => {
+          if(item.selected){
+            item.category=getFieldValue('category');
+          }
+        });
+      }
+    });
+
     const tagsProps = getFieldProps('tags', {
       rules: [
         { required: true, message: '请选择标签', type: 'array' }
-      ]
+      ],
+      onChange:() =>{
+        const {fileList} = this.state;
+        fileList.forEach((item) => {
+          if(item.selected){
+            item.tags=getFieldValue('tags');
+          }
+        });
+      }
     });
+
     const authorProps = getFieldProps('author', {
       rules: [
         { required: true, message: '请填写作者' }
-      ]
+      ],
+      onChange:() =>{
+        const {fileList} = this.state;
+        fileList.forEach((item) => {
+          if(item.selected){
+            item.author=getFieldValue('author');
+          }
+        });
+      }
+    });
+
+    const licenseTypeProps = getFieldProps('license_type', {
+      onChange:() =>{
+        const {fileList} = this.state;
+        fileList.forEach((item) => {
+          if(item.selected){
+            item.license_type=getFieldValue('license_type');
+          }
+        });
+      }
     });
 
     const expireProps = getFieldProps('objrights_expire_years', {
-      getValueFromEvent: (value, timeString) => timeString
+      getValueFromEvent: (value, timeString) => timeString,
+      onChange:() =>{
+        const {fileList} = this.state;
+        fileList.forEach((item) => {
+          if(item.selected){
+            item.objrights_expire_years=getFieldValue('objrights_expire_years');
+          }
+        });
+      }
     });
 
     const formItemLayout = {
       labelCol: { span: 6 },
       wrapperCol: { span: 18 }
     };
+
     const thumbItemLayout = {
       xs: { span: 6 },
       lg: { span: 4 }
@@ -123,29 +184,56 @@ class AudioUpload extends Component {
         });
       },
       onSelect: (file) => {
-        this.setState({
-          curFile: file.response.data
+        this.state.fileList.forEach((item) => {
+          if(item.selected){
+            setFieldsValue({
+              displayName: item.name,
+              remark: item.remark,
+              category: item.category,
+              tags: item.tags,
+              author: item.author,
+              license_type: item.license_type,
+            })
+          }
         });
+
+        this.setState({
+          fileList: this.state.fileList,
+          audioId: file.response.data.id,
+          thumbUrl: file.thumbUrl
+        })
       },
       onChange: ({file, fileList}) => {
         if(file.status === 'done'){
+          if(file.response.data.assetType === 2){
+            file.thumbUrl= file.response.data.ossid3
+          }
           this.setState({
-            fileList: fileList,
-            curFile: file.response.data
+            fileList: fileList
           });
+          message.success(`${file.name} 上传成功`);
         }else if(file.status === 'removed'){
           this.setState({
-            fileList: fileList,
-            curFile: file.response.data
+            fileList: fileList
           });
+          message.success(`${file.name} 删除成功`);
+        } else if(file.status === 'error') {
+          message.error(`${file.name} 上传失败`);
         }
       }
     };
+
     const cpAttachProps = {
       action: API_CONFIG.baseUri + API_CONFIG.audioUploadAttach,
       accept:'application/*',
+      disabled: this.state.audioId?false:true,
+      handleChange(info) {
+        let fileList = info.fileList;
+        attachList = fileList.slice(-1);
+        this.setState({ attachList });
+      },
       data:{
-        audioId: this.state.curFile.id
+        audioId: this.state.audioId
       },
       onChange: (file) => {
         console.log(file);
@@ -167,7 +255,7 @@ class AudioUpload extends Component {
             <Form horizontal onSubmit={this.handleSubmit} >
               <Row>
                 <Col className="gutter-row upload-thumb upload-thumb-audio" span={6}>
-                  <span></span>
+                  <span style={{backgroundImage: 'url('+this.state.thumbUrl+')'}}></span>
                 </Col>
                 <Col className="gutter-row" span={18}>
                   <FormItem>
@@ -181,10 +269,10 @@ class AudioUpload extends Component {
               </FormItem>
 
               <FormItem label="音频分类" {...formItemLayout}>
-                <Select {...categoryProps}>
-                  <Option value="jack">jack</Option>
-                  <Option value="lucy">lucy</Option>
-                  <Option value="yiminghe">yiminghe</Option>
+                <Select placeholder="请选择音频分类" {...categoryProps}>
+                  <Option value="1">流行</Option>
+                  <Option value="2">古典</Option>
+                  <Option value="3">欧美</Option>
                 </Select>
               </FormItem>
 
@@ -199,7 +287,7 @@ class AudioUpload extends Component {
               </FormItem>
 
               <FormItem {...formItemLayout} label="版权所属">
-                <RadioGroup size="default" {...getFieldProps('license_type')}>
+                <RadioGroup size="default" {...licenseTypeProps}>
                   <RadioButton value="a">无</RadioButton>
                   <RadioButton value="b">自有</RadioButton>
                   <RadioButton value="c">第三方</RadioButton>
@@ -229,14 +317,26 @@ class AudioUpload extends Component {
   }
 }
 
+const formOpts={
+    mapPropsToFields: (props) =>{
+      return props.fields
+    },
+    onFieldsChange: (props, fields) => {
+      // console.log(this);
+      // console.log(props)
+    }
+};
+
 AudioUpload.propTypes = {
   form: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired
 };
 
-function mapStateToProps() {
+function mapStateToProps(state) {
+  const {fileList} = state;
   return {
+    fileList
   };
 }
 
-export default connect(mapStateToProps)(CreateForm()(AudioUpload));
+export default connect(mapStateToProps)(CreateForm(formOpts)(AudioUpload));

@@ -1,8 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Form, Select, Input, DatePicker, Switch, Radio, Cascader, Button, Row, Col, Upload, Icon, Tag, Checkbox, Tabs} from 'antd';
 import { connect } from 'react-redux';
-import { browserHistory } from 'react-router';
-
+import { browserHistory, Link } from 'react-router';
 import './style.scss';
 const CreateForm = Form.create;
 const FormItem = Form.Item;
@@ -20,7 +19,7 @@ const tags =[
 ];
 
 
-class DetailsImage extends Component {
+class VideoDetails extends Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -79,6 +78,10 @@ class DetailsImage extends Component {
                 </div>
               </Col>
               <Col lg={{span: 8}}>
+              <div className="ant-row ant-form-item ant-col-offset-6">
+                <Button htmlType="submit" size="large" type="primary"><Link to={'/video/update'}>编辑视频</Link></Button>
+                <Button size="large" className="gap-left">下载视频</Button>
+              </div>
                 <Tabs type="card">
                   <TabPane tab="基本信息" key="1">
                     <FormItem
@@ -259,7 +262,7 @@ class DetailsImage extends Component {
   }
 }
 
-DetailsImage.propTypes = {
+VideoDetails.propTypes = {
   form: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired
 };
@@ -269,4 +272,4 @@ function mapStateToProps() {
   };
 }
 
-export default connect(mapStateToProps)(CreateForm()(DetailsImage));
+export default connect(mapStateToProps)(CreateForm()(VideoDetails));
