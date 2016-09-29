@@ -81,13 +81,6 @@ class CreateUser extends Component {
       trigger: 'onBlur',
     });
 
-    const companyProps = getFieldProps('orgName', {
-      rules: [
-        { required: true, min: 4, message: '公司名称至少为 4 个字符' },
-        { validator: this.userExists },
-      ],
-      trigger: 'onBlur',
-    });
 
     const phoneProps = getFieldProps('tel', {
       rules: [
@@ -140,7 +133,7 @@ class CreateUser extends Component {
           </FormItem>
 
           <FormItem
-            label="是否是管理员"
+            label="是否本机构管理员"
             {...formItemLayout}
           >
             <Switch checkedChildren="是" unCheckedChildren="否" {...getFieldProps('isAdmin', { valuePropName: 'checked' })} />
@@ -163,16 +156,6 @@ class CreateUser extends Component {
           >
             <Input {...phoneProps} type="tel" />
           </FormItem>
-
-          <FormItem
-            {...formItemLayout}
-            label="公司名称"
-            hasFeedback
-            required
-          >
-            <Input {...companyProps} />
-          </FormItem>
-
           <FormItem
             {...formItemLayout}
             label="邮箱"
@@ -181,19 +164,6 @@ class CreateUser extends Component {
           >
             <Input {...emailProps} type="email" />
           </FormItem>
-
-          <FormItem
-            {...formItemLayout}
-            label="产品选择"
-          >
-            <Select
-              multiple
-              placeholder="请选择产品"
-            >
-              {productsOpts}
-            </Select>
-          </FormItem>
-
           <FormItem wrapperCol={{ span: 8, offset: 4 }}>
             <Button type="primary" htmlType="submit">确定</Button><span className="gap-inline"></span><Button type="ghost" onClick={this.handleReset}>取消</Button>
           </FormItem>

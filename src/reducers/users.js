@@ -4,10 +4,6 @@ import {
 import initialState from './initialState';
 
 export default function users(state = initialState.users, action) {
-  console.log('#############');
-  console.log(initialState);
-  console.log('%%%%%%%%%%%%%%');
-
   switch (action.type) {
     case USERS_QERUEST:
       return Object.assign({}, state, {

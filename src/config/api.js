@@ -13,7 +13,7 @@ export const API_CONFIG = {
   auth: 'damSys/userlogin',
   queryUser: 'damUser/pageList?token='+ token,          //查询用户
   queryOrgUser: 'damUser/orgUserList?token='+ token,          //查询用户
-  createUser: 'damUser/create',           //创建用户
+  createUser: 'damUser/create?token=' + token,           //创建用户
   productsOpts: 'damProduct/list',        //查询产品
   products: 'damProduct/pageList',        //查询产品
   createProduct: 'damProduct/create',     //创建产品
@@ -38,8 +38,8 @@ export const API_CONFIG = {
   uploadImgAttach: 'img/uploadAttach?token='+ token,
   category: 'category/treeView',
   vcgCategory: 'vcgCategory/list',
-  listOrgRoles:'damRole/list',   //组织机构内的角色列表
-  createRole:'damRole/createRole',//组织机构自建角色
+  listOrgRoles:'damRole/list?token='+ token,   //组织机构内的角色列表
+  createRole:'damRole/createRole?token='+ token,//组织机构自建角色
 
   queryResource: 'damMedia/pageList?token='+ token,
 };
