@@ -54,7 +54,7 @@ function usersError(message) {
 export function queryUsers(params) {
   return dispatch => {
     dispatch(requestUsers());
-    return cFetch(API_CONFIG.queryUser, { method: "GET", params: params }).then((res) => {
+    return cFetch(API_CONFIG.queryOrgUser, { method: "GET", params: params }).then((res) => {
       if (res.jsonResult.returnCode === '1') {
         dispatch(receiveUsers(res.jsonResult));
       } else {

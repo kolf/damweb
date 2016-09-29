@@ -4,6 +4,10 @@ import {
 import initialState from './initialState';
 
 export default function users(state = initialState.users, action) {
+  console.log('#############');
+  console.log(initialState);
+  console.log('%%%%%%%%%%%%%%');
+
   switch (action.type) {
     case USERS_QERUEST:
       return Object.assign({}, state, {
@@ -18,7 +22,7 @@ export default function users(state = initialState.users, action) {
           pageSize: action.users.data.pageSize,
           pageNum: action.users.data.pageNum
         },
-        data: action.users.data.list
+        data: action.users.data
       });
     case USERS_FAILURE:
       return Object.assign({}, state, {

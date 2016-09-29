@@ -1,4 +1,4 @@
-// const host = "http://dev.dam-server.vcg.com";
+//const host = "http://dev.dam-server.vcg.com";
 import cookie from 'js-cookie';
 const host = "http://192.168.3.120:8080";
 // const host = "http://192.168.3.109:8080";
@@ -12,6 +12,7 @@ export const API_CONFIG = {
   baseUri: baseUri,
   auth: 'damSys/userlogin',
   queryUser: 'damUser/pageList?token='+ token,          //查询用户
+  queryOrgUser: 'damUser/orgUserList?token='+ token,          //查询用户
   createUser: 'damUser/create',           //创建用户
   productsOpts: 'damProduct/list',        //查询产品
   products: 'damProduct/pageList',        //查询产品

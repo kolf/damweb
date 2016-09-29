@@ -34,6 +34,10 @@ import AudioUpload from './containers/Audio/Upload/index';
 import AudioUpdate from './containers/Audio/Update/index';
 import AudioDetails from './containers/Audio/Details/index';
 
+//add by lirui@2016-9-29
+import Users from './containers/User/Users';
+import CreateUser from './containers/User/CreateUser';
+
 import NotFound from './components/NotFound/index';
 
 export default (
@@ -48,7 +52,10 @@ export default (
 
     <Route path="remark" component={RemarkIndex}/>
 
-    <Route path="users" component={UserList}/>
+    <Route path="users" component={UserList} />
+    //add by lirui@2016-9-29
+    <Route path="userList" component={Users} />
+    <Route path="addUser" component={CreateUser} />
 
     <Route path="upload/index" component={UploadIndex}/>
 

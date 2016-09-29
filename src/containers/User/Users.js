@@ -69,6 +69,7 @@ class Users extends Component {
 
   render() {
     console.log(this.props);
+    console.log("**********************");
     const { users: { data, meta, isFetching } } = this.props;
 
     const columns = [{

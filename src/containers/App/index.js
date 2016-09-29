@@ -41,7 +41,7 @@ class App extends Component {
               <Menu.Item key="2"><Link to={'/review'}><Icon type="laptop" />资源审核</Link></Menu.Item>
               <SubMenu key="sub2" title={<span>
                 <Icon type="user" />用户管理</span>}>
-                <Menu.Item key="5">用户注册</Menu.Item>
+                <Menu.Item key="5"><Link to={'/userList'}>用户管理</Link></Menu.Item>
                 <Menu.Item key="6">角色管理</Menu.Item>
               </SubMenu>
               <Menu.Item key="7"><Link to={'/remark'}><Icon type="pushpin-o" />水印管理</Link></Menu.Item>
