@@ -50,7 +50,7 @@ class ImageUpload extends Component {
     const { imgId} = this.state;
 
     if(!imgId){
-      message.warning('请先上传文件');
+      message.warning('请先选择上传文件');
       return false;
     }
 

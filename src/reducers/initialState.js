@@ -23,5 +23,17 @@ export default {
       pageNum: 1
     },
     data: []
+  },
+  audio: {
+    isFetching: false,
+    data: {}
+  },
+  video: {
+    isFetching: false,
+    data: {}
+  },
+  image: {
+    isFetching: false,
+    data: {}
   }
 };

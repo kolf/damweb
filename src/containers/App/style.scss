@@ -125,10 +125,15 @@ body{
 
 .pad{
   &-bottom{
-    padding-bottom: 20px;
+    padding-bottom: 24px;
   }
   &-top{
-    padding-top: 20px;
+    padding-top: 24px;
+  }
+}
+.gap{
+  &-bottom{
+    margin-bottom:24px;
   }
 }
 

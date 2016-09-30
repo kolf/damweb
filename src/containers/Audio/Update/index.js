@@ -1,295 +1,293 @@
-import React, { Component, PropTypes } from 'react';
-import { Form, Select, Input, DatePicker, Switch, Radio, Cascader, Button, Row, Col, Upload, Icon, Tag, Checkbox, Tabs } from 'antd';
-import { connect } from 'react-redux';
-import { browserHistory,Link } from 'react-router';
+import React, {Component, PropTypes} from 'react';
+import {
+  Form,
+  Select,
+  Input,
+  DatePicker,
+  Switch,
+  Radio,
+  Cascader,
+  Button,
+  Row,
+  Col,
+  Upload,
+  Icon,
+  Tag,
+  message,
+  Checkbox,
+  Tabs
+} from 'antd';
+import {connect} from 'react-redux';
+import {browserHistory, Link} from 'react-router';
 import './style.scss';
+import {updateAudio} from '../../../actions/updateAudio';
+import {getAudio} from '../../../actions/getAudio';
+import {TAG} from '../../../config/tags';
+import Video from 'react-html5video';
 
 const CreateForm = Form.create;
 const FormItem = Form.Item;
 const Option = Select.Option;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
+const CheckboxGroup = Checkbox.Group;
 const TabPane = Tabs.TabPane;
-
-const areaData = [{
-  value: 'shanghai',
-  label: '中国',
-  children: [{
-    value: 'shanghaishi',
-    label: '上海市',
-    children: [{
-      value: 'pudongxinqu',
-      label: '浦东新区',
-    }]
-  }],
-}];
-
-const tags =[
-  { key: 1, name: '娱乐' },
-  { key: 2, name: '明星动态' },
-  { key: 3, name: '春夏' }
-];
 
 class AudioUpdate extends Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.onChange = this.onChange.bind(this);
-
-    this.state = {
-      color: 'colors'
-    }
-
-    console.log(this.state)
   }
 
-  handleSubmit(e){
+  componentDidMount() {
+    const {dispatch, routeParams} = this.props;
+    dispatch(getAudio({
+      id: routeParams.id
+    }))
+  }
+
+  handleSubmit(e) {
     e.preventDefault();
-  }
-
-  onChange(e){
-    this.setState({
-      color: e.target.value,
+    const {dispatch, routeParams} = this.props;
+    this.props.form.validateFields((errors) => {
+      if (errors) {
+        return false;
+      }
+      const creds = (this.props.form.getFieldsValue());
+      Object.assign(creds, {
+        id:routeParams.id,
+        tags: creds.tags.join(',')
+      });
+      dispatch(updateAudio(creds, (msg) => {
+        browserHistory.push(`/audio/details/${routeParams.id}`);
+      }));
     });
   }
 
   render() {
-    const { getFieldProps } = this.props.form;
+    const {getFieldProps} = this.props.form;
+    const {audio: {data}} = this.props;
 
-    const addressProps = getFieldProps('address', {
+    const displayNameProps = getFieldProps('displayName', {
       rules: [
-        { required: true, min: 2, message: '拍摄地至少为 2 个字符' },
-        { validator: this.userExists },
-      ]
+        {required: true, message: '请填写标题'}
+      ],
+      initialValue: data.displayName
     });
 
-    const avatarProps = getFieldProps('avatar', {
+    const remarkProps = getFieldProps('remark', {
       rules: [
-        { required: true, min: 2, message: '拍摄地至少为 2 个字符' },
-        { validator: this.userExists },
-      ]
+        {required: true, message: '请填写说明'}
+      ],
+      initialValue: data.remark
+    });
+
+    const audioTypeProps = getFieldProps('audioType', {
+      rules: [
+        {required: true, message: '请选择分类'}
+      ],
+      initialValue: data.audioType
+    });
+
+    const tagsProps = getFieldProps('tags', {
+      rules: [
+        {required: true, message: '请选择标签', type: 'array'}
+      ],
+      initialValue: data.tags.split(',')
+    });
+
+    const authorProps = getFieldProps('author', {
+      rules: [
+        {required: true, message: '请填写作者'}
+      ],
+      initialValue: data.author
+    });
+
+    const setDisplayProps = getFieldProps('resStatus', {
+
+    });
+    const conTypeProps = getFieldProps('conType', {
+      initialValue: data.conType
+    });
+    const descripProps = getFieldProps('descrip', {
+      initialValue: data.descrip
+    });
+    const vocalProps = getFieldProps('vocal', {
+      initialValue: data.vocal
+    });
+
+    const licenseTypeProps = getFieldProps('licenseType', {
+      initialValue: data.licenseType
+    });
+
+    const copyrightProps = getFieldProps('copyright', {
+      initialValue: data.copyright
+    });
+
+    const rightsTypeProps = getFieldProps('rightsType', {
+      initialValue: data.rightsType
     });
 
     const formItemLayout = {
-      labelCol: { span: 6 },
-      wrapperCol: { span: 18 }
+      labelCol: {span: 6},
+      wrapperCol: {span: 18}
     };
 
     return (
       <div>
         <div className="ant-layout-content">
-          <Col xs={{offset: 0, span:24}} lg={{offset:3, span:18}}>
+          <Col xs={{offset: 0, span: 24}} lg={{offset: 3, span: 18}}>
             <Row gutter={24}>
               <Col lg={{span: 16}}>
                 <div className="edit-view">
-                  <div className="edit-view-img" style={{backgroundImage:'url(https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png)'}}>
-                  </div>
+                  <Video controls loop muted poster="../../../assets/images/music.png"
+                         style={{width: '100%', height: '100%'}}>
+                    <source
+                      src="http://kmg.oss-cn-beijing.aliyuncs.com/dam/v/63ee8de8-4bd0-486d-9dfd-523ac2d4236a.mp4?Expires=1475559159&OSSAccessKeyId=LTAId4pMnCWmqJnP&Signature=eKU5lKEioKzDP/zRkO0sLZmamAc%3D"
+                      type="video/webm"/>
+                  </Video>
                 </div>
               </Col>
               <Col lg={{span: 8}}>
-                <div className="ant-row ant-form-item ant-col-offset-6">
-                  <Button size="large" type="primary"><Link to={'/audio/details'}>保存编辑</Link></Button>
-                  <Button size="large" className="gap-left">下载音频</Button>
-                </div>
-
+                <Form horizontal onSubmit={this.handleSubmit}>
+                  <div className="ant-row ant-col-offset-6 pad-bottom">
+                    <Button htmlType="submit" size="large" type="primary">保存编辑</Button>
+                    <Button size="large" className="gap-left">下载音频</Button>
+                  </div>
                   <Tabs type="card">
                     <TabPane tab="基本信息" key="Tab_1">
-                      <FormItem
-                        {...formItemLayout}
-                        label="音频标题"
-                        required
-                        hasFeedback
-                      >
-                        <Input {...avatarProps}/>
+                      <FormItem {...formItemLayout} label="音频标题">
+                        <Input placeholder="请输入标题" type="textarea" {...displayNameProps}/>
                       </FormItem>
 
-                      <FormItem
-                        label="说明"
-                        {...formItemLayout}
-                      >
-                        <Input type="textarea" {...addressProps}/>
+                      <FormItem {...formItemLayout} label="音频说明">
+                        <Input type="textarea" {...remarkProps}/>
                       </FormItem>
 
-                      <FormItem
-                        {...formItemLayout}
-                        label="音频分类"
-                        required
-                      >
-                        <Select style={{ width: '100%' }} {...getFieldProps('select')}
-                        >
-                          <Option value="jack">jack</Option>
-                          <Option value="lucy">lucy</Option>
-                          <Option value="disabled" disabled>disabled</Option>
-                          <Option value="yiminghe">yiminghe</Option>
+                      <FormItem {...formItemLayout} label="音频分类">
+                        <Select placeholder="请选择" style={{width: '100%'}} {...audioTypeProps}>
+                          {TAG.audio.audio_type.map(item =>
+                            <Option key={item.key}>{item.name}</Option>
+                          )}
                         </Select>
                       </FormItem>
 
-                    <FormItem
-                      {...formItemLayout}
-                      label="标签"
-                      required
-                    >
-                      <Select tags placeholder="请添加标签" style={{width: '100%'}} {...getFieldProps('tag1', {initialValue: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6']})}>
-                        <Option key="T1">成人</Option>
-                        <Option key="T2">广角拍摄</Option>
-                        <Option key="T3">寒冷</Option>
-                        <Option key="T4">创造力</Option>
-                        <Option key="T5">活动中</Option>
-                        <Option key="T6">人</Option>
-                      </Select>
-                    </FormItem>
+                      <FormItem {...formItemLayout} label="标签">
+                        <Select tags placeholder="请添加标签" style={{width: '100%'}} {...tagsProps} >
+                          {TAG.tags.map(item =>
+                            <Option key={item.key}>{item.name}</Option>
+                          )}
+                        </Select>
+                      </FormItem>
 
-                      <FormItem
-                        {...formItemLayout}
-                        label="上传时间"
-                      >
+                      <FormItem {...formItemLayout} label="上传时间">
                         <p className="ant-form-text">2016-02-26 14:56:51</p>
                       </FormItem>
 
-                      <FormItem
-                        {...formItemLayout}
-                        label="作者"
-                        required
-                        hasFeedback
-                      >
-                        <Input {...avatarProps}/>
+                      <FormItem {...formItemLayout} label="作者">
+                        <Input {...authorProps}/>
                       </FormItem>
 
-                      <FormItem
-                        {...formItemLayout}
-                        label="拍摄城市"
-                        required
-                        hasFeedback
-                      >
-                        <Cascader options={areaData} {...getFieldProps('area')} />
+                      <FormItem {...formItemLayout} label="内容类别">
+                        <Select placeholder="请选择" style={{width: '100%'}} {...conTypeProps}>
+                          {TAG.audio.con_type.map(item =>
+                            <Option key={item.key}>{item.name}</Option>
+                          )}
+                        </Select>
                       </FormItem>
 
-                      <FormItem
-                        {...formItemLayout}
-                        label="拍摄地"
-                        required
-                        hasFeedback
-                      >
-                        <Input {...addressProps}/>
+                      <FormItem {...formItemLayout} label="风格">
+                        <Select placeholder="请选择" style={{width: '100%'}} {...descripProps}>
+                          {TAG.audio.descrip.map(item =>
+                            <Option key={item.key}>{item.name}</Option>
+                          )}
+                        </Select>
                       </FormItem>
 
-                      <FormItem
-                        {...formItemLayout}
-                        label="色彩"
-                        required
-                        hasFeedback
-                      >
-                        <RadioGroup size="default" disabled onChange={this.onChange} value={this.state.color}>
-                          <Radio value={'colors'}>彩色</Radio>
-                          <Radio value={'gray'}>黑白</Radio>
-                        </RadioGroup>
+                      <FormItem {...formItemLayout} label="声音">
+                        <Select placeholder="请选择" style={{width: '100%'}} {...vocalProps}>
+                          {TAG.audio.vocal.map(item =>
+                            <Option key={item.key}>{item.name}</Option>
+                          )}
+                        </Select>
                       </FormItem>
                     </TabPane>
                     <TabPane tab="版权信息" key="Tab_2">
-                      <FormItem
-                        label="版权所属"
-                        {...formItemLayout}
-                      >
-                        <RadioGroup size="default" {...getFieldProps('rg')}>
+                      <FormItem label="版权所属" {...formItemLayout}>
+                        <RadioGroup size="default" {...copyrightProps}>
                           <RadioButton value="a">无</RadioButton>
                           <RadioButton value="b">自有</RadioButton>
                           <RadioButton value="c">第三方</RadioButton>
                         </RadioGroup>
                       </FormItem>
 
-                      <FormItem
-                        label="版权授权"
-                        {...formItemLayout}
-                      >
-                        <RadioGroup size="default" {...getFieldProps('rg')}>
-                          <RadioButton value="g">RM</RadioButton>
-                          <RadioButton value="h">RF</RadioButton>
+                      <FormItem label="版权授权" {...formItemLayout}>
+                        <RadioGroup size="default" {...licenseTypeProps}>
+                          <RadioButton value="rm">RM</RadioButton>
+                          <RadioButton value="rf">RF</RadioButton>
+                          <RadioButton value="rr">RR</RadioButton>
                         </RadioGroup>
                       </FormItem>
 
-                      <FormItem
-                        {...formItemLayout}
-                        label="版权授权"
-                        required
-                        hasFeedback
-                      >
-                        <RadioGroup size="default" disabled onChange={this.onChange} value={this.state.color}>
-                          <Radio value={'colors'}>肖像权</Radio>
-                          <Radio value={'gray'}>物权</Radio>
-                        </RadioGroup>
+                      <FormItem label="授权类型" {...formItemLayout}>
+                        <CheckboxGroup {...rightsTypeProps} options={TAG.rightsType} size="default"/>
                       </FormItem>
-                      <FormItem
-                        {...formItemLayout}
-                        label="上传时间"
-                      >
-                        <p className="ant-form-text">肖像权授权文件.pdf</p>
-                      </FormItem>
-                      <FormItem
-                        {...formItemLayout}
-                        label="版权时效"
-                      >
+
+                      <FormItem {...formItemLayout} label="版权时效">
                         <p className="ant-form-text">2016-02-26 14:56:51</p>
                       </FormItem>
-                      <FormItem
-                        {...formItemLayout}
-                        label="水印位置"
-                      >
-
-                        <div className="btn-abs" style={{marginTop: 3}}>
-                          <Button className="lt">左上</Button>
-                          <Button className="tr">右上</Button>
-                          <Button className="c">中间</Button>
-                          <Button className="lb">左下</Button>
-                          <Button className="rb">右下</Button>
-                        </div>
-
+                      <FormItem {...formItemLayout} label="授权文件">
+                        <p className="ant-form-text"><a href="">肖像权授权文件.pdf</a></p>
                       </FormItem>
                     </TabPane>
                   </Tabs>
-
                   <Col xs={{offset: 6}}>
-                    <Checkbox>是否在展示平台显示资源</Checkbox>
+                    <Checkbox {...setDisplayProps}>是否在展示平台显示资源</Checkbox>
                   </Col>
-
+                </Form>
               </Col>
             </Row>
             <div className="edit-view-exif">
-              <h4>EXIF信息</h4>
+              <h4>音频信息</h4>
               <Row gutter={24}>
                 <Col xs={{span: 6}}>
                   <ul className="list-v">
-                    <li>拍摄时间: 索尼</li>
-                    <li>制造商: 索尼</li>
-                    <li>测光模式: 索尼</li>
-                    <li>白平衡: 索尼</li>
+                    <li>发行时间: 2002</li>
+                    <li>艺术家: 玖月奇迹</li>
+                    <li>所属专辑: 中国美</li>
+                    <li>指挥或导演:</li>
                   </ul>
                 </Col>
                 <Col xs={{span: 6}}>
                   <ul className="list-v">
-                    <li>音频格式: 索尼</li>
-                    <li>曝光时间: 索尼</li>
-                    <li>焦距: 索尼</li>
-                    <li>曝光程序: 索尼</li>
+                    <li>音频格式: mp3</li>
+                    <li>音频时长: 00:04:41</li>
+                    <li>文件大小: 4.30MB</li>
+                    <li>比特率: 128kbps</li>
                   </ul>
                 </Col>
-                <Col xs={{span: 6}}><ul className="list-v">
-                  <li>原始宽度: 索尼</li>
-                  <li>相机型号: 索尼</li>
-                  <li>闪光灯: 索尼</li>
-                  <li>曝光补偿: 索尼</li>
-                </ul></Col>
-                <Col xs={{span: 6}}><ul className="list-v">
-                  <li>ISO: 索尼</li>
-                  <li>原始高度: 索尼</li>
-                  <li>光圈: 索尼</li>
-                  <li>曝光模式: 索尼</li>
-                </ul></Col>
+                <Col xs={{span: 6}}>
+                  <ul className="list-v">
+                    <li>作曲者:</li>
+                    <li>氛围：</li>
+                    <li>演奏器材：</li>
+                    <li>音乐节拍：</li>
+                  </ul>
+                </Col>
+                <Col xs={{span: 6}}>
+                  <ul className="list-v">
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                  </ul>
+                </Col>
               </Row>
             </div>
-            </Col>
+          </Col>
         </div>
       </div>
-    );
+    )
   }
 }
 
@@ -298,8 +296,10 @@ AudioUpdate.propTypes = {
   dispatch: PropTypes.func.isRequired
 };
 
-function mapStateToProps() {
+function mapStateToProps(state) {
+  const {audio} = state;
   return {
+    audio
   };
 }
 

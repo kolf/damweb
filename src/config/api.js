@@ -23,18 +23,19 @@ export const API_CONFIG = {
   searchAudio:'audio2016/pageList',       //音频资源查询分页显示
   listAudio:'audio2016/pageList',         //音频列表分页显示
   uploadAudio:'audio2016/uploadAudio?token='+ token,         //上传音频资源详情
-  audioDetail:'audio2016/view',           //音频详情
+  audioDetail:'audio2016/view?token='+ token,           //音频详情
   audioUpdate:'audio2016/update?token='+ token,         //音频修改
   audioUploadAttach:'audio2016/uploadAttach?token='+ token,         //音频修改
   searchVideo:'video2016/pageList',       //视频资源查询分页显示
   listVideo:'video2016/pageList',         //视频列表分页显示
   uploadVideo:'video2016/uploadVideo?token='+ token,         //上传频资源视
-  videoDetail:'video2016/view',           //视频详情
+  videoDetail:'video2016/view?token='+ token,           //视频详情
   videoUpdate:'video2016/update?token='+ token,         //视频修改
   videoUploadAttach:'video2016/uploadAttach?token='+ token,         //视频修改
   uploadImg :'img/uploadImg?token='+ token,             //图片上传
   updateImg :'img/update?token='+ token,             //图片编辑
   uploadImgAttach: 'img/uploadAttach?token='+ token,
+  imageDetail: 'img/view?token='+ token,
   category: 'category/treeView',
   vcgCategory: 'vcgCategory/list',
 

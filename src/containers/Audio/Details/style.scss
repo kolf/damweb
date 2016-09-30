@@ -1,0 +1,16 @@
+.video{
+  position: relative;
+  left: 0;
+  top: 0;
+  width: 100%;
+  background-color: #333;
+  padding-top:80%;
+  video{
+    top:0;
+    position: absolute;
+  }
+}
+.video-overlay__loader .video-spinner, .video-overlay__play .video-icon{
+  padding-top:14px;
+  padding-left:22px;
+}

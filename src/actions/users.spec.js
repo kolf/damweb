@@ -5,7 +5,7 @@ import { expect } from 'chai';
 import {
   USERS_QERUEST, USERS_SUCCESS
 } from './../constants/actionTypes';
-import { fetchUsers } from './users';
+import { queryUsers } from './users';
 import { API_CONFIG } from './../config/api';
 
 const middlewares = [ thunk ];
@@ -28,7 +28,7 @@ describe('User actions', function() {
     ];
     const store = mockStore();
 
-    return store.dispatch(fetchUsers())
+    return store.dispatch(queryUsers())
       .then(() => {
         expect(store.getActions()).to.deep.equal(expectedActions);
       });

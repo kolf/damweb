@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Login from '../Login/index';
 import { Link } from 'react-router';
 import './style.scss';
+import '../../../node_modules/react-html5video/dist/ReactHtml5Video.css';
 import { Menu, Breadcrumb, Icon } from 'antd';
 const SubMenu = Menu.SubMenu;
 

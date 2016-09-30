@@ -21,10 +21,10 @@ describe('User reducer',() => {
       errorMessage: '',
       meta: {
         total: db.users.meta.total,
-        perPage: db.users.meta.per_page,
-        page: db.users.meta.page
+        pageSize: db.users.meta.pageSize,
+        pageNum: db.users.meta.pageNum
       },
-      data: db.users.data
+      data: db.users.data.list
     });
   });
 });

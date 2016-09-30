@@ -21,7 +21,7 @@ class UploadList extends Component {
     super(props);
     this.state={
       pageNum: 1,
-      pageSize: 18
+      pageSize: '10'
     }
   }
 
@@ -58,11 +58,9 @@ class UploadList extends Component {
 
     const pager ={
       "page": this.state.pageNum,
-      "pageSize": '18',
       "total": total,
       "showSizeChanger": true,
       "showQuickJumper": true,
-      "pageSizeOptions": ['18', '36'],
       "showTotal": () => {
         return '共 '+total+' 条';
       },
