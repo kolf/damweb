@@ -49,7 +49,18 @@ class Roles extends Component {
       dataIndex: "remark",
       key: "remark",
       sorter: true
-    }];
+    },{
+      title: '操作',
+      key: 'operation',
+      render: () => (
+          <ButtonGroup>
+              <Button htmlType="submit" size="large" type="primary"><Link to={`/addRole`}>分配权限</Link></Button>
+          </ButtonGroup>
+
+
+
+      )
+  }];
 
     const pagination = {
       showSizeChanger: true,

@@ -40,6 +40,8 @@ export const API_CONFIG = {
   vcgCategory: 'vcgCategory/list',
   listOrgRoles:'damRole/list?token='+ token,   //组织机构内的角色列表
   createRole:'damRole/createRole?token='+ token,//组织机构自建角色
+  authUser:'damUserRole/authUser?token='+ token,     //为用户授权
+
 
   queryResource: 'damMedia/pageList?token='+ token,
 };

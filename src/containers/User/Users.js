@@ -104,10 +104,11 @@ class Users extends Component {
       },{
         title: '操作',
         key: 'operation',
-        render: () => (
+        render: (item) => (
           <ButtonGroup>
             <Button type="primary">启用</Button>
             <Button type="ghost">停用</Button>
+            <Button htmlType="submit" size="large" type="primary"><Link to={`/authUser/${item.damId}`}>分配角色</Link></Button>
           </ButtonGroup>
         )
       }

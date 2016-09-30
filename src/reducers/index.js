@@ -5,6 +5,7 @@ import auth from './auth';
 import users from './users';
 import resources from './resources';
 import roles from './roles';
+import userroles from './userroles';
 
 
 const rootReducer = combineReducers({
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
   auth,
   users,
   resources,
-  roles
+  roles,
+  userroles
 });
 
 export default rootReducer;

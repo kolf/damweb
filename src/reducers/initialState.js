@@ -32,5 +32,13 @@ export default {
       pageNum: 1
     },
     data: []
+  }, user_roles: {
+    isFetching: false,
+    meta: {
+      total: 0,
+      pageSize: 10,
+      pageNum: 1
+    },
+    data: []
   }
 };

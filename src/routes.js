@@ -39,6 +39,7 @@ import Users from './containers/User/Users';
 import CreateUser from './containers/User/CreateUser';
 import  Roles from './containers/Roles/Roles';
 import  CreateRole from './containers/Roles/CreateRole';
+import AuthUser from './containers/User/AuthUser';
 
 
 import NotFound from './components/NotFound/index';
@@ -61,6 +62,8 @@ export default (
     <Route path="addUser" component={CreateUser} />
     <Route path="roleList" component={Roles} />
     <Route path="addRole" component={CreateRole} />
+    <Route path="authUser/:id" component={AuthUser} />
+
 
     <Route path="upload/index" component={UploadIndex}/>
 
