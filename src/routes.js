@@ -29,10 +29,12 @@ import ImageGroupReview from './containers/ImageGroup/Review/index';
 import VideoUpload from './containers/Video/Upload/index';
 import VideoUpdate from './containers/Video/Update/index';
 import VideoDetails from './containers/Video/Details/index';
+import VideoReview from './containers/Video/Review/index';
 
 import AudioUpload from './containers/Audio/Upload/index';
 import AudioUpdate from './containers/Audio/Update/index';
 import AudioDetails from './containers/Audio/Details/index';
+import AudioReview from './containers/Audio/Review/index';
 
 import NotFound from './components/NotFound/index';
 
@@ -65,12 +67,12 @@ export default (
     <Route path="video/upload" component={VideoUpload}/>
     <Route path="video/update/:id" component={VideoUpdate}/>
     <Route path="video/details/:id" component={VideoDetails}/>
-    <Route path="video/review/:id" component={VideoDetails}/>
+    <Route path="video/review/:id" component={VideoReview}/>
 
     <Route path="audio/upload" component={AudioUpload}/>
     <Route path="audio/update/:id" component={AudioUpdate}/>
     <Route path="audio/details/:id" component={AudioDetails}/>
-    <Route path="audio/review/:id" component={AudioDetails}/>
+    <Route path="audio/review/:id" component={AudioReview}/>
 
     <Route path="*" component={NotFound}/>
   </Route>

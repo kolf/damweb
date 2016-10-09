@@ -23,7 +23,7 @@ const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;
 const TabPane = Tabs.TabPane;
-let initTags = '';
+
 class AudioDetails extends Component {
   constructor(props) {
     super(props);
@@ -40,12 +40,8 @@ class AudioDetails extends Component {
     const {getFieldProps} = this.props.form;
     const {audio: {data}} = this.props;
 
-
-    if(data.tags){
-      initTags= data.tags.split(',');
-    }
     const tagsProps = getFieldProps('tags', {
-      //initialValue: initTags
+      initialValue: data.tags.split(',')
     });
 
     const formItemLayout = {

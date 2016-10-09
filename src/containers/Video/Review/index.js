@@ -3,21 +3,28 @@ import {
   Form,
   Select,
   Input,
+  DatePicker,
+  Switch,
   Radio,
+  Cascader,
   Button,
   Row,
   Col,
-  message,
+  Upload,
+  Icon,
+  Tag,
+  Message,
   Checkbox,
   Tabs
 } from 'antd';
 import {connect} from 'react-redux';
 import {browserHistory, Link} from 'react-router';
 import './style.scss';
-import {updateImage} from '../../../actions/updateImage';
-import {getImage} from '../../../actions/getImage';
+import {updateVideo} from '../../../actions/updateVideo';
+import {getVideo} from '../../../actions/getVideo';
+import {review} from '../../../actions/review';
 import {TAG} from '../../../config/tags';
-
+import Video from 'react-html5video';
 
 const CreateForm = Form.create;
 const FormItem = Form.Item;
@@ -27,7 +34,7 @@ const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;
 const TabPane = Tabs.TabPane;
 
-class ImageReview extends Component {
+class VideoReview extends Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -35,12 +42,12 @@ class ImageReview extends Component {
 
   componentDidMount() {
     const {dispatch, routeParams} = this.props;
-    dispatch(getImage({
+    dispatch(getVideo({
       id: routeParams.id
     }))
   }
 
-  handleSubmit(e) {
+  handleSubmit(e){
     e.preventDefault();
     const {dispatch, routeParams} = this.props;
     this.props.form.validateFields((errors) => {
@@ -49,15 +56,16 @@ class ImageReview extends Component {
       }
       const creds = (this.props.form.getFieldsValue());
       Object.assign(creds, {
-        id: routeParams.id,
+        id:routeParams.id,
         tags: creds.tags.join(',')
       });
-      dispatch(updateImage(creds, (msg) => this.handleReview(5)));
+      dispatch(updateVideo(creds, () => this.handleReview(5)));
     });
   }
 
   handleReview(resultType){
-    const {dispatch, routeParams, audio: {data}} = this.props;
+    console.log(this);
+    const {dispatch, routeParams, video: {data}} = this.props;
 
     dispatch(review({
       audioResult: resultType,
@@ -71,34 +79,34 @@ class ImageReview extends Component {
 
   render() {
     const {getFieldProps} = this.props.form;
-    const {image: {data}} = this.props;
+    const {video: {data}} = this.props;
 
-    const displayNameProps = getFieldProps('title', {
+    const displayNameProps = getFieldProps('displayName', {
       rules: [
         {required: true, message: '请填写标题'}
       ],
-      initialValue: data.title
+      initialValue: data.displayName
     });
 
-    const remarkProps = getFieldProps('caption', {
+    const remarkProps = getFieldProps('remark', {
       rules: [
         {required: true, message: '请填写说明'}
       ],
-      initialValue: data.caption
+      initialValue: data.remark
     });
 
-    const audioTypeProps = getFieldProps('assetFamily', {
+    const videoTypeProps = getFieldProps('videoType', {
       rules: [
         {required: true, message: '请选择分类'}
       ],
-      initialValue: data.assetFamily
+      initialValue: data.videoType
     });
 
     const tagsProps = getFieldProps('tags', {
       rules: [
         {required: true, message: '请选择标签', type: 'array'}
       ],
-      //initialValue: data.tags.split(',')
+      initialValue: data.tags.split(',')
     });
 
     const authorProps = getFieldProps('author', {
@@ -108,8 +116,9 @@ class ImageReview extends Component {
       initialValue: data.author
     });
 
-    const setDisplayProps = getFieldProps('resStatus', {});
-    
+    const setDisplayProps = getFieldProps('resStatus', {
+
+    });
     const conTypeProps = getFieldProps('conType', {
       initialValue: data.conType
     });
@@ -140,31 +149,33 @@ class ImageReview extends Component {
     return (
       <div>
         <div className="ant-layout-content">
-          <Col xs={{offset: 0, span: 24}} lg={{offset: 3, span: 18}}>
+          <Col xs={{offset: 0, span:24}} lg={{offset:3, span:18}}>
             <Row gutter={24}>
               <Col lg={{span: 16}}>
                 <div className="edit-view">
-                  <div className="edit-view-img" style={{backgroundImage: `url(${data.ossId2})`}}></div>
+                  <Video controls loop muted poster="../../../assets/images/music.png" style={{width: '100%', height: '100%'}}>
+                    <source src={data.ossId} type="video/mp4"/>
+                  </Video>
                 </div>
               </Col>
               <Col lg={{span: 8}}>
                 <Form horizontal onSubmit={this.handleSubmit}>
                   <div className="ant-row ant-col-offset-6 pad-bottom">
                     <Button size="large" type="primary" htmlType="submit">审核通过</Button>
-                    <Button size="large" className="gap-left">审核拒绝</Button>
+                    <Button size="large" className="gap-left" onClick={this.handleReview.bind(this, 4)}>审核拒绝</Button>
                   </div>
                   <Tabs type="card">
                     <TabPane tab="基本信息" key="Tab_1">
-                      <FormItem {...formItemLayout} label="图片标题">
+                      <FormItem {...formItemLayout} label="视频标题">
                         <Input placeholder="请输入标题" type="textarea" {...displayNameProps}/>
                       </FormItem>
 
-                      <FormItem {...formItemLayout} label="图片说明">
+                      <FormItem {...formItemLayout} label="视频说明">
                         <Input type="textarea" {...remarkProps}/>
                       </FormItem>
 
-                      <FormItem {...formItemLayout} label="图片分类">
-                        <Select placeholder="请选择" style={{width: '100%'}} {...audioTypeProps}>
+                      <FormItem {...formItemLayout} label="视频分类">
+                        <Select placeholder="请选择" style={{width: '100%'}} {...videoTypeProps}>
                           {TAG.audio.audio_type.map(item =>
                             <Option key={item.key}>{item.name}</Option>
                           )}
@@ -186,24 +197,29 @@ class ImageReview extends Component {
                       <FormItem {...formItemLayout} label="作者">
                         <Input {...authorProps}/>
                       </FormItem>
-                      <FormItem {...formItemLayout} label="拍摄城市">
-                        <p>dd</p>
-                      </FormItem>
+
                       <FormItem {...formItemLayout} label="内容类别">
-                        <p className="ant-form-text">
-                          {data.conType && TAG.audio.con_type.find(item =>
-                            item.key = data.conType
-                          ).name}
-                        </p>
+                        <Select placeholder="请选择" style={{width: '100%'}} {...conTypeProps}>
+                          {TAG.audio.con_type.map(item =>
+                            <Option key={item.key}>{item.name}</Option>
+                          )}
+                        </Select>
                       </FormItem>
-                      <FormItem {...formItemLayout} label="拍摄地">
-                        <Input/>
+
+                      <FormItem {...formItemLayout} label="风格">
+                        <Select placeholder="请选择" style={{width: '100%'}} {...descripProps}>
+                          {TAG.audio.descrip.map(item =>
+                            <Option key={item.key}>{item.name}</Option>
+                          )}
+                        </Select>
                       </FormItem>
-                      <FormItem {...formItemLayout} label="色彩">
-                        <RadioGroup>
-                          <Radio value={'colors'}>彩色</Radio>
-                          <Radio value={'gray'}>黑白</Radio>
-                        </RadioGroup>
+
+                      <FormItem {...formItemLayout} label="视频">
+                        <Select placeholder="请选择" style={{width: '100%'}} {...vocalProps}>
+                          {TAG.audio.vocal.map(item =>
+                            <Option key={item.key}>{item.name}</Option>
+                          )}
+                        </Select>
                       </FormItem>
                     </TabPane>
                     <TabPane tab="版权信息" key="Tab_2">
@@ -230,31 +246,19 @@ class ImageReview extends Component {
                       <FormItem {...formItemLayout} label="版权时效">
                         <p className="ant-form-text">2016-02-26 14:56:51</p>
                       </FormItem>
-
                       <FormItem {...formItemLayout} label="授权文件">
                         <p className="ant-form-text"><a href="">肖像权授权文件.pdf</a></p>
                       </FormItem>
-
-                      <FormItem {...formItemLayout} label="水印位置">
-                        <div className="btn-abs" style={{marginTop: 3}}>
-                          <Button className="lt">左上</Button>
-                          <Button className="tr">右上</Button>
-                          <Button className="c">中间</Button>
-                          <Button className="lb">左下</Button>
-                          <Button className="rb">右下</Button>
-                        </div>
-                      </FormItem>
-
                     </TabPane>
                   </Tabs>
                   <Col xs={{offset: 6}}>
-                    <Checkbox>是否在展示平台显示资源</Checkbox>
+                    <Checkbox {...setDisplayProps}>是否在展示平台显示资源</Checkbox>
                   </Col>
                 </Form>
               </Col>
             </Row>
             <div className="edit-view-exif">
-              <h4>EXIF信息</h4>
+              <h4>视频信息</h4>
               <Row gutter={24}>
                 <Col xs={{span: 6}}>
                   <ul className="list-v">
@@ -266,47 +270,43 @@ class ImageReview extends Component {
                 </Col>
                 <Col xs={{span: 6}}>
                   <ul className="list-v">
-                    <li>图片格式: 索尼</li>
+                    <li>视频格式: 索尼</li>
                     <li>曝光时间: 索尼</li>
                     <li>焦距: 索尼</li>
                     <li>曝光程序: 索尼</li>
                   </ul>
                 </Col>
-                <Col xs={{span: 6}}>
-                  <ul className="list-v">
-                    <li>原始宽度: 索尼</li>
-                    <li>相机型号: 索尼</li>
-                    <li>闪光灯: 索尼</li>
-                    <li>曝光补偿: 索尼</li>
-                  </ul>
-                </Col>
-                <Col xs={{span: 6}}>
-                  <ul className="list-v">
-                    <li>ISO: 索尼</li>
-                    <li>原始高度: 索尼</li>
-                    <li>光圈: 索尼</li>
-                    <li>曝光模式: 索尼</li>
-                  </ul>
-                </Col>
+                <Col xs={{span: 6}}><ul className="list-v">
+                  <li>原始宽度: 索尼</li>
+                  <li>相机型号: 索尼</li>
+                  <li>闪光灯: 索尼</li>
+                  <li>曝光补偿: 索尼</li>
+                </ul></Col>
+                <Col xs={{span: 6}}><ul className="list-v">
+                  <li>ISO: 索尼</li>
+                  <li>原始高度: 索尼</li>
+                  <li>光圈: 索尼</li>
+                  <li>曝光模式: 索尼</li>
+                </ul></Col>
               </Row>
             </div>
-          </Col>
+            </Col>
         </div>
       </div>
     );
   }
 }
 
-ImageReview.propTypes = {
+VideoReview.propTypes = {
   form: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
-  const {image} = state;
+  const {video} = state;
   return {
-    image
+    video
   };
 }
 
-export default connect(mapStateToProps)(CreateForm()(ImageReview));
+export default connect(mapStateToProps)(CreateForm()(VideoReview));

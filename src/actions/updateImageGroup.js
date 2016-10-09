@@ -6,22 +6,22 @@ import cFetch from './../utils/cFetch';
 import { API_CONFIG } from './../config/api';
 import { message } from 'antd';
 
-function requestUpdateImage() {
+function requestUpdateImageGroup() {
   return {
     type: UPDATE_IMG_QERUEST,
     isFetching: true
   };
 }
 
-function receiveUpdateImage(image) {
+function receiveUpdateImageGroup(imageGroup) {
   return {
     type: UPDATE_IMG_SUCCESS,
     isFetching: false,
-    image
+    imageGroup
   };
 }
 
-function UpdateImageError(message) {
+function UpdateImageGroupError(message) {
   return {
     type: UPDATE_IMG_FAILURE,
     isFetching: false,
@@ -29,16 +29,15 @@ function UpdateImageError(message) {
   };
 }
 
-export function updateImage(creds, cb) {
+export function updateImageGroup(creds, cb) {
   return dispatch => {
-    dispatch(requestUpdateImage(creds));
-    return cFetch(API_CONFIG.updateImg, { method: "POST", body: JSON.stringify(creds) }).then((res) => {
+    dispatch(requestUpdateImageGroup(creds));
+    return cFetch(API_CONFIG.updateImageGroup, { method: "POST", body: JSON.stringify(creds) }).then((res) => {
       if (res.jsonResult.returnCode === '1') {
-        dispatch(receiveUpdateImage(res.jsonResult));
-        // message.success('资源入库成功！');
-        cb(res.jsonResult.msg);
+        dispatch(receiveUpdateImageGroup(res.jsonResult));
+        cb && cb(res.jsonResult.msg);
       } else {
-        dispatch(UpdateImageError(res.jsonResult.msg));
+        dispatch(UpdateImageGroupError(res.jsonResult.msg));
         message.error(res.jsonResult.msg);
       }
     });

@@ -68,7 +68,7 @@ class AudioUpload extends Component {
         id: audioId,
         tags: creds.tags.join(',')
       });
-      dispatch(updateAudio(creds));
+      dispatch(updateAudio(creds, () => message.success('资源入库成功！')));
     });
   }
 
@@ -294,7 +294,7 @@ class AudioUpload extends Component {
               </FormItem>
 
               <FormItem {...formItemLayout} label="标签">
-                <Select tags placeholder="请添加标签" style={{width: '100%'}} {...getFieldProps('tag1')} >
+                <Select tags placeholder="请添加标签" style={{width: '100%'}} {...tagsProps} >
                   {TAG.tags.map(item =>
                     <Option key={item.key}>{item.name}</Option>
                   )}

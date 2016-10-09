@@ -20,6 +20,7 @@ class UploadList extends Component {
   constructor(props) {
     super(props);
     this.state={
+      auditStatus: 5,
       pageNum: 1,
       pageSize: '10'
     }
@@ -28,22 +29,33 @@ class UploadList extends Component {
   componentDidMount() {
     this.queryList({
       pageNum: this.state.pageNum,
-      pageSize: this.state.pageSize
+      pageSize: this.state.pageSize,
+      auditStatus: this.state.auditStatus
     });
-  }
-
-  goToDetails(e) {
-    browserHistory.push('/imageGroup/details')
   }
 
   queryList (params) {
     const { dispatch } = this.props;
+    params.auditStatus = this.state.auditStatus;
     dispatch(queryResource(params));
   }
 
   refresh(pager, {pageNum, pageSize}){
     this.setState({pageNum, pageSize});
     this.queryList({pageNum, pageSize});
+  }
+
+  goToDetails(assetType, id){
+    browserHistory.push(`/${this.getAssetTypeName(assetType)}/details/${id}`);
+  }
+
+  getAssetTypeName(assetType){
+    switch (assetType) {
+      case 1: return `image`;
+      case 2: return `audio`;
+      case 3: return `video`;
+      case 4: return `imageGroup`;
+    }
   }
 
   render() {
@@ -85,7 +97,7 @@ class UploadList extends Component {
                 <Button type="primary" htmlType="submit" size="large"><Icon type="search" /> 搜索</Button>
               </FormItem>
               <FormItem>
-                <Select style={{width:70}} size="large" defaultValue="all" {...getFieldProps('phrase', {initialValue: ''})}>
+                <Select style={{width:70}} size="large" {...getFieldProps('auditStatus', {initialValue: ''})}>
                   <Option value="">全部</Option>
                   <Option value="1">图片</Option>
                   <Option value="2">音频</Option>
@@ -103,43 +115,53 @@ class UploadList extends Component {
             <Button type="ghost" size="large"><Link to={'/imageGroup/upload'}><Icon type="hdd" /> 合并组照</Link></Button>
           </div>
           <Row gutter={24}>
-            {data.map(item =>
+            {data && data.map(item =>
               <Col {...thumbItemLayout}>
-                <Link to={'/'+(()=>{
-                  switch (item.assetType) {
-                    case 1: return `image/details/${item.id}`;
-                    case 2: return `audio/details/${item.id}`;
-                    case 3: return `video/details/${item.id}`;
-                  }
-                })()}>
                 <div className="thumb-list-item">
-                  <div className="thumb-list-item-img">
+                  <div className="thumb-list-item-img" onClick={this.goToDetails.bind(this, item.assetType, item.id)}>
                     {(() => {
                       switch (item.assetType) {
                         case 1: return <p><img src={item.ossId2} className="hidden"/><img src={item.ossId2} alt="item.name"/></p>;
                         case 2: return <p><img src={item.ossid3} className="hidden"/><img src={item.ossid3} alt="item.name"/></p>;
                         case 3: return <Video controls muted><source src="http://kmg.oss-cn-beijing.aliyuncs.com/dam/v/c52f5e37-a2f9-4805-887d-52c6cb0d7830.mp4?Expires=1475506208&OSSAccessKeyId=LTAId4pMnCWmqJnP&Signature=qz394GbQkwr1Lv4gl81uiVdGeSk%3D" type="video/mp4" /></Video>;
+                        case 4: return <p><img src={item.ossId2} className="hidden"/><img src={item.ossId2} alt="item.name"/>
+                          </p>;
                       }
                     })()}
                   </div>
-                  <div className="thumb-list-item-text">{item.displayName}<div className="thumb-list-item-btns ant-btn-group ant-btn-group-sm">
-                    <Link className="ant-btn ant-btn-primary ant-btn-icon-only" to={'/image/details'}><Icon type="eye-o" /></Link>
-                    <a className="ant-btn ant-btn-icon-only" target="_block" href={item.ossId}><Icon type="download" /></a>
+                  <div className="thumb-list-item-text">{(() => {
+                    switch (item.assetType){
+                      case 1:
+                        return item.title
+                      case 2:
+                        return item.displayName
+                      case 3:
+                        return item.displayName
+                      case 4:
+                        return item.title
+                    }
+                  })()}<div className="thumb-list-item-btns ant-btn-group ant-btn-group-sm">
+                    <span className="ant-btn ant-btn-primary ant-btn-icon-only"><Icon type="eye-o" /></span>
+                    <span className="ant-btn ant-btn-icon-only"><Icon type="download" /></span>
                   </div></div>
 
                   <div className="thumb-list-item-badges">
                     {item.conType ? <Tag color="red">RM</Tag> : ''}
                     <Tag>{(() => {
                       switch (item.assetType) {
-                        case 1: return "图片";
-                        case 2: return "音频";
-                        case 3: return "视频";
+                        case 1:
+                          return "图片";
+                        case 2:
+                          return "音频";
+                        case 3:
+                          return "视频";
+                        case 4:
+                          return "组照";
                       }
                     })()}
                     </Tag>
                   </div>
                 </div>
-                </Link>
               </Col>
             )}
           </Row>

@@ -8,12 +8,12 @@ const Option = Select.Option;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
-
 import {API_CONFIG} from '../../../config/api';
 import { updateImage } from '../../../actions/updateImage';
-require('../../../assets/images/audioThumb.gif');
 
 import './style.scss';
+
+import ImageGroupFrom from './ImageGroupFrom';
 
 const areaData = [{
   value: 'shanghai',
@@ -27,12 +27,6 @@ const areaData = [{
     }]
   }],
 }];
-
-const tags =[
-  { key: 1, name: '娱乐' },
-  { key: 2, name: '明星动态' },
-  { key: 3, name: '春夏' }
-];
 
 class ImageGroupUpload extends Component {
   constructor(props) {
@@ -48,7 +42,7 @@ class ImageGroupUpload extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const { dispatch } = this.props;
+    const { dispatch, form } = this.props;
     const { imgId} = this.state;
 
     if(!imgId){
@@ -56,63 +50,21 @@ class ImageGroupUpload extends Component {
       return false;
     }
 
-    this.props.form.validateFields((errors) => {
+    form.validateFields((errors) => {
       if (errors) {
         return false;
       }
-      const creds = (this.props.form.getFieldsValue());
+      const creds = (form.getFieldsValue());
       Object.assign(creds, {
         id: imgId,
         tags: creds.tags.join(',')
       });
-      dispatch(updateImage(creds));
+      dispatch(updateImage(creds, (msg) => message.success('图片入库成功！')));
     });
   }
 
   render() {
     const { getFieldProps, setFieldsValue, getFieldValue } = this.props.form;
-
-    const imgGroupTitleProps = getFieldProps('title', {
-      rules: [
-        { required: true, message: '请填写标题' }
-      ],
-      onChange:() =>{
-        const {fileList} = this.state;
-        fileList.forEach((item) => {
-          if(item.selected){
-            item.name=getFieldValue('title');
-          }
-        });
-      }
-    });
-
-    const imgGroupDescProps = getFieldProps('title', {
-      rules: [
-        { required: true, message: '请填写标题' }
-      ],
-      onChange:() =>{
-        const {fileList} = this.state;
-        fileList.forEach((item) => {
-          if(item.selected){
-            item.name=getFieldValue('title');
-          }
-        });
-      }
-    });
-
-    const imgGroupTagsProps = getFieldProps('title', {
-      rules: [
-        { required: true, message: '请填写标题' }
-      ],
-      onChange:() =>{
-        const {fileList} = this.state;
-        fileList.forEach((item) => {
-          if(item.selected){
-            item.name=getFieldValue('title');
-          }
-        });
-      }
-    });
 
     const displayNameProps = getFieldProps('title', {
       rules: [
@@ -308,20 +260,9 @@ class ImageGroupUpload extends Component {
             </div>
           </div>
           <div className="upload-sidebar">
+            <ImageGroupFrom data={this.state.fileList} />
+            <hr/>
             <Form horizontal onSubmit={this.handleSubmit} >
-              <FormItem {...formItemLayout} label="组照标题" >
-                <Input {...imgGroupTitleProps}/>
-              </FormItem>
-              <FormItem {...formItemLayout} label="组照说明" >
-                <Input type="textarea" {...imgGroupDescProps}/>
-              </FormItem>
-
-              <FormItem {...formItemLayout} label="组照标签" >
-                <Select tags placeholder="请添加标签" {...imgGroupTagsProps}>
-                  <Option key="P1">风景</Option>
-                </Select>
-              </FormItem>
-              <hr/>
               <Row>
                 <Col className="gutter-row upload-thumb" span={6}>
                   <span></span>
@@ -390,7 +331,7 @@ class ImageGroupUpload extends Component {
               </FormItem>
 
               <FormItem>
-                <Button className="btn-block" type="primary" htmlType="submit">资源入库</Button>
+                <Button className="btn-block" type="primary" htmlType="submit">图片入库</Button>
               </FormItem>
             </Form>
           </div>

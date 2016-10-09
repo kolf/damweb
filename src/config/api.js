@@ -40,4 +40,6 @@ export const API_CONFIG = {
   vcgCategory: 'vcgCategory/list',
 
   queryResource: 'damMedia/pageList?token='+ token,
+  review: 'auditor/audit?token='+ token,
+  updateImageGroup: 'imgGroup/create?token='+ token,
 };

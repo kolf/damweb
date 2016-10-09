@@ -35,7 +35,7 @@ export function updateAudio(creds, cb) {
     return cFetch(API_CONFIG.audioUpdate, { method: "POST", body: JSON.stringify(creds) }).then((res) => {
       if (res.jsonResult.returnCode === '1') {
         dispatch(receiveUpdateAudio(res.jsonResult));
-        message.success('资源入库成功！');
+        //message.success('资源入库成功！');
         cb(res.jsonResult.msg);
       } else {
         dispatch(UpdateAudioError(res.jsonResult.msg));

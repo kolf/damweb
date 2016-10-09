@@ -63,7 +63,7 @@ class VideoUpload extends Component {
         id: videoId,
         tags: creds.tags.join(',')
       });
-      dispatch(updateVideo(creds));
+      dispatch(updateVideo(creds, () => message.success('资源入库成功！')));
     });
   }
 
