@@ -28,7 +28,7 @@ const CheckboxGroup = Checkbox.Group;
 
 import {API_CONFIG} from '../../../config/api';
 import {updateAudio} from '../../../actions/updateAudio';
-require('../../../assets/images/audioThumb.gif');
+
 import {TAG} from '../../../config/tags';
 
 import './style.scss';

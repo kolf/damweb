@@ -24,6 +24,10 @@ export default {
     },
     data: []
   },
+  categorys: {
+    isFetching: false,
+    data: []
+  },
   audio: {
     isFetching: false,
     data: {}

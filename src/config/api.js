@@ -42,4 +42,7 @@ export const API_CONFIG = {
   queryResource: 'damMedia/pageList?token='+ token,
   review: 'auditor/audit?token='+ token,
   updateImageGroup: 'imgGroup/create?token='+ token,
+  queryCategory: 'category/treeView?token='+ token,
+  createCategory: 'category/create?token='+ token,
+  removeCategory: 'category/delete?token='+ token,
 };

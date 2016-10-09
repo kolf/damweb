@@ -3,22 +3,16 @@ import {
   Form,
   Select,
   Input,
-  DatePicker,
-  Switch,
   Radio,
-  Cascader,
   Button,
   Row,
   Col,
-  Upload,
-  Icon,
-  Tag,
   Message,
   Checkbox,
   Tabs
 } from 'antd';
 import {connect} from 'react-redux';
-import {browserHistory, Link} from 'react-router';
+import {browserHistory} from 'react-router';
 import './style.scss';
 import {updateAudio} from '../../../actions/updateAudio';
 import {getAudio} from '../../../actions/getAudio';
@@ -117,13 +111,15 @@ class AudioReview extends Component {
     });
 
     const setDisplayProps = getFieldProps('resStatus', {});
-    
+
     const conTypeProps = getFieldProps('conType', {
       initialValue: data.conType
     });
+
     const descripProps = getFieldProps('descrip', {
       initialValue: data.descrip
     });
+
     const vocalProps = getFieldProps('vocal', {
       initialValue: data.vocal
     });

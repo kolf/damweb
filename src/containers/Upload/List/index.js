@@ -4,7 +4,7 @@ import { Form, Input, Row, Col, Menu, Dropdown, Button, Icon, Select, Card, Tag,
 import { Link } from 'react-router';
 import { browserHistory } from 'react-router';
 
-import ClassifyMenu from '../../../components/ClassifyMenu';
+import CategoryMenu from '../../../components/CategoryMenu';
 import {queryResource} from '../../../actions/queryResource';
 import Video from 'react-html5video';
 
@@ -86,7 +86,7 @@ class UploadList extends Component {
 
     return (
       <div>
-        <ClassifyMenu />
+        <CategoryMenu />
         <div className="ant-layout-content">
           <div className="text-center">
             <Form inline className="pad-bottom search-box" onSubmit={this.handleSubmit}>

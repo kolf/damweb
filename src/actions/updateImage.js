@@ -36,7 +36,7 @@ export function updateImage(creds, cb) {
       if (res.jsonResult.returnCode === '1') {
         dispatch(receiveUpdateImage(res.jsonResult));
         // message.success('资源入库成功！');
-        cb(res.jsonResult.msg);
+        cb && cb(res.jsonResult.msg);
       } else {
         dispatch(UpdateImageError(res.jsonResult.msg));
         message.error(res.jsonResult.msg);

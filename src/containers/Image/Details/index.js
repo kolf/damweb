@@ -10,7 +10,7 @@ import {
   Tabs
 } from 'antd';
 import {connect} from 'react-redux';
-import {browserHistory, Link} from 'react-router';
+import {Link} from 'react-router';
 import './style.scss';
 
 import {getImage} from '../../../actions/getImage';
@@ -38,10 +38,6 @@ class ImageDetails extends Component {
   render() {
     const {getFieldProps} = this.props.form;
     const {image: {data}} = this.props;
-
-    if (data.tags) {
-
-    }
 
     const tagsProps = getFieldProps('tags', {
       initialValue: data.tags.split(',')

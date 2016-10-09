@@ -129,21 +129,21 @@ class ReviewIndex extends Component {
       audioResult: resultType,
       resId: id,
       resType: assetType
-    }, (msg) => {
-      Message.success('审核成功！');
+    }, () => {
+      // Message.success('审核成功！');
       setTimeout(this.refresh("pager", {"pageNum": this.state.pageNum}), 1000)
-    }))
+    }));
   }
 
   assetTypeTab(activeKey){
-    this.setState({
-      'auditStatus': activeKey
-    });
-    this.queryList({
-      pageNum: this.state.pageNum,
-      pageSize: this.state.pageSize,
-      auditStatus: this.state.auditStatus
-    });
+    // this.setState({
+    //   'auditStatus': activeKey
+    // });
+    // this.queryList({
+    //   pageNum: this.state.pageNum,
+    //   pageSize: this.state.pageSize,
+    //   auditStatus: activeKey
+    // });
   }
 
   render() {
@@ -243,7 +243,7 @@ class ReviewIndex extends Component {
                               type="video/mp4"/>
                           </Video>;
                         case 4:
-                          return <p><img src={item.ossId2} className="hidden"/><img src={item.ossId2} alt="item.name"/>
+                          return <p><img src={item.cover.ossId1} className="hidden"/><img src={item.cover.ossId1} alt="item.name"/>
                           </p>;
                       }
                     })()}
@@ -251,13 +251,13 @@ class ReviewIndex extends Component {
                   <div className="thumb-list-item-text">{(() => {
                     switch (item.assetType){
                       case 1:
-                        return item.title
+                        return item.title;
                       case 2:
-                        return item.displayName
+                        return item.displayName;
                       case 3:
-                        return item.displayName
+                        return item.displayName;
                       case 4:
-                        return item.title
+                        return item.title;
                     }
                   })()}
                     <div className="thumb-list-item-btns ant-btn-group ant-btn-group-sm">

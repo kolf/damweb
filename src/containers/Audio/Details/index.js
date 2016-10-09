@@ -10,7 +10,7 @@ import {
   Tabs
 } from 'antd';
 import {connect} from 'react-redux';
-import {browserHistory, Link} from 'react-router';
+import {Link} from 'react-router';
 import './style.scss';
 import {getAudio} from '../../../actions/getAudio';
 import {TAG} from '../../../config/tags';

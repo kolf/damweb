@@ -7,15 +7,16 @@ import {
   Button,
   Row,
   Col,
-  message,
+  Message,
   Checkbox,
   Tabs
 } from 'antd';
 import {connect} from 'react-redux';
-import {browserHistory, Link} from 'react-router';
+import {browserHistory} from 'react-router';
 import './style.scss';
 import {updateImage} from '../../../actions/updateImage';
 import {getImage} from '../../../actions/getImage';
+import {review} from '../../../actions/review';
 import {TAG} from '../../../config/tags';
 
 
@@ -57,7 +58,7 @@ class ImageReview extends Component {
   }
 
   handleReview(resultType){
-    const {dispatch, routeParams, audio: {data}} = this.props;
+    const {dispatch, routeParams, image: {data}} = this.props;
 
     dispatch(review({
       audioResult: resultType,
@@ -109,7 +110,7 @@ class ImageReview extends Component {
     });
 
     const setDisplayProps = getFieldProps('resStatus', {});
-    
+
     const conTypeProps = getFieldProps('conType', {
       initialValue: data.conType
     });

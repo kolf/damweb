@@ -10,7 +10,6 @@ const RadioGroup = Radio.Group;
 
 import { API_CONFIG } from '../../../config/api';
 import { updateVideo } from '../../../actions/updateVideo';
-require('../../../assets/images/audioThumb.gif');
 
 import './style.scss';
 import Video from "react-h5-video";

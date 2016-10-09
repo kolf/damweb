@@ -11,7 +11,6 @@ const RadioGroup = Radio.Group;
 
 import {API_CONFIG} from '../../../config/api';
 import { updateImage } from '../../../actions/updateImage';
-require('../../../assets/images/audioThumb.gif');
 
 import './style.scss';
 
@@ -35,7 +34,7 @@ class ImageUpload extends Component {
       fileList: [],
       attachList: [],
       imgId: '',
-      thumbUrl: '../../../assets/images/audioThumb.gif'
+      thumbUrl: '../../../assets/images/logo.svg'
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -63,7 +62,7 @@ class ImageUpload extends Component {
         id: imgId,
         tags: creds.tags.join(',')
       });
-      dispatch(updateImage(creds));
+      dispatch(updateImage(creds, () => message.success('资源入库成功！')));
     });
   }
 
