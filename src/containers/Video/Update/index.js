@@ -91,7 +91,7 @@ class VideoUpdate extends Component {
       rules: [
         {required: true, message: '请选择标签', type: 'array'}
       ],
-      initialValue: data.tags.split(',')
+      initialValue: data.tags && data.tags.split(',')
     });
 
     const authorProps = getFieldProps('author', {

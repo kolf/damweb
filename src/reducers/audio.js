@@ -11,9 +11,11 @@ export default function audio(state = initialState.audio, action) {
         isFetching: true
       });
     case GET_AUDIO_SUCCESS:
+      let data = action.audio.data;
+      data.tags  = data.tags || '';
       return Object.assign({}, state, {
         isFetching: false,
-        data: action.audio.data,
+        data: data,
         errorMessage: ''
       });
     case GET_AUDIO_FAILURE:

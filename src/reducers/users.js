@@ -18,7 +18,7 @@ export default function users(state = initialState.users, action) {
           pageSize: action.users.data.pageSize,
           pageNum: action.users.data.pageNum
         },
-        data: action.users.data.list
+        data: action.users.data
       });
     case USERS_FAILURE:
       return Object.assign({}, state, {

@@ -238,8 +238,7 @@ class ReviewIndex extends Component {
                           </p>;
                         case 3:
                           return <Video controls muted>
-                            <source
-                              src="http://kmg.oss-cn-beijing.aliyuncs.com/dam/v/c52f5e37-a2f9-4805-887d-52c6cb0d7830.mp4?Expires=1475506208&OSSAccessKeyId=LTAId4pMnCWmqJnP&Signature=qz394GbQkwr1Lv4gl81uiVdGeSk%3D"
+                            <source src={item.ossId}
                               type="video/mp4"/>
                           </Video>;
                         case 4:

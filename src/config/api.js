@@ -1,4 +1,4 @@
-// const host = "http://dev.dam-server.vcg.com";
+//const host = "http://dev.dam-server.vcg.com";
 import cookie from 'js-cookie';
 const host = "http://192.168.3.120:8080";
 // const host = "http://192.168.3.109:8080";
@@ -12,7 +12,8 @@ export const API_CONFIG = {
   baseUri: baseUri,
   auth: 'damSys/userlogin',
   queryUser: 'damUser/pageList?token='+ token,          //查询用户
-  createUser: 'damUser/create',           //创建用户
+  queryOrgUser: 'damUser/orgUserList?token='+ token,          //查询用户
+  createUser: 'damUser/create?token=' + token,           //创建用户
   productsOpts: 'damProduct/list',        //查询产品
   products: 'damProduct/pageList',        //查询产品
   createProduct: 'damProduct/create',     //创建产品
@@ -38,6 +39,10 @@ export const API_CONFIG = {
   imageDetail: 'img/view?token='+ token,
   category: 'category/treeView',
   vcgCategory: 'vcgCategory/list',
+  listOrgRoles:'damRole/list?token='+ token,   //组织机构内的角色列表
+  createRole:'damRole/createRole?token='+ token,//组织机构自建角色
+  authUser:'damUserRole/authUser?token='+ token,     //为用户授权
+
 
   queryResource: 'damMedia/pageList?token='+ token,
   review: 'auditor/audit?token='+ token,

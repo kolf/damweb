@@ -10,13 +10,24 @@ const CreateForm = Form.create;
 const FormItem = Form.Item;
 const ButtonGroup = Button.Group;
 
-import './style.scss';
+import './Users.scss';
 
 class Users extends Component {
   constructor(props) {
     super(props);
     this.handleTableChange = this.handleTableChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
+
+  handleSubmit(e) {
+    e.preventDefault();
+
+    const { dispatch } = this.props;
+    const creds = (this.props.form.getFieldsValue());
+      dispatch(queryUsers(creds));
+
+  }
+
 
   componentDidMount() {
     const { dispatch } = this.props;
@@ -93,10 +104,11 @@ class Users extends Component {
       },{
         title: '操作',
         key: 'operation',
-        render: () => (
+        render: (item) => (
           <ButtonGroup>
-            <Button type="primary">启用</Button>
-            <Button type="ghost">停用</Button>
+            <Button>启用</Button>
+            <Button>停用</Button>
+            <Button htmlType="submit"><Link to={`/authUser/${item.damId}`}>分配角色</Link></Button>
           </ButtonGroup>
         )
       }
@@ -116,7 +128,8 @@ class Users extends Component {
 
     return (
       <div>
-        <Form horizontal className="ant-advanced-search-form">
+        <div className="ant-layout-content">
+        <Form horizontal className="ant-advanced-search-form" onSubmit={this.handleSubmit}>
           <Row gutter={16}>
             <Col sm={8}>
               <FormItem label="用户帐号" {...formItemLayout} >
@@ -155,7 +168,9 @@ class Users extends Component {
           loading={isFetching}
           onChange={this.handleTableChange}
           bordered
+          size="small"
         />
+          </div>
       </div>
     );
   }

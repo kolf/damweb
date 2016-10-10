@@ -55,6 +55,7 @@ class VideoReview extends Component {
         return false;
       }
       const creds = (this.props.form.getFieldsValue());
+
       Object.assign(creds, {
         id:routeParams.id,
         tags: creds.tags.join(',')
@@ -64,7 +65,6 @@ class VideoReview extends Component {
   }
 
   handleReview(resultType){
-    console.log(this);
     const {dispatch, routeParams, video: {data}} = this.props;
 
     dispatch(review({
@@ -106,7 +106,7 @@ class VideoReview extends Component {
       rules: [
         {required: true, message: '请选择标签', type: 'array'}
       ],
-      initialValue: data.tags.split(',')
+      initialValue: data.tags && data.tags.split(',')
     });
 
     const authorProps = getFieldProps('author', {
@@ -116,9 +116,8 @@ class VideoReview extends Component {
       initialValue: data.author
     });
 
-    const setDisplayProps = getFieldProps('resStatus', {
+    const setDisplayProps = getFieldProps('resStatus', {});
 
-    });
     const conTypeProps = getFieldProps('conType', {
       initialValue: data.conType
     });

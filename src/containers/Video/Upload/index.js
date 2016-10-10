@@ -14,19 +14,6 @@ import { updateVideo } from '../../../actions/updateVideo';
 import './style.scss';
 import Video from "react-h5-video";
 
-const areaData = [{
-  value: 'shanghai',
-  label: '中国',
-  children: [{
-    value: 'shanghaishi',
-    label: '上海市',
-    children: [{
-      value: 'pudongxinqu',
-      label: '浦东新区',
-    }]
-  }],
-}];
-
 class VideoUpload extends Component {
   constructor(props) {
     super(props);
@@ -207,6 +194,7 @@ class VideoUpload extends Component {
             fileList: fileList
           });
           message.success(`${file.name} 上传成功`);
+          file.thumbUrl = this.state.thumbUrl
         }else if(file.status === 'removed'){
           this.setState({
             fileList: fileList

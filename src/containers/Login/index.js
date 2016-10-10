@@ -44,7 +44,6 @@ class Login extends Component {
       }
     };
     setFields(newValue);
-    console.log(message)
   }
 
   render() {

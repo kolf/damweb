@@ -50,6 +50,7 @@ class AudioReview extends Component {
         return false;
       }
       const creds = (this.props.form.getFieldsValue());
+
       Object.assign(creds, {
         id:routeParams.id,
         tags: creds.tags.join(',')
@@ -100,7 +101,7 @@ class AudioReview extends Component {
       rules: [
         {required: true, message: '请选择标签', type: 'array'}
       ],
-      initialValue: data.tags.split(',')
+      initialValue: data.tags && data.tags.split(',')
     });
 
     const authorProps = getFieldProps('author', {

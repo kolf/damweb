@@ -8,6 +8,8 @@ import audio from './audio';
 import image from './image';
 import video from './video';
 import categorys from './categorys';
+import roles from './roles';
+import userroles from './userroles';
 
 const rootReducer = combineReducers({
   routing: routerReducer,
@@ -17,7 +19,9 @@ const rootReducer = combineReducers({
   audio,
   image,
   video,
-  categorys
+  categorys,
+  roles,
+  userroles
 });
 
 export default rootReducer;
