@@ -19,30 +19,34 @@ import './style.scss';
 class UploadList extends Component {
   constructor(props) {
     super(props);
-    this.state={
-      auditStatus: 5,
-      pageNum: 1,
-      pageSize: '10'
-    }
+    this.state = {
+      query:{
+        auditStatus: 1,
+        pageNum: 1,
+        pageSize: '24',
+      }
+    };
   }
 
   componentDidMount() {
-    this.queryList({
-      pageNum: this.state.pageNum,
-      pageSize: this.state.pageSize,
-      auditStatus: this.state.auditStatus
-    });
+    this.queryList();
   }
 
   queryList (params) {
     const { dispatch } = this.props;
-    params.auditStatus = this.state.auditStatus;
-    dispatch(queryResource(params));
+    dispatch(queryResource(this.state.query));
   }
 
-  refresh(pager, {pageNum, pageSize}){
-    this.setState({pageNum, pageSize});
-    this.queryList({pageNum, pageSize});
+  refresh(type, params) {
+    let query = this.state.query;
+    if(type === 'pager'){
+      Object.assign(query, this.state.query, params);
+    } else if(type === 'auditStatus'){
+      console.log(type);
+      Object.assign(query, this.state.query, params, {'pageNum': 1});
+    }
+    this.setState({query});
+    this.queryList();
   }
 
   goToDetails(assetType, id){
@@ -68,9 +72,11 @@ class UploadList extends Component {
       lg: { span: 4 }
     };
 
-    const pager ={
-      "page": this.state.pageNum,
+    const pager = {
+      "page": this.state.query.pageNum,
+      "pageSize": this.state.query.pageSize,
       "total": total,
+      "pageSizeOptions": ['24','48', '96'],
       "showSizeChanger": true,
       "showQuickJumper": true,
       "showTotal": () => {

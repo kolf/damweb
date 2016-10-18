@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, IndexRoute } from 'react-router';
+import {Route, IndexRoute} from 'react-router';
 
 import App from './containers/App/index';
 
@@ -47,24 +47,24 @@ import AuthUser from './containers/User/AuthUser';
 import NotFound from './components/NotFound/index';
 
 export default (
-  <Route path="/" component={App}>
-    <IndexRoute component={Home}/>
+  <Route path="/" breadcrumbName="管理首页" component={App}>
+    <IndexRoute breadcrumbName="首页" component={Home}/>
 
     <Route path="resource" breadcrumbName="资源库列表" component={UploadList}/>
 
-    <Route path="review" component={ReviewIndex}/>
+    <Route path="review" breadcrumbName="资源审核" component={ReviewIndex}/>
 
     <Route path="download" component={DownloadIndex}/>
 
     <Route path="remark" component={RemarkIndex}/>
 
-    <Route path="users" component={UserList} />
+    <Route path="users" component={UserList}/>
     //add by lirui@2016-9-29
-    <Route path="userList" component={Users} />
-    <Route path="addUser" component={CreateUser} />
-    <Route path="roleList" component={Roles} />
-    <Route path="addRole" component={CreateRole} />
-    <Route path="authUser/:id" component={AuthUser} />
+    <Route path="userList" component={Users}/>
+    <Route path="addUser" component={CreateUser}/>
+    <Route path="roleList" component={Roles}/>
+    <Route path="addRole" component={CreateRole}/>
+    <Route path="authUser/:id" component={AuthUser}/>
 
 
     <Route path="upload/index" component={UploadIndex}/>
@@ -79,7 +79,7 @@ export default (
     <Route path="imageGroup/details/:id" component={ImageGroupDetails}/>
     <Route path="imageGroup/review/:id" component={ImageGroupReview}/>
 
-    <Route path="video/upload" component={VideoUpload}/>
+    <Route path="video/upload" breadcrumbName="视频上传" component={VideoUpload}/>
     <Route path="video/update/:id" component={VideoUpdate}/>
     <Route path="video/details/:id" component={VideoDetails}/>
     <Route path="video/review/:id" component={VideoReview}/>

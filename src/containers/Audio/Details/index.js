@@ -41,7 +41,7 @@ class AudioDetails extends Component {
     const {audio: {data}} = this.props;
 
     const tagsProps = getFieldProps('tags', {
-      initialValue: data.tags.split(',')
+      // initialValue: data.tags.split(',')
     });
 
     const formItemLayout = {
@@ -139,10 +139,11 @@ class AudioDetails extends Component {
                       </RadioGroup>
                     </FormItem>
 
-                    <FormItem label="版权授权" {...formItemLayout} >
-                      <RadioGroup defaultValue="g" disabled size="default">
-                        <RadioButton value="g">RM</RadioButton>
-                        <RadioButton value="h">RF</RadioButton>
+                    <FormItem label="版权授权" {...formItemLayout}>
+                      <RadioGroup size="default">
+                        <RadioButton value="rm">RM</RadioButton>
+                        <RadioButton value="rf">RF</RadioButton>
+                        <RadioButton value="rr">RR</RadioButton>
                       </RadioGroup>
                     </FormItem>
 

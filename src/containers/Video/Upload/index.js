@@ -1,23 +1,41 @@
-import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
-import { Form, Select, Input, DatePicker, Switch, Radio, Cascader, Button, Row, Col, Upload, Icon, Tag, message} from 'antd';
+import React, {Component, PropTypes} from 'react';
+import {connect} from 'react-redux';
+import {
+  Form,
+  Checkbox,
+  Select,
+  Input,
+  DatePicker,
+  Switch,
+  Radio,
+  Cascader,
+  Button,
+  Row,
+  Col,
+  Upload,
+  Icon,
+  Tag,
+  message
+} from 'antd';
 
 const CreateForm = Form.create;
 const FormItem = Form.Item;
 const Option = Select.Option;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
+const CheckboxGroup = Checkbox.Group;
 
-import { API_CONFIG } from '../../../config/api';
-import { updateVideo } from '../../../actions/updateVideo';
+import {TAG} from '../../../config/tags';
+import {API_CONFIG} from '../../../config/api';
+import {updateVideo} from '../../../actions/updateVideo';
+import CategorySelect from '../../../components/CategorySelect';
 
 import './style.scss';
-import Video from "react-h5-video";
 
 class VideoUpload extends Component {
   constructor(props) {
     super(props);
-    this.state= {
+    this.state = {
       fileList: [],
       attachList: [],
       videoId: '',
@@ -26,16 +44,16 @@ class VideoUpload extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  componentDidMount(){
+  componentDidMount() {
 
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    const { dispatch } = this.props;
-    const { videoId} = this.state;
+    const {dispatch} = this.props;
+    const {videoId} = this.state;
 
-    if(!videoId){
+    if (!videoId) {
       message.warning('请先上传文件');
       return false;
     }
@@ -53,114 +71,120 @@ class VideoUpload extends Component {
     });
   }
 
+  selectCategoryCallback(categoryId) {
+    this.setState({
+      categoryId: categoryId
+    })
+  }
+
   render() {
-    const { getFieldProps, setFieldsValue, getFieldValue } = this.props.form;
+    const {getFieldDecorator} = this.props.form;
 
-    const displayNameProps = getFieldProps('displayName', {
-      rules: [
-        { required: true, message: '请填写标题' }
-      ],
-      onChange:() =>{
-        const {fileList} = this.state;
-        fileList.forEach((item) => {
-          if(item.selected){
-            item.name=getFieldValue('displayName');
-          }
-        });
-      }
-    });
-
-    const remarkProps = getFieldProps('remark', {
-      rules: [
-        { required: true, message: '请填写描述' }
-      ],
-      onChange:() =>{
-        const {fileList} = this.state;
-        fileList.forEach((item) => {
-          if(item.selected){
-            item.remark=getFieldValue('remark');
-          }
-        });
-      }
-    });
-    const categoryProps = getFieldProps('category', {
-      rules: [
-        { required: true, message: '请选择分类' }
-      ],
-      onChange:() =>{
-        const {fileList} = this.state;
-        fileList.forEach((item) => {
-          if(item.selected){
-            item.category=getFieldValue('category');
-          }
-        });
-      }
-    });
-
-    const tagsProps = getFieldProps('tags', {
-      rules: [
-        { required: true, message: '请选择标签', type: 'array' }
-      ],
-      onChange:() =>{
-        const {fileList} = this.state;
-        fileList.forEach((item) => {
-          if(item.selected){
-            item.tags=getFieldValue('tags');
-          }
-        });
-      }
-    });
-    const authorProps = getFieldProps('author', {
-      rules: [
-        { required: true, message: '请填写作者' }
-      ],
-      onChange:() =>{
-        const {fileList} = this.state;
-        fileList.forEach((item) => {
-          if(item.selected){
-            item.author=getFieldValue('author');
-          }
-        });
-      }
-    });
-
-    const licenseTypeProps = getFieldProps('license_type', {
-      onChange:() =>{
-        const {fileList} = this.state;
-        fileList.forEach((item) => {
-          if(item.selected){
-            item.license_type=getFieldValue('license_type');
-          }
-        });
-      }
-    });
-
-    const expireProps = getFieldProps('objrights_expire_years', {
-      getValueFromEvent: (value, timeString) => timeString,
-      onChange:() =>{
-        const {fileList} = this.state;
-        fileList.forEach((item) => {
-          if(item.selected){
-            item.objrights_expire_years=getFieldValue('objrights_expire_years');
-          }
-        });
-      }
-    });
+    // const displayNameProps = getFieldProps('displayName', {
+    //   rules: [
+    //     { required: true, message: '请填写标题' }
+    //   ],
+    //   onChange:() =>{
+    //     const {fileList} = this.state;
+    //     fileList.forEach((item) => {
+    //       if(item.selected){
+    //         item.name=getFieldValue('displayName');
+    //       }
+    //     });
+    //   }
+    // });
+    //
+    // const remarkProps = getFieldProps('remark', {
+    //   rules: [
+    //     { required: true, message: '请填写描述' }
+    //   ],
+    //   onChange:() =>{
+    //     const {fileList} = this.state;
+    //     fileList.forEach((item) => {
+    //       if(item.selected){
+    //         item.remark=getFieldValue('remark');
+    //       }
+    //     });
+    //   }
+    // });
+    // const categoryProps = getFieldProps('category', {
+    //   rules: [
+    //     { required: true, message: '请选择分类' }
+    //   ],
+    //   onChange:() =>{
+    //     const {fileList} = this.state;
+    //     fileList.forEach((item) => {
+    //       if(item.selected){
+    //         item.category=getFieldValue('category');
+    //       }
+    //     });
+    //   }
+    // });
+    //
+    // const tagsProps = getFieldProps('tags', {
+    //   rules: [
+    //     { required: true, message: '请选择标签', type: 'array' }
+    //   ],
+    //   onChange:() =>{
+    //     const {fileList} = this.state;
+    //     fileList.forEach((item) => {
+    //       if(item.selected){
+    //         item.tags=getFieldValue('tags');
+    //       }
+    //     });
+    //   }
+    // });
+    // const authorProps = getFieldProps('author', {
+    //   rules: [
+    //     { required: true, message: '请填写作者' }
+    //   ],
+    //   onChange:() =>{
+    //     const {fileList} = this.state;
+    //     fileList.forEach((item) => {
+    //       if(item.selected){
+    //         item.author=getFieldValue('author');
+    //       }
+    //     });
+    //   }
+    // });
+    //
+    // const licenseTypeProps = getFieldProps('license_type', {
+    //   onChange:() =>{
+    //     const {fileList} = this.state;
+    //     fileList.forEach((item) => {
+    //       if(item.selected){
+    //         item.license_type=getFieldValue('license_type');
+    //       }
+    //     });
+    //   }
+    // });
+    //
+    // const expireProps = getFieldProps('objrights_expire_years', {
+    //   getValueFromEvent: (value, timeString) => timeString,
+    //   onChange:() =>{
+    //     const {fileList} = this.state;
+    //     fileList.forEach((item) => {
+    //       if(item.selected){
+    //         item.objrights_expire_years=getFieldValue('objrights_expire_years');
+    //       }
+    //     });
+    //   }
+    // });
 
     const formItemLayout = {
-      labelCol: { span: 6 },
-      wrapperCol: { span: 18 }
+      labelCol: {span: 7},
+      wrapperCol: {span: 17}
     };
 
     const thumbItemLayout = {
-      xs: { span: 6 },
-      lg: { span: 4 }
+      xs: {span: 6},
+      lg: {span: 4}
     };
 
     const uploadListProps = {
       action: API_CONFIG.baseUri + API_CONFIG.uploadVideo,
       listType: 'picture-card',
-      accept:'video/*',
+      accept: 'video/*',
       multiple: true,
       onPreview: (file) => {
         this.setState({
@@ -170,7 +194,7 @@ class VideoUpload extends Component {
       },
       onSelect: (file) => {
         this.state.fileList.forEach((item) => {
-          if(item.selected){
+          if (item.selected) {
             console.log(item);
             setFieldsValue({
               displayName: item.name,
@@ -189,18 +213,18 @@ class VideoUpload extends Component {
         })
       },
       onChange: ({file, fileList}) => {
-        if(file.status === 'done'){
+        if (file.status === 'done') {
           this.setState({
             fileList: fileList
           });
           message.success(`${file.name} 上传成功`);
           file.thumbUrl = this.state.thumbUrl
-        }else if(file.status === 'removed'){
+        } else if (file.status === 'removed') {
           this.setState({
             fileList: fileList
           });
           message.success(`${file.name} 删除成功`);
-        } else if(file.status === 'error') {
+        } else if (file.status === 'error') {
           message.error(`${file.name} 上传失败`);
         }
       }
@@ -208,14 +232,14 @@ class VideoUpload extends Component {
 
     const cpAttachProps = {
       action: API_CONFIG.baseUri + API_CONFIG.videoUploadAttach,
-      accept:'application/*',
-      disabled: this.state.videoId?false:true,
+      accept: 'application/*',
+      disabled: this.state.videoId ? false : true,
       handleChange(info) {
         let fileList = info.fileList;
         attachList = fileList.slice(-1);
-        this.setState({ attachList });
+        this.setState({attachList});
       },
-      data:{
+      data: {
         videoId: this.state.videoId
       },
       onChange: (file) => {
@@ -229,55 +253,129 @@ class VideoUpload extends Component {
           <div className="upload-main">
             <div className="upload-thumbs">
               <Upload className="upload-list-btn" {...uploadListProps}>
-                <Icon type="plus" />
+                <Icon type="plus"/>
                 <div className="ant-upload-text">点击上传</div>
               </Upload>
             </div>
           </div>
           <div className="upload-sidebar">
-            <Form horizontal onSubmit={this.handleSubmit} >
-              <FormItem label="视频标题" {...formItemLayout}>
-                <Input type="textarea" {...displayNameProps}/>
+            <Form horizontal onSubmit={this.handleSubmit}>
+              <FormItem {...formItemLayout} label="视频标题">
+                {getFieldDecorator('displayName', {
+                  rules: [
+                    {required: true, message: '请填写标题'}
+                  ]
+                })(
+                  <Input placeholder="请输入标题" type="textarea"/>
+                )}
               </FormItem>
 
-              <FormItem label="视频说明" {...formItemLayout}>
-                <Input type="textarea" {...remarkProps}/>
+              <FormItem {...formItemLayout} label="视频说明">
+                {getFieldDecorator('remark', {
+                  rules: [
+                    {required: true, message: '请填写说明'}
+                  ]
+                })(
+                  <Input type="textarea"/>
+                )}
               </FormItem>
 
-              <FormItem label="视频分类" {...formItemLayout}>
-                <Select placeholder="请选择视频分类" {...categoryProps}>
-                  <Option value="1">流行</Option>
-                  <Option value="2">古典</Option>
-                  <Option value="3">欧美</Option>
-                </Select>
+              <FormItem {...formItemLayout} label="资源分类">
+                {getFieldDecorator('vcgCategory', {
+                  rules: [
+                    {required: true, message: '请选择VCG分类'}
+                  ]
+                })(
+                  <CategorySelect onChange={this.selectCategoryCallback.bind(this)}/>
+                )}
               </FormItem>
 
-              <FormItem label="视频标签" {...formItemLayout}>
-                <Select tags placeholder="请添加标签"  {...tagsProps}>
-                  <Option value="1">风景</Option>
-                </Select>
+              <FormItem {...formItemLayout} label="VCG分类">
+                {getFieldDecorator('vcgCategory', {
+                  rules: [
+                    {required: true, message: '请选择VCG分类'}
+                  ]
+                })(
+                  <Select placeholder="请选择" style={{width: '100%'}}>
+                    {TAG.audio.audio_type.map(item =>
+                      <Option key={item.key}>{item.name}</Option>
+                    )}
+                  </Select>
+                )}
+                <div className="ant-form-explain">(全局分类)</div>
               </FormItem>
 
-              <FormItem label="作者" {...formItemLayout}>
-                <Input {...authorProps}/>
+              <FormItem {...formItemLayout} label="标签">
+                {getFieldDecorator('tags', {
+                  rules: [
+                    {required: true, message: '请添加标签'}
+                  ]
+                })(
+                  <Select tags placeholder="请添加标签" style={{width: '100%'}}>
+                    {TAG.tags.map(item =>
+                      <Option key={item.key}>{item.name}</Option>
+                    )}
+                  </Select>
+                )}
+              </FormItem>
+              <FormItem {...formItemLayout} label="关健字">
+                {getFieldDecorator('keywords', {
+                  rules: [
+                    {required: true, message: '请添加关健字'}
+                  ]
+                })(
+                  <Input/>)}
+              </FormItem>
+              <FormItem {...formItemLayout} label="作者">
+                {getFieldDecorator('author', {
+                  rules: [
+                    {required: true, message: '请添加关健字'}
+                  ]
+                })(<Input/>)}
+              </FormItem>
+              <FormItem {...formItemLayout} label="内容类别">
+                {getFieldDecorator('conType', {
+                  rules: [
+                    {required: true, message: '请选择内容类别'}
+                  ]
+                })(
+                  <Select placeholder="请选择" style={{width: '100%'}}>
+                    {TAG.audio.con_type.map(item =>
+                      <Option key={item.key}>{item.name}</Option>
+                    )}
+                  </Select>)}
               </FormItem>
 
-              <FormItem {...formItemLayout} label="版权所属">
-                <RadioGroup size="default" {...licenseTypeProps}>
-                  <RadioButton value="a">无</RadioButton>
-                  <RadioButton value="b">自有</RadioButton>
-                  <RadioButton value="c">第三方</RadioButton>
-                </RadioGroup>
+
+              <FormItem label="版权所属" {...formItemLayout}>
+                {getFieldDecorator('copyright', {})(
+                  <RadioGroup size="default">
+                    <RadioButton value="0">无</RadioButton>
+                    <RadioButton value="1">自有</RadioButton>
+                    <RadioButton value="2">第三方</RadioButton>
+                  </RadioGroup>
+                )}
               </FormItem>
 
-              <FormItem label="版权时效" {...formItemLayout}>
-                <DatePicker placeholder="版权有效期" {...expireProps} />
+              <FormItem label="版权授权" {...formItemLayout}>
+                {getFieldDecorator('licenseType', {})(
+                  <RadioGroup size="default">
+                    <RadioButton value="rm">RM</RadioButton>
+                    <RadioButton value="rf">RF</RadioButton>
+                    <RadioButton value="rr">RR</RadioButton>
+                  </RadioGroup>
+                )}
               </FormItem>
 
+              <FormItem label="授权类型" {...formItemLayout}>
+                {getFieldDecorator('rightsType', {})(
+                  <CheckboxGroup options={TAG.rightsType} size="default"/>
+                )}
+              </FormItem>
               <FormItem label="授权文件" {...formItemLayout}>
                 <Upload {...cpAttachProps}>
                   <Button type="ghost" size="large">
-                    <Icon type="upload" /> 点击上传
+                    <Icon type="upload"/> 点击上传
                   </Button>
                 </Upload>
               </FormItem>
@@ -299,8 +397,7 @@ VideoUpload.propTypes = {
 };
 
 function mapStateToProps() {
-  return {
-  };
+  return {};
 }
 
 export default connect(mapStateToProps)(CreateForm()(VideoUpload));

@@ -39,32 +39,36 @@ class ReviewIndex extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      auditStatus: 1,
       startValue: null,
       endValue: null,
       endOpen: false,
-      pageNum: 1,
-      pageSize: '10'
+      query:{
+        auditStatus: 1,
+        pageNum: 1,
+        pageSize: '24',
+      }
     };
   }
 
   componentDidMount() {
-    this.queryList({
-      pageNum: this.state.pageNum,
-      pageSize: this.state.pageSize,
-      auditStatus: this.state.auditStatus
-    });
+    this.queryList();
   }
 
-  queryList(params) {
+  queryList() {
     const {dispatch} = this.props;
-    params.auditStatus = this.state.auditStatus;
-    dispatch(queryResource(params));
+    dispatch(queryResource(this.state.query));
   }
 
-  refresh(pager, {pageNum, pageSize, auditStatus}) {
-    this.setState({pageNum, pageSize, auditStatus});
-    this.queryList({pageNum, pageSize, auditStatus});
+  refresh(type, params) {
+    let query = this.state.query;
+    if(type === 'pager'){
+      Object.assign(query, this.state.query, params);
+    } else if(type === 'auditStatus'){
+      console.log(type);
+      Object.assign(query, this.state.query, params, {'pageNum': 1});
+    }
+    this.setState({query});
+    this.queryList();
   }
 
   disabledStartDate(startValue) {
@@ -122,7 +126,7 @@ class ReviewIndex extends Component {
     }
   }
 
-  handleReview(resultType, id, assetType){
+  handleReview(resultType, id, assetType) {
     const {dispatch} = this.props;
 
     dispatch(review({
@@ -130,20 +134,13 @@ class ReviewIndex extends Component {
       resId: id,
       resType: assetType
     }, () => {
-      // Message.success('审核成功！');
-      setTimeout(this.refresh("pager", {"pageNum": this.state.pageNum}), 1000)
+      Message.success('审核成功！');
+      setTimeout(this.refresh(), 1000)
     }));
   }
 
-  assetTypeTab(activeKey){
-    // this.setState({
-    //   'auditStatus': activeKey
-    // });
-    // this.queryList({
-    //   pageNum: this.state.pageNum,
-    //   pageSize: this.state.pageSize,
-    //   auditStatus: activeKey
-    // });
+  assetTypeTab(activeKey) {
+    this.refresh('auditStatus', {"auditStatus": activeKey});
   }
 
   render() {
@@ -157,8 +154,10 @@ class ReviewIndex extends Component {
     };
 
     const pager = {
-      "page": this.state.pageNum,
+      "page": this.state.query.pageNum,
+      "pageSize": this.state.query.pageSize,
       "total": total,
+      "pageSizeOptions": ['24','48', '96'],
       "showSizeChanger": true,
       "showQuickJumper": true,
       "showTotal": () => {
@@ -239,16 +238,17 @@ class ReviewIndex extends Component {
                         case 3:
                           return <Video controls muted>
                             <source src={item.ossId}
-                              type="video/mp4"/>
+                                    type="video/mp4"/>
                           </Video>;
                         case 4:
-                          return <p><img src={item.cover.ossId1} className="hidden"/><img src={item.cover.ossId1} alt="item.name"/>
+                          return <p><img src={item.cover.ossId1} className="hidden"/><img src={item.cover.ossId1}
+                                                                                          alt="item.name"/>
                           </p>;
                       }
                     })()}
                   </div>
                   <div className="thumb-list-item-text">{(() => {
-                    switch (item.assetType){
+                    switch (item.assetType) {
                       case 1:
                         return item.title;
                       case 2:
@@ -260,8 +260,12 @@ class ReviewIndex extends Component {
                     }
                   })()}
                     <div className="thumb-list-item-btns ant-btn-group ant-btn-group-sm">
-                      <span className="ant-btn ant-btn-primary ant-btn-icon-only" onClick={this.handleReview.bind(this, 5, item.id, item.assetType)}><Icon type="check"/></span>
-                      <span className="ant-btn ant-btn-icon-only" onClick={this.handleReview.bind(this, 4, item.id, item.assetType)}><Icon type="cross"/></span>
+                      <span className="ant-btn ant-btn-primary ant-btn-icon-only"
+                            onClick={this.handleReview.bind(this, 5, item.id, item.assetType)}><Icon
+                        type="check"/></span>
+                      <span className="ant-btn ant-btn-icon-only"
+                            onClick={this.handleReview.bind(this, 4, item.id, item.assetType)}><Icon
+                        type="cross"/></span>
                     </div>
                   </div>
 

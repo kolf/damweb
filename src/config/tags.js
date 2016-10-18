@@ -15,8 +15,8 @@ export const TAG= {
   ],
 
   rightsType:[
-    { label: '物权', value: 'obj_rights' },
-    { label: '肖像权', value: 'portrait_rights' }
+    { label: '物权', value: 'objRights' },
+    { label: '肖像权', value: 'portraitRights' }
   ],
 
   audio:{

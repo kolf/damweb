@@ -114,7 +114,7 @@ function cFetch(url, options) {
 
   opts.headers = {
     ...opts.headers,
-    'Authorization': cookie.get('token') || ''
+    // 'Authorization': cookie.get('token') || ''
   };
 
   return fetch(mergeUrl, opts)

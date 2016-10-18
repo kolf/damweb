@@ -29,12 +29,13 @@ function getVideoError(message) {
   };
 }
 
-export function getVideo(params) {
+export function getVideo(params, cb) {
   return dispatch => {
     dispatch(requestGetVideo());
     return cFetch(API_CONFIG.videoDetail, { method: "GET", params: params}).then((res) => {
       if (res.jsonResult.returnCode === '1') {
         dispatch(receiveGetVideo(res.jsonResult));
+        cb && cb(res.jsonResult.data)
       } else {
         dispatch(getVideoError(res.jsonResult.msg));
         message.error(res.jsonResult.msg);

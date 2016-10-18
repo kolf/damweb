@@ -1,6 +1,8 @@
-//const host = "http://dev.dam-server.vcg.com";
 import cookie from 'js-cookie';
-const host = "http://192.168.3.120:8080";
+
+const host = "http://dev.dam-server.vcg.com";
+// const host = "http://192.168.3.178:8080";
+// const host = "http://192.168.3.120:8080";
 // const host = "http://192.168.3.109:8080";
 
 const baseUri = host + "/";
@@ -42,8 +44,6 @@ export const API_CONFIG = {
   listOrgRoles:'damRole/list?token='+ token,   //组织机构内的角色列表
   createRole:'damRole/createRole?token='+ token,//组织机构自建角色
   authUser:'damUserRole/authUser?token='+ token,     //为用户授权
-
-
   queryResource: 'damMedia/pageList?token='+ token,
   review: 'auditor/audit?token='+ token,
   updateImageGroup: 'imgGroup/create?token='+ token,

@@ -20,6 +20,7 @@ import {connect} from 'react-redux';
 import {browserHistory, Link} from 'react-router';
 import './style.scss';
 import {getVideo} from '../../../actions/getVideo';
+import {queryCategory} from '../../../actions/category';
 import {TAG} from '../../../config/tags';
 import Video from 'react-html5video';
 
@@ -30,6 +31,20 @@ const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;
 const TabPane = Tabs.TabPane;
+
+let categoryName = '';
+const findCategory = (data, id) => {
+  data.forEach((item) => {
+    if (item.code == id) {
+      categoryName = item.name
+    } else if (item.childNode) {
+      findCategory(item.childNode, id)
+    }
+  });
+
+  return categoryName;
+};
+
 class VideoDetails extends Component {
   constructor(props) {
     super(props);
@@ -39,15 +54,14 @@ class VideoDetails extends Component {
     const {dispatch, routeParams} = this.props;
     dispatch(getVideo({
       id: routeParams.id
-    }))
+    }));
+    dispatch(queryCategory())
   }
 
   render() {
-    const {getFieldProps} = this.props.form;
+    const {getFieldDecorator} = this.props.form;
     const {video: {data}} = this.props;
-    const tagsProps = getFieldProps('tags', {
-      //initialValue: data.tags.split(',')
-    });
+    const categoryData = this.props.categorys.data || [];
 
     const formItemLayout = {
       labelCol: {span: 6},
@@ -61,7 +75,8 @@ class VideoDetails extends Component {
             <Row gutter={24}>
               <Col lg={{span: 16}}>
                 <div className="edit-view">
-                  <Video controls loop muted poster="../../../assets/images/music.png" style={{width: '100%', height: '100%'}}>
+                  <Video controls loop muted poster="../../../assets/images/music.png"
+                         style={{width: '100%', height: '100%'}}>
                     <source src={data.ossId} type="video/mp4"/>
                   </Video>
                 </div>
@@ -72,34 +87,40 @@ class VideoDetails extends Component {
                     to={`/video/update/${this.props.routeParams.id}`}>编辑视频</Link></Button>
                   <Button size="large" className="gap-left">下载视频</Button>
                 </div>
-                <Tabs type="card">
+                <Tabs type="card" animated={false}>
                   <TabPane tab="基本信息" key="tab_1">
                     <FormItem {...formItemLayout} label="视频标题">
                       <p className="ant-form-text">{data.displayName}</p>
                     </FormItem>
 
-                    <FormItem label="说明" {...formItemLayout}>
+                    <FormItem label="视频说明" {...formItemLayout}>
                       <p className="ant-form-text">{data.remark}</p>
                     </FormItem>
 
-                    <FormItem {...formItemLayout} label="视频分类">
-                      <p className="ant-form-text">
-                        {data.videoType && TAG.audio.audio_type.find(item =>
-                          item.key = data.videoType
-                        ).name}
-                      </p>
+                    <FormItem {...formItemLayout} label="资源分类">
+                      {findCategory(categoryData, data.category)}
                     </FormItem>
+
+                    <FormItem {...formItemLayout} label="VCG分类">
+                      {data.vcgCategory && TAG.audio.audio_type.find(item =>
+                        item.key = data.vcgCategory
+                      ).name}
+                    </FormItem>
+
 
                     <FormItem {...formItemLayout} label="标签">
-                      <Select disabled tags placeholder="请添加标签" style={{width: '100%'}} {...tagsProps} >
-                        {TAG.tags.map(item =>
-                          <Option key={item.key}>{item.name}</Option>
-                        )}
-                      </Select>
+                      {data.tags && (()=> {
+                          const TagsData = data.tags.split(',') || [];
+
+                          return TagsData.map((item) => {
+                            return <Tag>{TAG.tags.find(tag => tag.key == item).name}</Tag>
+                          })
+                        })()
+                      }
                     </FormItem>
 
-                    <FormItem {...formItemLayout} label="上传时间">
-                      <p className="ant-form-text">{data.uploadTime}</p>
+                    <FormItem {...formItemLayout} label="关健字">
+                      <p className="ant-form-text">{data.keywords}</p>
                     </FormItem>
 
                     <FormItem {...formItemLayout} label="作者">
@@ -109,42 +130,33 @@ class VideoDetails extends Component {
                     <FormItem {...formItemLayout} label="内容类别">
                       <p className="ant-form-text">
                         {data.conType && TAG.audio.con_type.find(item =>
-                          item.key = data.conType
+                          item.key == data.conType
                         ).name}
                       </p>
                     </FormItem>
 
+                    <FormItem {...formItemLayout} label="上传时间">
+                      <p className="ant-form-text">{data.uploadTime}</p>
+                    </FormItem>
 
-                    <FormItem {...formItemLayout} label="风格">
-                      <p className="ant-form-text">
-                        {data.descrip && TAG.audio.descrip.find(item =>
-                          item.key = data.descrip
-                        ).name}
-                      </p>
-                    </FormItem>
-                    <FormItem {...formItemLayout} label="视频">
-                      <p className="ant-form-text">
-                        {data.vocal && TAG.audio.vocal.find(item =>
-                          item.key = data.vocal
-                        ).name}
-                      </p>
-                    </FormItem>
 
                   </TabPane>
                   <TabPane tab="版权信息" key="2">
                     <FormItem label="版权所属" {...formItemLayout} >
-                      <RadioGroup defaultValue="a" disabled size="default">
-                        <RadioButton value="a">无</RadioButton>
-                        <RadioButton value="b">自有</RadioButton>
-                        <RadioButton value="c">第三方</RadioButton>
-                      </RadioGroup>
+                      {(()=> {
+                        switch (data.copyright) {
+                          case '0':
+                            return '无';
+                          case '1':
+                            return '自有';
+                          case '2':
+                            return '第三方';
+                        }
+                      })()}
                     </FormItem>
 
                     <FormItem label="版权授权" {...formItemLayout} >
-                      <RadioGroup defaultValue="g" disabled size="default">
-                        <RadioButton value="g">RM</RadioButton>
-                        <RadioButton value="h">RF</RadioButton>
-                      </RadioGroup>
+                      {data.licenseType}
                     </FormItem>
 
                     <FormItem label="授权类型" {...formItemLayout}>
@@ -168,33 +180,23 @@ class VideoDetails extends Component {
               <Row gutter={24}>
                 <Col xs={{span: 6}}>
                   <ul className="list-v">
-                    <li>每秒帧数: 25</li>
-                    <li>像素比例: 16:9</li>
-                    <li>比特率: 128kbps</li>
-                    <li>文件大小: 4.30MB</li>
+                    <li>时长: {data.length}</li>
+                    <li>大小: {data.size}</li>
                   </ul>
                 </Col>
                 <Col xs={{span: 6}}>
                   <ul className="list-v">
-                    <li>视频格式: mp4</li>
-                    <li>镜头长度: 00:04:41</li>
-                    <li>时长: 00:04:41</li>
-                    <li>彩色或黑白: 彩色</li>
+                    <li>比特率: {data.bps}</li>
                   </ul>
                 </Col>
                 <Col xs={{span: 6}}>
                   <ul className="list-v">
-                    <li>发行者：</li>
-                    <li>发行日期: 2016-01-01</li>
-                    <li>拍摄时间: 2016-01-01</li>
-                    <li>母带存储：</li>
-
+                    <li>每秒帧数: {data.fps}</li>
                   </ul>
                 </Col>
                 <Col xs={{span: 6}}>
                   <ul className="list-v">
-                    <li>清晰度：</li>
-                    <li>镜头编号:</li>
+                    <li>像素比例: {data.pixPropotion}</li>
                   </ul>
                 </Col>
               </Row>
@@ -212,9 +214,10 @@ VideoDetails.propTypes = {
 };
 
 function mapStateToProps(state) {
-  const {video} = state
+  const {video, categorys} = state;
   return {
-    video
+    video,
+    categorys
   };
 }
 

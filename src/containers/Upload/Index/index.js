@@ -35,7 +35,7 @@ class UploadIndex extends Component {
               <FormItem label="请先选择上传内容类型">
                 <RadioGroup {...getFieldProps('type', {initialValue: 'image'})}>
                   {
-                    (()=> {
+                    realms && (()=> {
                       const arr = [];
                       realms.forEach((item) => {
                         if(item.id === 28){

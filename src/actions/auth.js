@@ -62,7 +62,7 @@ export function loginUser(creds, cbk) {
         Message.success('登陆成功！')
       } else {
         dispatch(loginError(response.jsonResult.msg));
-        cbk(creds.damId, response.jsonResult.msg);
+        cbk(response.jsonResult.msg);
       }
     });
   };

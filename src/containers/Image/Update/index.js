@@ -50,7 +50,7 @@ class ImageUpdate extends Component {
       const creds = (this.props.form.getFieldsValue());
       Object.assign(creds, {
         id: routeParams.id,
-        tags: creds.tags.join(',')
+        // tags: creds.tags.join(',')
       });
       dispatch(updateImage(creds, (msg) => {
         browserHistory.push(`/image/details/${routeParams.id}`);
