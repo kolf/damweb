@@ -41,7 +41,7 @@ class CategorySelect extends Component {
 
   render() {
     const categoryData = this.props.categorys.data || [];
-    return <TreeSelect allowClear dropdownStyle={{maxHeight: 400, overflow: 'auto'}} treeData={toTreeData(categoryData)} placeholder="请选择" value={this.state.value} treeDefaultExpandAll onChange={this.onChange.bind(this)}/>;
+    return <TreeSelect size="large" allowClear dropdownStyle={{maxHeight: 400, overflow: 'auto'}} treeData={toTreeData(categoryData)} placeholder="请选择" value={this.state.value} treeDefaultExpandAll onChange={this.onChange.bind(this)}/>;
   }
 }
 

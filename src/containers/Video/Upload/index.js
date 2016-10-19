@@ -36,10 +36,8 @@ class VideoUpload extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fileList: [],
-      attachList: [],
-      videoId: '',
-      thumbUrl: '../../../assets/images/audioThumb.gif'
+      uploadList: [],
+      attachList: []
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -51,9 +49,9 @@ class VideoUpload extends Component {
   handleSubmit(e) {
     e.preventDefault();
     const {dispatch} = this.props;
-    const {videoId} = this.state;
+    const {uploadList} = this.state;
 
-    if (!videoId) {
+    if (!uploadList.length) {
       message.warning('请先上传文件');
       return false;
     }
@@ -64,7 +62,6 @@ class VideoUpload extends Component {
       }
       const creds = (this.props.form.getFieldsValue());
       Object.assign(creds, {
-        id: videoId,
         tags: creds.tags.join(',')
       });
       dispatch(updateVideo(creds, () => message.success('资源入库成功！')));
@@ -75,6 +72,10 @@ class VideoUpload extends Component {
     this.setState({
       categoryId: categoryId
     })
+  }
+
+  setValues(values){
+    
   }
 
   render() {
@@ -176,49 +177,21 @@ class VideoUpload extends Component {
       wrapperCol: {span: 17}
     };
 
-    const thumbItemLayout = {
-      xs: {span: 6},
-      lg: {span: 4}
-    };
-
     const uploadListProps = {
       action: API_CONFIG.baseUri + API_CONFIG.uploadVideo,
       listType: 'picture-card',
       accept: 'video/*',
       multiple: true,
       onPreview: (file) => {
-        this.setState({
-          priviewImage: file.url,
-          priviewVisible: true,
-        });
-      },
-      onSelect: (file) => {
-        this.state.fileList.forEach((item) => {
-          if (item.selected) {
-            console.log(item);
-            setFieldsValue({
-              displayName: item.name,
-              remark: item.remark,
-              category: item.category,
-              tags: item.tags,
-              author: item.author,
-              license_type: item.license_type,
-            })
-          }
-        });
-
-        this.setState({
-          fileList: this.state.fileList,
-          videoId: file.response.data.id
-        })
+        console.log('view')
       },
       onChange: ({file, fileList}) => {
         if (file.status === 'done') {
           this.setState({
             fileList: fileList
           });
+
           message.success(`${file.name} 上传成功`);
-          file.thumbUrl = this.state.thumbUrl
         } else if (file.status === 'removed') {
           this.setState({
             fileList: fileList
@@ -233,7 +206,7 @@ class VideoUpload extends Component {
     const cpAttachProps = {
       action: API_CONFIG.baseUri + API_CONFIG.videoUploadAttach,
       accept: 'application/*',
-      disabled: this.state.videoId ? false : true,
+      disabled: this.state.fileList ? false : true,
       handleChange(info) {
         let fileList = info.fileList;
         attachList = fileList.slice(-1);
@@ -266,7 +239,7 @@ class VideoUpload extends Component {
                     {required: true, message: '请填写标题'}
                   ]
                 })(
-                  <Input placeholder="请输入标题" type="textarea"/>
+                  <Input placeholder="请填写标题" type="textarea"/>
                 )}
               </FormItem>
 
@@ -276,7 +249,7 @@ class VideoUpload extends Component {
                     {required: true, message: '请填写说明'}
                   ]
                 })(
-                  <Input type="textarea"/>
+                  <Input placeholder="请填写说明" type="textarea"/>
                 )}
               </FormItem>
 
@@ -324,14 +297,14 @@ class VideoUpload extends Component {
                     {required: true, message: '请添加关健字'}
                   ]
                 })(
-                  <Input/>)}
+                  <Input placeholder="请添加关健字"/>)}
               </FormItem>
               <FormItem {...formItemLayout} label="作者">
                 {getFieldDecorator('author', {
                   rules: [
-                    {required: true, message: '请添加关健字'}
+                    {required: true, message: '请填写作者'}
                   ]
-                })(<Input/>)}
+                })(<Input placeholder="请填写作者"/>)}
               </FormItem>
               <FormItem {...formItemLayout} label="内容类别">
                 {getFieldDecorator('conType', {

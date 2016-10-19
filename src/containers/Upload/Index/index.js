@@ -34,24 +34,28 @@ class UploadIndex extends Component {
             <Form inline onSubmit={this.handleSubmit}>
               <FormItem label="请先选择上传内容类型">
                 <RadioGroup {...getFieldProps('type', {initialValue: 'image'})}>
-                  {
-                    realms && (()=> {
-                      const arr = [];
-                      realms.forEach((item) => {
-                        if(item.id === 28){
-                          arr.push(<Radio value={'video'}>视频</Radio>)
-                        }else if(item.id === 27){
-                          arr.push(<Radio value={'audio'}>音频</Radio>)
-                        }else if(item.id === 26){
-                          arr.push(<Radio value={'image'}>图片</Radio>)
-                        }else if(item.id === 29){
-                          arr.push(<Radio value={'imageGroup'}>组照</Radio>)
-                        }
-                      });
+                  {/*{*/}
+                    {/*realms && (()=> {*/}
+                      {/*const arr = [];*/}
+                      {/*realms.forEach((item) => {*/}
+                        {/*if(item.id === 28){*/}
+                          {/*arr.push(<Radio value={'video'}>视频</Radio>)*/}
+                        {/*}else if(item.id === 27){*/}
+                          {/*arr.push(<Radio value={'audio'}>音频</Radio>)*/}
+                        {/*}else if(item.id === 26){*/}
+                          {/*arr.push(<Radio value={'image'}>图片</Radio>)*/}
+                        {/*}else if(item.id === 29){*/}
+                          {/*arr.push(<Radio value={'imageGroup'}>组照</Radio>)*/}
+                        {/*}*/}
+                      {/*});*/}
+                      {/*return arr;*/}
+                    {/*})()*/}
+                  {/*}*/}
 
-                      return arr;
-                    })()
-                  }
+                  <Radio value={'video'}>视频</Radio>
+                  <Radio value={'audio'}>音频</Radio>
+                  <Radio value={'image'}>图片</Radio>
+                  <Radio value={'imageGroup'}>组照</Radio>
                 </RadioGroup>
               </FormItem>
               <Button type="primary" size="large" htmlType="submit">确定</Button>
