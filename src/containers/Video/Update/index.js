@@ -28,6 +28,7 @@ import {TAG} from '../../../config/tags';
 import {API_CONFIG} from '../../../config/api';
 import Video from 'react-html5video';
 import moment from 'moment';
+import cookie from 'js-cookie';
 
 const CreateForm = Form.create;
 const FormItem = Form.Item;
@@ -144,7 +145,7 @@ class VideoUpdate extends Component {
     };
 
     const cpAttachProps = {
-      action: API_CONFIG.baseUri + API_CONFIG.videoUploadAttach,
+      action: API_CONFIG.baseUri + API_CONFIG.videoUploadAttach + '?token='+ cookie.get('token'),
       accept: 'application/*',
       showUploadList: false,
       disabled: this.state.id ? false : true,

@@ -33,6 +33,7 @@ import {updateVideo} from '../../../actions/updateVideo';
 import {queryCategory} from '../../../actions/category';
 import CategorySelect from '../../../components/CategorySelect';
 import defaultVideoThmmb from '../../../assets/images/shipin.png';
+import cookie from 'js-cookie';
 
 import './style.scss';
 
@@ -136,7 +137,7 @@ class VideoUpload extends Component {
     };
 
     const uploadListProps = {
-      action: API_CONFIG.baseUri + API_CONFIG.uploadVideo,
+      action: API_CONFIG.baseUri + API_CONFIG.uploadVideo + '?token='+ cookie.get('token'),
       listType: 'picture-card',
       accept: 'video/*',
       multiple: true,
@@ -182,7 +183,7 @@ class VideoUpload extends Component {
     };
 
     const cpAttachProps = {
-      action: API_CONFIG.baseUri + API_CONFIG.videoUploadAttach,
+      action: API_CONFIG.baseUri + API_CONFIG.videoUploadAttach + '?token='+ cookie.get('token'),
       accept: 'application/*',
       showUploadList: false,
       disabled: this.state.attachId ? false : true,
