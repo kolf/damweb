@@ -4,10 +4,8 @@ import {connect} from 'react-redux';
 import {queryCategory} from '../actions/category';
 
 const toTreeData = data => {
-  return data.map((item, i) => {
-    // item.key = item.key || 0;
+  return data.map((item) => {
     let obj = {
-      // key: `${item.key}-${i}`,
       value: item.code + '',
       label: item.name
     };

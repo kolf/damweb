@@ -14,17 +14,21 @@ import {
   Icon,
   Tag,
   Message,
-  Checkbox,
-  Tabs
+  TreeSelect,
+  Tabs,
+  Checkbox
 } from 'antd';
 import {connect} from 'react-redux';
 import {browserHistory, Link} from 'react-router';
 import './style.scss';
 import {updateVideo} from '../../../actions/updateVideo';
 import {getVideo} from '../../../actions/getVideo';
+import {queryCategory} from '../../../actions/category';
 import {review} from '../../../actions/review';
 import {TAG} from '../../../config/tags';
+import {API_CONFIG} from '../../../config/api';
 import Video from 'react-html5video';
+import moment from 'moment';
 
 const CreateForm = Form.create;
 const FormItem = Form.Item;
@@ -37,34 +41,88 @@ const TabPane = Tabs.TabPane;
 class VideoReview extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      id: this.props.routeParams.id
+    };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
-    const {dispatch, routeParams} = this.props;
+    const {dispatch} = this.props;
+    dispatch(queryCategory());
     dispatch(getVideo({
-      id: routeParams.id
+      id: this.state.id
+    }, (videoData) => {
+      this.setValues(videoData)
     }))
   }
 
-  handleSubmit(e){
+  handleSubmit(e) {
     e.preventDefault();
-    const {dispatch, routeParams} = this.props;
-    this.props.form.validateFields((errors) => {
+    const {dispatch} = this.props;
+    this.props.form.validateFieldsAndScroll((errors) => {
       if (errors) {
         return false;
       }
       const creds = (this.props.form.getFieldsValue());
 
+      const copyrightObj = {
+        objRights: '0',
+        portraitRights: '0',
+      };
+
+      if (creds.rightsType) {
+        creds.rightsType.forEach((item) => {
+          copyrightObj[item] = '1'
+        })
+      }
+
+      if (typeof creds.expireDate === 'object') {
+        copyrightObj.expireDate = JSON.stringify(creds.expireDate).substr(1, 10)
+      }
+
+      copyrightObj.authType = creds.authType;
+      copyrightObj.ownerType = creds.ownerType;
+
+      delete creds.rightsType;
+
       Object.assign(creds, {
-        id:routeParams.id,
-        tags: creds.tags.join(',')
+        id: this.state.id,
+        tags: creds.tags.join(','),
+        copyrightObj
       });
-      dispatch(updateVideo(creds, () => this.handleReview(5)));
+
+      dispatch(updateVideo(creds, (res) => {
+        this.handleReview(5)
+      }));
     });
   }
 
-  handleReview(resultType){
+  setValues(file) {
+    const {setFieldsValue} = this.props.form;
+    let rightsType = [];
+    let expireDate = file.copyrightObj.expireDate? moment(file.copyrightObj.expireDate.substr(0, 10)) : '';
+
+    if (file.copyrightObj.objRights === 1) rightsType.push(`objRights`);
+    if (file.copyrightObj.portraitRights === 1) rightsType.push(`portraitRights`);
+
+    setFieldsValue({
+      displayName: file.displayName,
+      remark: file.remark,
+      vcgCategory: file.vcgCategory || [],
+      category: file.category || [],
+      tags: file.tags ? file.tags.split(',') : [],
+      keywords: file.keywords,
+      author: file.author,
+      conType: file.conType || [],
+      ownerType: file.copyrightObj.ownerType + '',
+      authType: file.copyrightObj.authType + '',
+      rightsType: rightsType,
+      expireDate: expireDate,
+    })
+  }
+
+  handleReview(resultType) {
     const {dispatch, routeParams, video: {data}} = this.props;
 
     dispatch(review({
@@ -78,67 +136,42 @@ class VideoReview extends Component {
   }
 
   render() {
-    const {getFieldProps} = this.props.form;
+    const {getFieldDecorator} = this.props.form;
+    const categoryData = this.props.categorys.data || [];
     const {video: {data}} = this.props;
 
-    const displayNameProps = getFieldProps('displayName', {
-      rules: [
-        {required: true, message: '请填写标题'}
-      ],
-      initialValue: data.displayName
-    });
+    const toTreeData = data => {
+      return data.map((item) => {
+        let obj = {
+          value: item.code + '',
+          label: item.name
+        };
+        if (item.childNode.length) {
+          obj.children = toTreeData(item.childNode)
+        }
+        return obj;
+      })
+    };
 
-    const remarkProps = getFieldProps('remark', {
-      rules: [
-        {required: true, message: '请填写说明'}
-      ],
-      initialValue: data.remark
-    });
-
-    const videoTypeProps = getFieldProps('videoType', {
-      rules: [
-        {required: true, message: '请选择分类'}
-      ],
-      initialValue: data.videoType
-    });
-
-    const tagsProps = getFieldProps('tags', {
-      rules: [
-        {required: true, message: '请选择标签', type: 'array'}
-      ],
-      initialValue: data.tags && data.tags.split(',')
-    });
-
-    const authorProps = getFieldProps('author', {
-      rules: [
-        {required: true, message: '请填写作者'}
-      ],
-      initialValue: data.author
-    });
-
-    const setDisplayProps = getFieldProps('resStatus', {});
-
-    const conTypeProps = getFieldProps('conType', {
-      initialValue: data.conType
-    });
-    const descripProps = getFieldProps('descrip', {
-      initialValue: data.descrip
-    });
-    const vocalProps = getFieldProps('vocal', {
-      initialValue: data.vocal
-    });
-
-    const licenseTypeProps = getFieldProps('licenseType', {
-      initialValue: data.licenseType
-    });
-
-    const copyrightProps = getFieldProps('copyright', {
-      initialValue: data.copyright
-    });
-
-    const rightsTypeProps = getFieldProps('rightsType', {
-      initialValue: data.rightsType
-    });
+    const cpAttachProps = {
+      action: API_CONFIG.baseUri + API_CONFIG.videoUploadAttach,
+      accept: 'application/*',
+      showUploadList: false,
+      disabled: this.state.id ? false : true,
+      handleChange(info) {
+        let fileList = info.fileList;
+        attachList = fileList.slice(-1);
+        this.setState({attachList});
+      },
+      data: {
+        videoId: this.state.id
+      },
+      onChange: (file) => {
+        if (file.status === 'done') {
+          message.success(`${file.name} 附件上传成功`);
+        }
+      }
+    };
 
     const formItemLayout = {
       labelCol: {span: 6},
@@ -148,12 +181,13 @@ class VideoReview extends Component {
     return (
       <div>
         <div className="ant-layout-content">
-          <Col xs={{offset: 0, span:24}} lg={{offset:3, span:18}}>
+          <Col xs={{offset: 0, span: 24}} lg={{offset: 3, span: 18}}>
             <Row gutter={24}>
               <Col lg={{span: 16}}>
                 <div className="edit-view">
-                  <Video controls loop muted poster="../../../assets/images/music.png" style={{width: '100%', height: '100%'}}>
-                    <source src={data.ossId} type="video/mp4"/>
+                  <Video controls loop muted poster="../../../assets/images/music.png"
+                         style={{width: '100%', height: '100%'}}>
+                    <source src={data.ossidUrl} type="video/mp4"/>
                   </Video>
                 </div>
               </Col>
@@ -163,95 +197,143 @@ class VideoReview extends Component {
                     <Button size="large" type="primary" htmlType="submit">审核通过</Button>
                     <Button size="large" className="gap-left" onClick={this.handleReview.bind(this, 4)}>审核拒绝</Button>
                   </div>
-                  <Tabs type="card">
+                  <Tabs type="card" animated={false}>
                     <TabPane tab="基本信息" key="Tab_1">
                       <FormItem {...formItemLayout} label="视频标题">
-                        <Input placeholder="请输入标题" type="textarea" {...displayNameProps}/>
+                        {getFieldDecorator('displayName', {
+                          rules: [
+                            {required: true, message: '请填写标题'}
+                          ]
+                        })(
+                          <Input placeholder="请填写标题" type="textarea"/>
+                        )}
                       </FormItem>
 
                       <FormItem {...formItemLayout} label="视频说明">
-                        <Input type="textarea" {...remarkProps}/>
+                        {getFieldDecorator('remark', {
+                          rules: [
+                            {required: true, message: '请填写说明'}
+                          ]
+                        })(
+                          <Input placeholder="请填写说明" type="textarea"/>
+                        )}
                       </FormItem>
 
-                      <FormItem {...formItemLayout} label="视频分类">
-                        <Select placeholder="请选择" style={{width: '100%'}} {...videoTypeProps}>
-                          {TAG.audio.audio_type.map(item =>
-                            <Option key={item.key}>{item.name}</Option>
-                          )}
-                        </Select>
+                      <FormItem {...formItemLayout} label="资源分类">
+                        {getFieldDecorator('category', {
+                          rules: [
+                            {required: true, message: '请选择资源分类'}
+                          ]
+                        })(
+                          <TreeSelect size="large" allowClear dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
+                                      treeData={toTreeData(categoryData)} placeholder="请选择" treeDefaultExpandAll/>
+                        )}
+                      </FormItem>
+
+                      <FormItem {...formItemLayout} label="VCG分类">
+                        {getFieldDecorator('vcgCategory', {
+                          rules: [
+                            {required: true, message: '请选择VCG分类'}
+                          ]
+                        })(
+                          <Select placeholder="请选择" style={{width: '100%'}}>
+                            {TAG.audio.audio_type.map(item =>
+                              <Option key={item.key}>{item.name}</Option>
+                            )}
+                          </Select>
+                        )}
+                        <div className="ant-form-explain">(全局分类)</div>
                       </FormItem>
 
                       <FormItem {...formItemLayout} label="标签">
-                        <Select tags placeholder="请添加标签" style={{width: '100%'}} {...tagsProps} >
-                          {TAG.tags.map(item =>
-                            <Option key={item.key}>{item.name}</Option>
-                          )}
-                        </Select>
+                        {getFieldDecorator('tags', {
+                          rules: [
+                            {required: true, message: '请添加标签', type: 'array'}
+                          ]
+                        })(
+                          <Select tags placeholder="请添加标签" style={{width: '100%'}}>
+                            {TAG.tags.map(item =>
+                              <Option value={item.key} key={item.key}>{item.name}</Option>
+                            )}
+                          </Select>
+                        )}
                       </FormItem>
-
-                      <FormItem {...formItemLayout} label="上传时间">
-                        <p className="ant-form-text">2016-02-26 14:56:51</p>
+                      <FormItem {...formItemLayout} label="关健字">
+                        {getFieldDecorator('keywords', {
+                          rules: [
+                            {required: true, message: '请添加关健字'}
+                          ]
+                        })(
+                          <Input placeholder="请添加关健字"/>)}
                       </FormItem>
-
                       <FormItem {...formItemLayout} label="作者">
-                        <Input {...authorProps}/>
+                        {getFieldDecorator('author', {
+                          rules: [
+                            {required: true, message: '请填写作者'}
+                          ]
+                        })(<Input placeholder="请填写作者"/>)}
                       </FormItem>
-
                       <FormItem {...formItemLayout} label="内容类别">
-                        <Select placeholder="请选择" style={{width: '100%'}} {...conTypeProps}>
-                          {TAG.audio.con_type.map(item =>
-                            <Option key={item.key}>{item.name}</Option>
-                          )}
-                        </Select>
+                        {getFieldDecorator('conType', {
+                          rules: [
+                            {required: true, message: '请选择内容类别'}
+                          ]
+                        })(
+                          <Select placeholder="请选择" style={{width: '100%'}}>
+                            {TAG.audio.con_type.map(item =>
+                              <Option key={item.key}>{item.name}</Option>
+                            )}
+                          </Select>)}
                       </FormItem>
 
-                      <FormItem {...formItemLayout} label="风格">
-                        <Select placeholder="请选择" style={{width: '100%'}} {...descripProps}>
-                          {TAG.audio.descrip.map(item =>
-                            <Option key={item.key}>{item.name}</Option>
-                          )}
-                        </Select>
-                      </FormItem>
 
-                      <FormItem {...formItemLayout} label="视频">
-                        <Select placeholder="请选择" style={{width: '100%'}} {...vocalProps}>
-                          {TAG.audio.vocal.map(item =>
-                            <Option key={item.key}>{item.name}</Option>
-                          )}
-                        </Select>
-                      </FormItem>
                     </TabPane>
                     <TabPane tab="版权信息" key="Tab_2">
                       <FormItem label="版权所属" {...formItemLayout}>
-                        <RadioGroup size="default" {...copyrightProps}>
-                          <RadioButton value="a">无</RadioButton>
-                          <RadioButton value="b">自有</RadioButton>
-                          <RadioButton value="c">第三方</RadioButton>
-                        </RadioGroup>
+                        {getFieldDecorator('ownerType', {})(
+                          <RadioGroup size="default">
+                            <RadioButton value="0">无</RadioButton>
+                            <RadioButton value="1">自有</RadioButton>
+                            <RadioButton value="2">第三方</RadioButton>
+                          </RadioGroup>
+                        )}
                       </FormItem>
 
                       <FormItem label="版权授权" {...formItemLayout}>
-                        <RadioGroup size="default" {...licenseTypeProps}>
-                          <RadioButton value="rm">RM</RadioButton>
-                          <RadioButton value="rf">RF</RadioButton>
-                          <RadioButton value="rr">RR</RadioButton>
-                        </RadioGroup>
+                        {getFieldDecorator('authType', {})(
+                          <RadioGroup size="default">
+                            <RadioButton value="1">RM</RadioButton>
+                            <RadioButton value="2">RF</RadioButton>
+                            <RadioButton value="3">RR</RadioButton>
+                          </RadioGroup>
+                        )}
                       </FormItem>
 
                       <FormItem label="授权类型" {...formItemLayout}>
-                        <CheckboxGroup {...rightsTypeProps} options={TAG.rightsType} size="default"/>
+                        {getFieldDecorator('rightsType', {})(
+                          <CheckboxGroup options={TAG.rightsType} size="default"/>
+                        )}
                       </FormItem>
 
-                      <FormItem {...formItemLayout} label="版权时效">
-                        <p className="ant-form-text">2016-02-26 14:56:51</p>
+                      <FormItem label="版权时效" {...formItemLayout}>
+                        {getFieldDecorator('expireDate', {})(
+                          <DatePicker />
+                        )}
                       </FormItem>
-                      <FormItem {...formItemLayout} label="授权文件">
-                        <p className="ant-form-text"><a href="">肖像权授权文件.pdf</a></p>
+
+                      <FormItem label="授权文件" {...formItemLayout}>
+                        <Upload {...cpAttachProps}>
+                          <Button type="ghost" size="large">
+                            <Icon type="upload"/> 点击上传
+                          </Button>
+                        </Upload>
                       </FormItem>
                     </TabPane>
                   </Tabs>
                   <Col xs={{offset: 6}}>
-                    <Checkbox {...setDisplayProps}>是否在展示平台显示资源</Checkbox>
+                    {getFieldDecorator('agreement', {initialValue: false, valuePropName: 'checked'})(
+                      <Checkbox>是否在展示平台显示资源</Checkbox>
+                    )}
                   </Col>
                 </Form>
               </Col>
@@ -261,35 +343,28 @@ class VideoReview extends Component {
               <Row gutter={24}>
                 <Col xs={{span: 6}}>
                   <ul className="list-v">
-                    <li>拍摄时间: 索尼</li>
-                    <li>制造商: 索尼</li>
-                    <li>测光模式: 索尼</li>
-                    <li>白平衡: 索尼</li>
+                    <li>时长: {data.length}</li>
+                    <li>大小: {data.size}</li>
                   </ul>
                 </Col>
                 <Col xs={{span: 6}}>
                   <ul className="list-v">
-                    <li>视频格式: 索尼</li>
-                    <li>曝光时间: 索尼</li>
-                    <li>焦距: 索尼</li>
-                    <li>曝光程序: 索尼</li>
+                    <li>比特率: {data.bps}</li>
                   </ul>
                 </Col>
-                <Col xs={{span: 6}}><ul className="list-v">
-                  <li>原始宽度: 索尼</li>
-                  <li>相机型号: 索尼</li>
-                  <li>闪光灯: 索尼</li>
-                  <li>曝光补偿: 索尼</li>
-                </ul></Col>
-                <Col xs={{span: 6}}><ul className="list-v">
-                  <li>ISO: 索尼</li>
-                  <li>原始高度: 索尼</li>
-                  <li>光圈: 索尼</li>
-                  <li>曝光模式: 索尼</li>
-                </ul></Col>
+                <Col xs={{span: 6}}>
+                  <ul className="list-v">
+                    <li>每秒帧数: {data.fps}</li>
+                  </ul>
+                </Col>
+                <Col xs={{span: 6}}>
+                  <ul className="list-v">
+                    <li>像素比例: {data.pixPropotion}</li>
+                  </ul>
+                </Col>
               </Row>
             </div>
-            </Col>
+          </Col>
         </div>
       </div>
     );
@@ -302,9 +377,10 @@ VideoReview.propTypes = {
 };
 
 function mapStateToProps(state) {
-  const {video} = state;
+  const {video, categorys} = state;
   return {
-    video
+    video,
+    categorys
   };
 }
 

@@ -42,7 +42,7 @@ class ReviewIndex extends Component {
       startValue: null,
       endValue: null,
       endOpen: false,
-      query:{
+      query: {
         auditStatus: 1,
         pageNum: 1,
         pageSize: '24',
@@ -61,9 +61,9 @@ class ReviewIndex extends Component {
 
   refresh(type, params) {
     let query = this.state.query;
-    if(type === 'pager'){
+    if (type === 'pager') {
       Object.assign(query, this.state.query, params);
-    } else if(type === 'auditStatus'){
+    } else if (type === 'auditStatus') {
       console.log(type);
       Object.assign(query, this.state.query, params, {'pageNum': 1});
     }
@@ -144,8 +144,7 @@ class ReviewIndex extends Component {
   }
 
   render() {
-    const _this = this;
-    const {getFieldProps} = this.props.form;
+    const {getFieldDecorator} = this.props.form;
     const {resources:{data, meta:{total}}} = this.props;
 
     const thumbItemLayout = {
@@ -157,17 +156,17 @@ class ReviewIndex extends Component {
       "page": this.state.query.pageNum,
       "pageSize": this.state.query.pageSize,
       "total": total,
-      "pageSizeOptions": ['24','48', '96'],
+      "pageSizeOptions": ['24', '48', '96'],
       "showSizeChanger": true,
       "showQuickJumper": true,
       "showTotal": () => {
         return '共 ' + total + ' 条';
       },
-      onShowSizeChange(pageNum, pageSize) {
-        _this.refresh("pager", {"pageNum": pageNum, "pageSize": pageSize});
+      onShowSizeChange: (pageNum, pageSize)=> {
+        this.refresh("pager", {"pageNum": pageNum, "pageSize": pageSize});
       },
-      onChange(pageNum) {
-        _this.refresh("pager", {"pageNum": pageNum});
+      onChange: (pageNum) => {
+        this.refresh("pager", {"pageNum": pageNum});
       }
     };
 
@@ -177,7 +176,9 @@ class ReviewIndex extends Component {
           <div className="text-center">
             <Form inline className="pad-bottom search-box" onSubmit={this.handleSubmit}>
               <FormItem label="申请用户">
-                <Input {...getFieldProps('phrase')} />
+                {getFieldDecorator('phrase ', {})(
+                  <Input/>
+                )}
               </FormItem>
               <FormItem label="申请日期">
                 <DatePicker
@@ -237,13 +238,11 @@ class ReviewIndex extends Component {
                           </p>;
                         case 3:
                           return <Video controls muted>
-                            <source src={item.ossId}
-                                    type="video/mp4"/>
+                            <source src={item.ossidUrl} type="video/mp4"/>
                           </Video>;
                         case 4:
                           return <p><img src={item.cover.ossId1} className="hidden"/><img src={item.cover.ossId1}
-                                                                                          alt="item.name"/>
-                          </p>;
+                                                                                          alt="item.name"/></p>;
                       }
                     })()}
                   </div>

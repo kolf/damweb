@@ -59,9 +59,42 @@ class VideoDetails extends Component {
   }
 
   render() {
-    const {getFieldDecorator} = this.props.form;
+    // const {getFieldDecorator} = this.props.form;
     const {video: {data}} = this.props;
     const categoryData = this.props.categorys.data || [];
+
+    const renderOwnerType = (type) => {
+      switch (type) {
+        case 0:
+          return '无';
+        case 1:
+          return '自有';
+        case 2:
+          return '第三方';
+      }
+    };
+
+    const renderAuthType = (type) => {
+      switch (type) {
+        case 1:
+          return 'RM';
+        case 2:
+          return 'RF';
+        case 3:
+          return 'RR';
+      }
+    };
+
+    const renderAuthRights = (copyrightObj) => {
+      let result = [];
+      if(copyrightObj.objRights){
+        result.push('物权')
+      }
+      if(copyrightObj.portraitRights){
+        result.push('肖像权')
+      }
+      return result.length? result.join(', ') : '无'
+    };
 
     const formItemLayout = {
       labelCol: {span: 6},
@@ -77,7 +110,7 @@ class VideoDetails extends Component {
                 <div className="edit-view">
                   <Video controls loop muted poster="../../../assets/images/music.png"
                          style={{width: '100%', height: '100%'}}>
-                    <source src={data.ossId} type="video/mp4"/>
+                    <source src={data.ossidUrl?data.ossidUrl: ''} type="video/mp4"/>
                   </Video>
                 </div>
               </Col>
@@ -113,7 +146,7 @@ class VideoDetails extends Component {
                           const TagsData = data.tags.split(',') || [];
 
                           return TagsData.map((item) => {
-                            return <Tag>{TAG.tags.find(tag => tag.key == item).name}</Tag>
+                            return item.name && <Tag>{TAG.tags.find(tag => tag.key == item).name}</Tag>
                           })
                         })()
                       }
@@ -139,36 +172,26 @@ class VideoDetails extends Component {
                       <p className="ant-form-text">{data.uploadTime}</p>
                     </FormItem>
 
-
                   </TabPane>
                   <TabPane tab="版权信息" key="2">
                     <FormItem label="版权所属" {...formItemLayout} >
-                      {(()=> {
-                        switch (data.copyright) {
-                          case '0':
-                            return '无';
-                          case '1':
-                            return '自有';
-                          case '2':
-                            return '第三方';
-                        }
-                      })()}
+                      {data.copyrightObj && renderOwnerType(data.copyrightObj.ownerType)}
                     </FormItem>
 
                     <FormItem label="版权授权" {...formItemLayout} >
-                      {data.licenseType}
+                      {data.copyrightObj && renderAuthType(data.copyrightObj.authType)}
                     </FormItem>
 
                     <FormItem label="授权类型" {...formItemLayout}>
-                      <CheckboxGroup options={TAG.rightsType} size="default"/>
+                      {data.copyrightObj && renderAuthRights(data.copyrightObj)}
                     </FormItem>
 
-                    <FormItem {...formItemLayout} label="上传时间">
-                      <p className="ant-form-text"><a href="">肖像权授权文件.pdf</a></p>
+                    <FormItem {...formItemLayout} label="授权文件">
+                      <p className="ant-form-text"><a href={data.copyrightObj? data.copyrightObj.attachUrl : ''}>{data.copyrightObj && data.copyrightObj.attachFile}</a></p>
                     </FormItem>
 
                     <FormItem {...formItemLayout} label="版权时效">
-                      <p className="ant-form-text">2016-02-26 14:56:51</p>
+                      <p className="ant-form-text">{data.copyrightObj && data.copyrightObj.expireDate}</p>
                     </FormItem>
 
                   </TabPane>

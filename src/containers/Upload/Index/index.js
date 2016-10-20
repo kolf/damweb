@@ -23,8 +23,24 @@ class UploadIndex extends Component {
   };
 
   render() {
-    const {getFieldProps} = this.props.form;
-    const {realms} = localStorage.get('user');
+    const {getFieldDecorator} = this.props.form;
+    const realms = localStorage.get('user').realms || [];
+
+    const renderRadios = () => {
+      let arr = [];
+      realms.forEach((item) => {
+        if (item.id === 28) {
+          arr.push(<Radio value={'video'}>视频</Radio>)
+        } else if (item.id === 27) {
+          arr.push(<Radio value={'audio'}>音频</Radio>)
+        } else if (item.id === 26) {
+          arr.push(<Radio value={'image'}>图片</Radio>)
+        } else if (item.id === 29) {
+          arr.push(<Radio value={'imageGroup'}>组照</Radio>)
+        }
+      });
+      return arr;
+    };
 
     return (
       <div>
@@ -33,30 +49,17 @@ class UploadIndex extends Component {
           <div className="text-center">
             <Form inline onSubmit={this.handleSubmit}>
               <FormItem label="请先选择上传内容类型">
-                <RadioGroup {...getFieldProps('type', {initialValue: 'image'})}>
-                  {/*{*/}
-                    {/*realms && (()=> {*/}
-                      {/*const arr = [];*/}
-                      {/*realms.forEach((item) => {*/}
-                        {/*if(item.id === 28){*/}
-                          {/*arr.push(<Radio value={'video'}>视频</Radio>)*/}
-                        {/*}else if(item.id === 27){*/}
-                          {/*arr.push(<Radio value={'audio'}>音频</Radio>)*/}
-                        {/*}else if(item.id === 26){*/}
-                          {/*arr.push(<Radio value={'image'}>图片</Radio>)*/}
-                        {/*}else if(item.id === 29){*/}
-                          {/*arr.push(<Radio value={'imageGroup'}>组照</Radio>)*/}
-                        {/*}*/}
-                      {/*});*/}
-                      {/*return arr;*/}
-                    {/*})()*/}
-                  {/*}*/}
-
-                  <Radio value={'video'}>视频</Radio>
-                  <Radio value={'audio'}>音频</Radio>
-                  <Radio value={'image'}>图片</Radio>
-                  <Radio value={'imageGroup'}>组照</Radio>
-                </RadioGroup>
+                {getFieldDecorator('type', {
+                  initialValue: 'video'
+                })(
+                  <RadioGroup>
+                    {renderRadios()}
+                    <Radio value={'video'}>视频</Radio>
+                    <Radio value={'audio'}>音频</Radio>
+                    <Radio value={'image'}>图片</Radio>
+                    <Radio value={'imageGroup'}>组照</Radio>
+                  </RadioGroup>
+                )}
               </FormItem>
               <Button type="primary" size="large" htmlType="submit">确定</Button>
             </Form>
