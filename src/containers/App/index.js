@@ -82,7 +82,6 @@ class App extends Component {
 
   render() {
     const {isAuthenticated} = this.props;
-    console.error(this.props);
     return (
       <div className="app-container">
         {isAuthenticated ? this.renderAuthenticatedPage() : <Login/>}

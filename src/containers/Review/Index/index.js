@@ -45,7 +45,7 @@ class ReviewIndex extends Component {
       query: {
         auditStatus: 1,
         pageNum: 1,
-        pageSize: '24',
+        pageSize: 24,
       }
     };
   }

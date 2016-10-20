@@ -87,13 +87,13 @@ class VideoDetails extends Component {
 
     const renderAuthRights = (copyrightObj) => {
       let result = [];
-      if(copyrightObj.objRights){
+      if (copyrightObj.objRights) {
         result.push('物权')
       }
-      if(copyrightObj.portraitRights){
+      if (copyrightObj.portraitRights) {
         result.push('肖像权')
       }
-      return result.length? result.join(', ') : '无'
+      return result.length ? result.join(', ') : '无'
     };
 
     const formItemLayout = {
@@ -110,7 +110,7 @@ class VideoDetails extends Component {
                 <div className="edit-view">
                   <Video controls loop muted poster="../../../assets/images/music.png"
                          style={{width: '100%', height: '100%'}}>
-                    <source src={data.ossidUrl?data.ossidUrl: ''} type="video/mp4"/>
+                    <source src={data.ossidUrl ? data.ossidUrl : ''} type="video/mp4"/>
                   </Video>
                 </div>
               </Col>
@@ -118,7 +118,7 @@ class VideoDetails extends Component {
                 <div className="ant-row ant-form-item ant-col-offset-6">
                   <Button htmlType="submit" size="large" type="primary"><Link
                     to={`/video/update/${this.props.routeParams.id}`}>编辑视频</Link></Button>
-                  <Button size="large" className="gap-left">下载视频</Button>
+                  <Button size="large" className="gap-left"><a href={data.ossidUrl}>下载视频</a></Button>
                 </div>
                 <Tabs type="card" animated={false}>
                   <TabPane tab="基本信息" key="tab_1">
@@ -140,15 +140,11 @@ class VideoDetails extends Component {
                       ).name}
                     </FormItem>
 
-
                     <FormItem {...formItemLayout} label="标签">
                       {data.tags && (()=> {
-                          const TagsData = data.tags.split(',') || [];
-
-                          return TagsData.map((item) => {
-                            return item.name && <Tag>{TAG.tags.find(tag => tag.key == item).name}</Tag>
-                          })
-                        })()
+                        const TagsData = data.tags.split(',') || [];
+                        return TAG.tags.filter(tag => (TagsData.indexOf(tag.key) !== -1)).map(item => <Tag>{item.name}</Tag>)
+                      })()
                       }
                     </FormItem>
 
@@ -187,7 +183,9 @@ class VideoDetails extends Component {
                     </FormItem>
 
                     <FormItem {...formItemLayout} label="授权文件">
-                      <p className="ant-form-text"><a href={data.copyrightObj? data.copyrightObj.attachUrl : ''}>{data.copyrightObj && data.copyrightObj.attachFile}</a></p>
+                      <p className="ant-form-text"><a
+                        href={data.copyrightObj ? data.copyrightObj.attachUrl : ''}>{data.copyrightObj && data.copyrightObj.attachFile}</a>
+                      </p>
                     </FormItem>
 
                     <FormItem {...formItemLayout} label="版权时效">

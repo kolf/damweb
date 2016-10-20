@@ -48,7 +48,7 @@ import NotFound from './components/NotFound/index';
 
 export default (
   <Route path="/" breadcrumbName="管理首页" component={App}>
-    <IndexRoute breadcrumbName="首页" component={Home}/>
+    <IndexRoute breadcrumbName="首页" component={UploadList}/>
 
     <Route path="resource" breadcrumbName="资源库列表" component={UploadList}/>
 

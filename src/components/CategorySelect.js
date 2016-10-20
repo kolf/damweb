@@ -3,20 +3,6 @@ import {TreeSelect} from 'antd';
 import {connect} from 'react-redux';
 import {queryCategory} from '../actions/category';
 
-const toTreeData = data => {
-  return data.map((item) => {
-    let obj = {
-      value: item.code + '',
-      label: item.name
-    };
-    if(item.childNode.length){
-      obj.children= toTreeData(item.childNode)
-    }
-    return obj;
-  })
-};
-
-
 class CategorySelect extends Component {
   constructor(props) {
     super(props);
@@ -39,6 +25,19 @@ class CategorySelect extends Component {
 
   render() {
     const categoryData = this.props.categorys.data || [];
+    const toTreeData = data => {
+      return data.map((item) => {
+        let obj = {
+          value: item.code + '',
+          label: item.name
+        };
+        if(item.childNode.length){
+          obj.children= toTreeData(item.childNode)
+        }
+        return obj;
+      })
+    };
+
     return <TreeSelect size="large" allowClear dropdownStyle={{maxHeight: 400, overflow: 'auto'}} treeData={toTreeData(categoryData)} placeholder="请选择" value={this.state.value} treeDefaultExpandAll onChange={this.onChange.bind(this)}/>;
   }
 }

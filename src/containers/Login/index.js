@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
+import {browserHistory} from 'react-router';
 import {Form, Input, Button, Message} from 'antd';
 import {loginUser} from './../../actions/auth';
 
@@ -24,7 +25,11 @@ class Login extends Component {
         return false;
       }
       const creds = (this.props.form.getFieldsValue());
-      dispatch(loginUser(creds, (msg) => Message.error(msg)))
+      dispatch(loginUser(creds, (data) => {
+        Message.success('登陆成功！');
+      },(msg) => {
+        Message.error(msg);
+      }))
     });
   }
 

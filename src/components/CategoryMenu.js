@@ -1,53 +1,19 @@
 import React, {Component, PropTypes} from 'react';
-import {Menu, Form, Button, Input, Modal, TreeSelect, Message} from 'antd';
+import {Menu, Form, Button, Input, Modal, TreeSelect, Message, Tabs} from 'antd';
 import {connect} from 'react-redux';
-import {queryCategory, createCategory} from '../actions/category';
+import {queryCategory, createCategory, updateCategory, removeCategory} from '../actions/category';
 
 const SubMenu = Menu.SubMenu;
 const CreateForm = Form.create;
 const FormItem = Form.Item;
-
-function toTreeData(data, resultArr) {
-  data.forEach((item) => {
-    let temp = {};
-    temp.label = item.name;
-    temp.value = item.code;
-    temp.key = item.code;
-    if (item.childNode) {
-      temp.children = [];
-      toTreeData(item.childNode, temp.children)
-    }
-    resultArr.push(temp)
-  })
-}
-
-function toTreeMenu(data, resultArr) {
-  data.forEach((item) => {
-    let temp = <SubMenu key={item.code} title={<span><span>{item.name}</span></span>}>
-      {((item)=> {
-        "use strict";
-        let childArr = [];
-        if (item.childNode.length) {
-          item.childNode.forEach(child => {
-            toTreeMenu(child.childNode, childArr)
-          })
-        } else {
-          childArr.push(<Menu.Item key={item.code}>{item.name}</Menu.Item>);
-        }
-        return childArr
-      })(item)}
-    </SubMenu>;
-
-    resultArr.push(temp)
-  })
-}
+const TabPane = Tabs.TabPane;
 
 class CategoryMenu extends Component {
   constructor(props) {
     super(props);
     this.state = {
       visible: false,
-      parentCode: ''
+      tab: 'create'
     }
   }
 
@@ -59,24 +25,42 @@ class CategoryMenu extends Component {
 
   handleSubmit() {
     const {dispatch, form} = this.props;
-    const {validateFields, getFieldsValue} = form;
+    const {validateFieldsAndScroll, getFieldsValue, resetFields} = form;
+    const {tab} = this.state;
 
-    validateFields((errors) => {
+    validateFieldsAndScroll((errors) => {
       if (errors) {
         return;
       }
       const creds = getFieldsValue();
-      creds.parentCode = this.state.parentCode;
-      dispatch(createCategory(creds, () => {
-        Message.success('创建成功！');
-        dispatch(queryCategory())
-      }));
+
+      if (tab === 'create') {
+        creds.parentCode = creds.parentCode || '0';
+        dispatch(createCategory(creds, () => {
+          Message.success('创建成功！');
+          dispatch(queryCategory())
+        }));
+      } else if (tab === 'update') {
+        creds.parentCode = creds.parentCode || '0';
+        creds.code = creds.id;
+        dispatch(updateCategory(creds, () => {
+          Message.success('修改成功！');
+          dispatch(queryCategory())
+        }));
+      } else if (tab === 'remove') {
+        dispatch(removeCategory(creds, () => {
+          Message.success('删除成功！');
+          dispatch(queryCategory())
+        }));
+      }
     });
 
     this.hideModal();
   }
 
   showModal() {
+    const {resetFields} = this.props.form;
+    resetFields();
     this.setState({visible: true});
   }
 
@@ -88,41 +72,97 @@ class CategoryMenu extends Component {
     this.setState({parentCode});
   }
 
+  handleClick({item, key, keyPath}) {
+    console.log(item)
+  }
+
+  onTabClick(tab) {
+    const {resetFields} = this.props.form;
+    resetFields();
+    this.setState({
+      tab
+    })
+  }
+
   render() {
     const {getFieldDecorator} = this.props.form;
 
-    const categorys = this.props.categorys.data || [];
+    const categoryData = this.props.categorys.data || [];
 
     const formItemLayout = {
       labelCol: {span: 4},
       wrapperCol: {span: 20},
     };
 
-    const categoryOpts = [];
-    const categoryMenu = [];
+    const loop = data => data.map((item) => {
+      if (item.childNode && item.childNode.length) {
+        return (
+          <SubMenu key={item.code} title={<span>{item.name}</span>}>
+            {loop(item.childNode)}
+          </SubMenu>
+        );
+      } else {
+        return <Menu.Item key={item.code}>{item.name}</Menu.Item>;
+      }
+    });
 
-    toTreeData(categorys, categoryOpts);
-    toTreeMenu(categorys, categoryMenu);
+    const toTreeData = data => {
+      return data.map((item) => {
+        let obj = {
+          value: item.code + '',
+          label: item.name
+        };
+        if (item.childNode.length) {
+          obj.children = toTreeData(item.childNode)
+        }
+        return obj;
+      })
+    };
 
     return <aside className="ant-layout-sider">
       <div className="pad"><Button onClick={this.showModal.bind(this)} className="btn-block" size="large"
-                                   type="primary">添加分类</Button></div>
-      <Menu _theme="dark" mode="inline">
-        {categoryMenu}
+                                   type="primary">管理分类</Button></div>
+      <Menu _theme="dark" mode="inline" onClick={this.handleClick.bind(this)}>
+        {loop(categoryData)}
       </Menu>
 
-      <Modal title="添加分类" visible={this.state.visible} onOk={this.handleSubmit.bind(this)}
+      <Modal title="管理分类" visible={this.state.visible} onOk={this.handleSubmit.bind(this)}
              onCancel={this.hideModal.bind(this)}>
-        <Form horizontal wrapClassName="vertical-center-modal" form={this.props.form}>
-          <FormItem {...formItemLayout} label="父级菜单">
-            <TreeSelect allowClear dropdownStyle={{maxHeight: 400, overflow: 'auto'}} treeData={categoryOpts}
-                        placeholder="请选择" treeDefaultExpandAll onChange={this.onChange.bind(this)}/>
+        <Form horizontal>
+          <Tabs type="card" defaultActiveKey={this.state.tab} onTabClick={this.onTabClick.bind(this)}>
+            <TabPane tab="添加分类" key="create"/>
+            <TabPane tab="修改分类" key="update"/>
+            <TabPane tab="删除分类" key="remove"/>
+          </Tabs>
+          {this.state.tab !== 'create' && <FormItem {...formItemLayout} label="选择分类">
+            {getFieldDecorator('id', {
+              rules: [
+                {required: true, message: '请选择要操作的分类'}
+              ],
+              onChange: (value) => {
+                console.log(value)
+              }
+            })(
+              <TreeSelect allowClear dropdownStyle={{maxHeight: 400, overflow: 'auto'}} treeData={toTreeData(categoryData)} placeholder="请选择" treeDefaultExpandAll/>
+            )}
           </FormItem>
-          <FormItem {...formItemLayout} label="菜单名字">
-            {getFieldDecorator('name ', {})(
+          }
+
+          {this.state.tab !== 'remove' && <FormItem {...formItemLayout} label="上级分类">
+            {getFieldDecorator('parentCode', {})(
+              <TreeSelect allowClear dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
+                          treeData={toTreeData(categoryData)} placeholder="请选择" treeDefaultExpandAll/>
+            )}
+          </FormItem>
+          }
+
+          {this.state.tab !== 'remove' &&
+          <FormItem {...formItemLayout} label="分类名字">
+            {getFieldDecorator('name', {})(
               <Input type="text" autoComplete="off"/>
             )}
           </FormItem>
+          }
         </Form>
       </Modal>
     </aside>;

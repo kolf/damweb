@@ -51,7 +51,7 @@ function receiveLogout() {
   };
 }
 
-export function loginUser(creds, cbk) {
+export function loginUser(creds, success, error) {
   return dispatch => {
     dispatch(requestLogin(creds));
     cFetch(API_CONFIG.auth, { method: "POST", body: JSON.stringify(creds) }).then((response) => {
@@ -59,10 +59,10 @@ export function loginUser(creds, cbk) {
         cookie.set('token', response.jsonResult.data.token);
         localStorage.set('user', response.jsonResult.data);
         dispatch(receiveLogin(response.jsonResult));
-        Message.success('登陆成功！')
+        success && success(response.jsonResult.data)
       } else {
         dispatch(loginError(response.jsonResult.msg));
-        cbk(response.jsonResult.msg);
+        error && error(response.jsonResult.msg);
       }
     });
   };
