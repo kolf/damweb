@@ -167,7 +167,7 @@ class VideoReview extends Component {
       data: {
         videoId: this.state.id
       },
-      onChange: (file) => {
+      onChange: ({file}) => {
         if (file.status === 'done') {
           message.success(`${file.name} 附件上传成功`);
         }

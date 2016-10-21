@@ -3,6 +3,7 @@ import { API_CONFIG } from './../../config/api';
 import { connect } from 'react-redux';
 import cs from 'classnames';
 import { Form,Button, Row, Col, Upload, Icon, Tag,message} from 'antd';
+import cookie from 'js-cookie';
 import './style.scss';
 
 class Remark extends Component {
@@ -20,7 +21,7 @@ class Remark extends Component {
     });
 
     //console.log(this.state);
-    var url=API_CONFIG.baseUri+API_CONFIG.updateWaterPosition+"?org_id=14&position="+args;
+    var url=API_CONFIG.baseUri+API_CONFIG.updateWaterPosition+"?token="+cookie.get('token')+"&org_id=14&position="+args;
     var fetchOptions = {
       method: 'POST',
       headers: {
@@ -36,7 +37,7 @@ class Remark extends Component {
   render() {
     const uploadWarterMarkImg = {
       name: 'file',
-      action: API_CONFIG.baseUri+API_CONFIG.uploadWaterprint,
+      action: API_CONFIG.baseUri+API_CONFIG.uploadWaterprint+"?token="+cookie.get('token'),
       //listType: 'picture',
       headers: {
         authorization: 'authorization-text',
@@ -53,7 +54,7 @@ class Remark extends Component {
         }
       },
     };
-    return <div className="client-info-container">水印管理<br/>
+    return <div className="client-info-container">
       <table className="tablealign" cellPadding={1} cellSpacing={2} border="1">
         <tr><td>
           <Form onSubmit={this.handleSubmit}>

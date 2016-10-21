@@ -184,7 +184,7 @@ class VideoDetails extends Component {
 
                     <FormItem {...formItemLayout} label="授权文件">
                       <p className="ant-form-text"><a
-                        href={data.copyrightObj ? data.copyrightObj.attachUrl : ''}>{data.copyrightObj && data.copyrightObj.attachFile}</a>
+                        href={data.copyrightObj ? data.copyrightObj.attachUrl : ''}>{data.copyrightObj && data.copyrightObj.attachFile || '无'}</a>
                       </p>
                     </FormItem>
 
