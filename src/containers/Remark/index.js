@@ -39,9 +39,10 @@ class Remark extends Component {
       name: 'file',
       action: API_CONFIG.baseUri+API_CONFIG.uploadWaterprint+"?token="+cookie.get('token'),
       //listType: 'picture',
-      headers: {
-        authorization: 'authorization-text',
-      },
+      accept: 'image/*',
+      // headers: {
+      //   authorization: 'authorization-text',
+      // },
       onChange(info) {
         if (info.file.status !== 'uploading') {
           console.log(info.file, info.fileList);
