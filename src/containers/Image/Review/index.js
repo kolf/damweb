@@ -3,22 +3,32 @@ import {
   Form,
   Select,
   Input,
+  DatePicker,
+  Switch,
   Radio,
+  Cascader,
   Button,
   Row,
   Col,
+  Upload,
+  Icon,
+  Tag,
   Message,
-  Checkbox,
-  Tabs
+  TreeSelect,
+  Tabs,
+  Checkbox
 } from 'antd';
 import {connect} from 'react-redux';
-import {browserHistory} from 'react-router';
+import {browserHistory, Link} from 'react-router';
 import './style.scss';
 import {updateImage} from '../../../actions/updateImage';
 import {getImage} from '../../../actions/getImage';
-import {review} from '../../../actions/review';
+import {queryCategory} from '../../../actions/category';
 import {TAG} from '../../../config/tags';
+import {API_CONFIG} from '../../../config/api';
 
+import moment from 'moment';
+import cookie from 'js-cookie';
 
 const CreateForm = Form.create;
 const FormItem = Form.Item;
@@ -32,106 +42,126 @@ class ImageReview extends Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
+
+    this.state = {
+      id: this.props.routeParams.id
+    };
+
   }
 
   componentDidMount() {
-    const {dispatch, routeParams} = this.props;
+    const {dispatch} = this.props;
+    dispatch(queryCategory());
     dispatch(getImage({
-      id: routeParams.id
+      id: this.state.id
+    }, (imgData) => {
+      this.setValues(imgData)
     }))
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    const {dispatch, routeParams} = this.props;
-    this.props.form.validateFields((errors) => {
+    const {dispatch} = this.props;
+    this.props.form.validateFieldsAndScroll((errors) => {
       if (errors) {
         return false;
       }
       const creds = (this.props.form.getFieldsValue());
+
+      const copyrightObj = {
+        objRights: '0',
+        portraitRights: '0',
+      };
+
+      if (creds.rightsType) {
+        creds.rightsType.forEach((item) => {
+          copyrightObj[item] = '1'
+        })
+      }
+
+      if (typeof creds.expireDate === 'object') {
+        copyrightObj.expireDate = JSON.stringify(creds.expireDate).substr(1, 10)
+      }
+
+      copyrightObj.authType = creds.authType;
+      copyrightObj.ownerType = creds.ownerType;
+
+      delete creds.rightsType;
+
       Object.assign(creds, {
-        id: routeParams.id,
-        tags: creds.tags.join(',')
+        id: this.state.id,
+        tags: creds.tags.join(','),
+        copyrightObj
       });
-      dispatch(updateImage(creds, (msg) => this.handleReview(5)));
+
+      dispatch(updateImage(creds, (res) => {
+        Message.success(res.msg);
+        setTimeout(() => browserHistory.push(`/image/details/${this.state.id}`))
+      }));
     });
   }
 
-  handleReview(resultType){
-    const {dispatch, routeParams, image: {data}} = this.props;
+  setValues(file) {
+    const {setFieldsValue} = this.props.form;
+    let rightsType = [];
+    // let expireDate = file.copyrightObj.expireDate? moment(file.copyrightObj.expireDate.substr(0, 10)) : '';
+    //
+    // if (file.copyrightObj.objRights === 1) rightsType.push(`objRights`);
+    // if (file.copyrightObj.portraitRights === 1) rightsType.push(`portraitRights`);
 
-    dispatch(review({
-      audioResult: resultType,
-      resId: routeParams.id,
-      resType: data.assetType
-    }, () => {
-      Message.success('审核成功！');
-      setTimeout(() => browserHistory.push('/review'), 2000)
-    }))
+    setFieldsValue({
+      title: file.title,
+      caption: file.caption,
+      vcgCategory: file.vcgCategory || '',
+      category: file.category || [],
+      tags: file.tags ? file.tags.split(',') : [],
+      keywords: file.keywords,
+      author: file.author,
+      conType: file.conType || '',
+      // ownerType: file.copyrightObj.ownerType + '',
+      // authType: file.copyrightObj.authType + '',
+      rightsType: rightsType,
+      // expireDate: expireDate,
+    })
   }
 
   render() {
-    const {getFieldProps} = this.props.form;
+    const {getFieldDecorator} = this.props.form;
+    const categoryData = this.props.categorys.data || [];
     const {image: {data}} = this.props;
 
-    const displayNameProps = getFieldProps('title', {
-      rules: [
-        {required: true, message: '请填写标题'}
-      ],
-      initialValue: data.title
-    });
+    const toTreeData = data => {
+      return data.map((item) => {
+        let obj = {
+          value: item.code + '',
+          label: item.name
+        };
+        if (item.childNode.length) {
+          obj.children = toTreeData(item.childNode)
+        }
+        return obj;
+      })
+    };
 
-    const remarkProps = getFieldProps('caption', {
-      rules: [
-        {required: true, message: '请填写说明'}
-      ],
-      initialValue: data.caption
-    });
-
-    const audioTypeProps = getFieldProps('assetFamily', {
-      rules: [
-        {required: true, message: '请选择分类'}
-      ],
-      initialValue: data.assetFamily
-    });
-
-    const tagsProps = getFieldProps('tags', {
-      rules: [
-        {required: true, message: '请选择标签', type: 'array'}
-      ],
-      initialValue: data.tags && data.tags.split(',')
-    });
-
-    const authorProps = getFieldProps('author', {
-      rules: [
-        {required: true, message: '请填写作者'}
-      ],
-      initialValue: data.author
-    });
-
-    const setDisplayProps = getFieldProps('resStatus', {});
-
-    const conTypeProps = getFieldProps('conType', {
-      initialValue: data.conType
-    });
-    const descripProps = getFieldProps('descrip', {
-      initialValue: data.descrip
-    });
-    const vocalProps = getFieldProps('vocal', {
-      initialValue: data.vocal
-    });
-
-    const licenseTypeProps = getFieldProps('licenseType', {
-      initialValue: data.licenseType
-    });
-
-    const copyrightProps = getFieldProps('copyright', {
-      initialValue: data.copyright
-    });
-
-    const rightsTypeProps = getFieldProps('rightsType', {
-      initialValue: data.rightsType
-    });
+    const cpAttachProps = {
+      action: API_CONFIG.baseUri + API_CONFIG.videoUploadAttach + '?token='+ cookie.get('token'),
+      accept: 'application/*',
+      showUploadList: false,
+      disabled: this.state.id ? false : true,
+      handleChange(info) {
+        let fileList = info.fileList;
+        attachList = fileList.slice(-1);
+        this.setState({attachList});
+      },
+      data: {
+        videoId: this.state.id
+      },
+      onChange: ({file}) => {
+        if (file.status === 'done') {
+          message.success(`${file.name} 附件上传成功`);
+        }
+      }
+    };
 
     const formItemLayout = {
       labelCol: {span: 6},
@@ -145,7 +175,7 @@ class ImageReview extends Component {
             <Row gutter={24}>
               <Col lg={{span: 16}}>
                 <div className="edit-view">
-                  <div className="edit-view-img" style={{backgroundImage: `url(${data.ossId2})`}}></div>
+                  <div className="edit-view-img" style={{backgroundImage: `url(${data.ossid1Url})`}}></div>
                 </div>
               </Col>
               <Col lg={{span: 8}}>
@@ -154,108 +184,149 @@ class ImageReview extends Component {
                     <Button size="large" type="primary" htmlType="submit">审核通过</Button>
                     <Button size="large" className="gap-left">审核拒绝</Button>
                   </div>
-                  <Tabs type="card">
+                  <Tabs type="card" animated={false}>
                     <TabPane tab="基本信息" key="Tab_1">
                       <FormItem {...formItemLayout} label="图片标题">
-                        <Input placeholder="请输入标题" type="textarea" {...displayNameProps}/>
+                        {getFieldDecorator('title', {
+                          rules: [
+                            {required: true, message: '请填写标题'}
+                          ]
+                        })(
+                          <Input placeholder="请填写标题" type="textarea"/>
+                        )}
                       </FormItem>
 
                       <FormItem {...formItemLayout} label="图片说明">
-                        <Input type="textarea" {...remarkProps}/>
+                        {getFieldDecorator('caption', {
+                          rules: [
+                            {required: true, message: '请填写说明'}
+                          ]
+                        })(
+                          <Input placeholder="请填写说明" type="textarea"/>
+                        )}
                       </FormItem>
 
-                      <FormItem {...formItemLayout} label="图片分类">
-                        <Select placeholder="请选择" style={{width: '100%'}} {...audioTypeProps}>
-                          {TAG.audio.audio_type.map(item =>
-                            <Option key={item.key}>{item.name}</Option>
-                          )}
-                        </Select>
+                      <FormItem {...formItemLayout} label="资源分类">
+                        {getFieldDecorator('category', {
+                          rules: [
+                            {required: true, message: '请选择资源分类'}
+                          ]
+                        })(
+                          <TreeSelect size="large" allowClear dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
+                                      treeData={toTreeData(categoryData)} placeholder="请选择" treeDefaultExpandAll/>
+                        )}
+                      </FormItem>
+
+                      <FormItem {...formItemLayout} label="VCG分类">
+                        {getFieldDecorator('vcgCategory', {
+                          rules: [
+                            {required: true, message: '请选择VCG分类'}
+                          ]
+                        })(
+                          <Select placeholder="请选择" style={{width: '100%'}}>
+                            {TAG.audio.audio_type.map(item =>
+                              <Option key={item.key}>{item.name}</Option>
+                            )}
+                          </Select>
+                        )}
+                        <div className="ant-form-explain">(全局分类)</div>
                       </FormItem>
 
                       <FormItem {...formItemLayout} label="标签">
-                        <Select tags placeholder="请添加标签" style={{width: '100%'}} {...tagsProps} >
-                          {TAG.tags.map(item =>
-                            <Option key={item.key}>{item.name}</Option>
-                          )}
-                        </Select>
+                        {getFieldDecorator('tags', {
+                          rules: [
+                            {required: true, message: '请添加标签', type: 'array'}
+                          ]
+                        })(
+                          <Select tags placeholder="请添加标签" style={{width: '100%'}}>
+                            {TAG.tags.map(item =>
+                              <Option value={item.key} key={item.key}>{item.name}</Option>
+                            )}
+                          </Select>
+                        )}
                       </FormItem>
-
-                      <FormItem {...formItemLayout} label="上传时间">
-                        <p className="ant-form-text">2016-02-26 14:56:51</p>
+                      <FormItem {...formItemLayout} label="关健字">
+                        {getFieldDecorator('keywords', {
+                          rules: [
+                            {required: true, message: '请添加关健字'}
+                          ]
+                        })(
+                          <Input placeholder="请添加关健字"/>)}
                       </FormItem>
-
                       <FormItem {...formItemLayout} label="作者">
-                        <Input {...authorProps}/>
-                      </FormItem>
-                      <FormItem {...formItemLayout} label="拍摄城市">
-                        <p>dd</p>
+                        {getFieldDecorator('author', {
+                          rules: [
+                            {required: true, message: '请填写作者'}
+                          ]
+                        })(<Input placeholder="请填写作者"/>)}
                       </FormItem>
                       <FormItem {...formItemLayout} label="内容类别">
-                        <p className="ant-form-text">
-                          {data.conType && TAG.audio.con_type.find(item =>
-                            item.key = data.conType
-                          ).name}
-                        </p>
+                        {getFieldDecorator('conType', {
+                          rules: [
+                            {required: true, message: '请选择内容类别'}
+                          ]
+                        })(
+                          <Select placeholder="请选择" style={{width: '100%'}}>
+                            {TAG.audio.con_type.map(item =>
+                              <Option key={item.key}>{item.name}</Option>
+                            )}
+                          </Select>)}
                       </FormItem>
-                      <FormItem {...formItemLayout} label="拍摄地">
-                        <Input/>
-                      </FormItem>
-                      <FormItem {...formItemLayout} label="色彩">
-                        <RadioGroup>
-                          <Radio value={'colors'}>彩色</Radio>
-                          <Radio value={'gray'}>黑白</Radio>
-                        </RadioGroup>
-                      </FormItem>
+
+
                     </TabPane>
                     <TabPane tab="版权信息" key="Tab_2">
                       <FormItem label="版权所属" {...formItemLayout}>
-                        <RadioGroup size="default" {...copyrightProps}>
-                          <RadioButton value="a">无</RadioButton>
-                          <RadioButton value="b">自有</RadioButton>
-                          <RadioButton value="c">第三方</RadioButton>
-                        </RadioGroup>
+                        {getFieldDecorator('ownerType', {})(
+                          <RadioGroup size="default">
+                            <RadioButton value="0">无</RadioButton>
+                            <RadioButton value="1">自有</RadioButton>
+                            <RadioButton value="2">第三方</RadioButton>
+                          </RadioGroup>
+                        )}
                       </FormItem>
 
                       <FormItem label="版权授权" {...formItemLayout}>
-                        <RadioGroup size="default" {...licenseTypeProps}>
-                          <RadioButton value="rm">RM</RadioButton>
-                          <RadioButton value="rf">RF</RadioButton>
-                          <RadioButton value="rr">RR</RadioButton>
-                        </RadioGroup>
+                        {getFieldDecorator('authType', {})(
+                          <RadioGroup size="default">
+                            <RadioButton value="1">RM</RadioButton>
+                            <RadioButton value="2">RF</RadioButton>
+                            <RadioButton value="3">RR</RadioButton>
+                          </RadioGroup>
+                        )}
                       </FormItem>
 
                       <FormItem label="授权类型" {...formItemLayout}>
-                        <CheckboxGroup {...rightsTypeProps} options={TAG.rightsType} size="default"/>
+                        {getFieldDecorator('rightsType', {})(
+                          <CheckboxGroup options={TAG.rightsType} size="default"/>
+                        )}
                       </FormItem>
 
-                      <FormItem {...formItemLayout} label="版权时效">
-                        <p className="ant-form-text">2016-02-26 14:56:51</p>
+                      <FormItem label="版权时效" {...formItemLayout}>
+                        {getFieldDecorator('expireDate', {})(
+                          <DatePicker />
+                        )}
                       </FormItem>
 
-                      <FormItem {...formItemLayout} label="授权文件">
-                        <p className="ant-form-text"><a href="">肖像权授权文件.pdf</a></p>
+                      <FormItem label="授权文件" {...formItemLayout}>
+                        <Upload {...cpAttachProps}>
+                          <Button type="ghost" size="large">
+                            <Icon type="upload"/> 点击上传
+                          </Button>
+                        </Upload>
                       </FormItem>
-
-                      <FormItem {...formItemLayout} label="水印位置">
-                        <div className="btn-abs" style={{marginTop: 3}}>
-                          <Button className="lt">左上</Button>
-                          <Button className="tr">右上</Button>
-                          <Button className="c">中间</Button>
-                          <Button className="lb">左下</Button>
-                          <Button className="rb">右下</Button>
-                        </div>
-                      </FormItem>
-
                     </TabPane>
                   </Tabs>
                   <Col xs={{offset: 6}}>
-                    <Checkbox>是否在展示平台显示资源</Checkbox>
+                    {getFieldDecorator('agreement', {initialValue: false, valuePropName: 'checked'})(
+                      <Checkbox>是否在展示平台显示资源</Checkbox>
+                    )}
                   </Col>
                 </Form>
               </Col>
             </Row>
             <div className="edit-view-exif">
-              <h4>EXIF信息</h4>
+              <h4>图片信息</h4>
               <Row gutter={24}>
                 <Col xs={{span: 6}}>
                   <ul className="list-v">
@@ -304,9 +375,9 @@ ImageReview.propTypes = {
 };
 
 function mapStateToProps(state) {
-  const {image} = state;
+  const {image, categorys} = state;
   return {
-    image
+    image, categorys
   };
 }
 

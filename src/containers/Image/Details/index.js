@@ -2,18 +2,25 @@ import React, {Component, PropTypes} from 'react';
 import {
   Form,
   Select,
+  Input,
+  DatePicker,
+  Switch,
   Radio,
+  Cascader,
   Button,
   Row,
   Col,
+  Upload,
+  Icon,
+  Tag,
   Checkbox,
   Tabs
 } from 'antd';
 import {connect} from 'react-redux';
-import {Link} from 'react-router';
+import {browserHistory, Link} from 'react-router';
 import './style.scss';
-
 import {getImage} from '../../../actions/getImage';
+import {queryCategory} from '../../../actions/category';
 import {TAG} from '../../../config/tags';
 
 const CreateForm = Form.create;
@@ -23,6 +30,20 @@ const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;
 const TabPane = Tabs.TabPane;
+
+let categoryName = '';
+const findCategory = (data, id) => {
+  data.forEach((item) => {
+    if (item.code == id) {
+      categoryName = item.name
+    } else if (item.childNode) {
+      findCategory(item.childNode, id)
+    }
+  });
+
+  return categoryName;
+};
+
 class ImageDetails extends Component {
   constructor(props) {
     super(props);
@@ -32,16 +53,47 @@ class ImageDetails extends Component {
     const {dispatch, routeParams} = this.props;
     dispatch(getImage({
       id: routeParams.id
-    }))
+    }));
+    dispatch(queryCategory())
   }
 
   render() {
-    const {getFieldProps} = this.props.form;
-    const {image: {data}} = this.props;
 
-    const tagsProps = getFieldProps('tags', {
-      initialValue: data.tags.split(',')
-    });
+    const {image: {data}} = this.props;
+    const categoryData = this.props.categorys.data || [];
+
+    const renderOwnerType = (type) => {
+      switch (type) {
+        case 0:
+          return '无';
+        case 1:
+          return '自有';
+        case 2:
+          return '第三方';
+      }
+    };
+
+    const renderAuthType = (type) => {
+      switch (type) {
+        case 1:
+          return 'RM';
+        case 2:
+          return 'RF';
+        case 3:
+          return 'RR';
+      }
+    };
+
+    const renderAuthRights = (copyrightObj) => {
+      let result = [];
+      if (copyrightObj.objRights) {
+        result.push('物权')
+      }
+      if (copyrightObj.portraitRights) {
+        result.push('肖像权')
+      }
+      return result.length ? result.join(', ') : '无'
+    };
 
     const formItemLayout = {
       labelCol: {span: 6},
@@ -55,7 +107,7 @@ class ImageDetails extends Component {
             <Row gutter={24}>
               <Col lg={{span: 16}}>
                 <div className="edit-view">
-                  <div className="edit-view-img" style={{backgroundImage: `url(${data.ossId2})`}}>
+                  <div className="edit-view-img" style={{backgroundImage: `url(${data.ossid1Url})`}}>
                   </div>
                 </div>
               </Col>
@@ -63,110 +115,86 @@ class ImageDetails extends Component {
                 <div className="ant-row ant-form-item ant-col-offset-6">
                   <Button htmlType="submit" size="large" type="primary"><Link
                     to={`/image/update/${this.props.routeParams.id}`}>编辑图片</Link></Button>
-                  <Button size="large" className="gap-left">下载图片</Button>
+                  <Button size="large" className="gap-left"><a href={data.ossidUrl}>下载图片</a></Button>
                 </div>
-                <Tabs type="card">
+                <Tabs type="card" animated={false}>
                   <TabPane tab="基本信息" key="tab_1">
                     <FormItem {...formItemLayout} label="图片标题">
                       <p className="ant-form-text">{data.title}</p>
                     </FormItem>
 
-                    <FormItem label="说明" {...formItemLayout}>
+                    <FormItem label="图片说明" {...formItemLayout}>
                       <p className="ant-form-text">{data.caption}</p>
                     </FormItem>
 
-                    <FormItem {...formItemLayout} label="图片分类">
-                      <p className="ant-form-text">
-                        {data.assetFamily && TAG.audio.audio_type.find(item =>
-                          item.key = data.assetFamily
-                        ).name}
-                      </p>
+                    <FormItem {...formItemLayout} label="资源分类">
+                      {findCategory(categoryData, data.category)}
                     </FormItem>
+
+                    {data.vcgCategory && <FormItem {...formItemLayout} label="VCG分类">
+                      {TAG.audio.audio_type.find(item =>
+                        item.key == data.vcgCategory
+                      ).name}
+                    </FormItem>}
 
                     <FormItem {...formItemLayout} label="标签">
-                      <Select disabled tags placeholder="请添加标签" style={{width: '100%'}} {...tagsProps} >
-                        {TAG.tags.map(item =>
-                          <Option key={item.key}>{item.name}</Option>
-                        )}
-                      </Select>
+                      {data.tags && (()=> {
+                        const TagsData = data.tags.split(',') || [];
+                        return TAG.tags.filter(tag => (TagsData.indexOf(tag.key) !== -1)).map(item => <Tag>{item.name}</Tag>)
+                      })()
+                      }
                     </FormItem>
 
-                    <FormItem {...formItemLayout} label="上传时间">
-                      <p className="ant-form-text">{data.createTime}</p>
+                    <FormItem {...formItemLayout} label="关健字">
+                      <p className="ant-form-text">{data.keywords}</p>
                     </FormItem>
 
                     <FormItem {...formItemLayout} label="作者">
-                      <p className="ant-form-text">{data.author}</p>
+                      <p className="ant-form-text">{data.creditLine}</p>
                     </FormItem>
 
                     <FormItem {...formItemLayout} label="内容类别">
                       <p className="ant-form-text">
                         {data.conType && TAG.audio.con_type.find(item =>
-                          item.key = data.conType
+                          item.key == data.conType
                         ).name}
                       </p>
                     </FormItem>
 
-                    <FormItem {...formItemLayout} label="拍摄地">
-                      <p className="ant-form-text">天安门广场</p>
+                    <FormItem {...formItemLayout} label="上传时间">
+                      <p className="ant-form-text">{data.uploadTime}</p>
                     </FormItem>
 
-                    <FormItem {...formItemLayout} label="色彩">
-                      <RadioGroup disabled>
-                        <Radio value={'colors'}>彩色</Radio>
-                        <Radio value={'gray'}>黑白</Radio>
-                      </RadioGroup>
-                    </FormItem>
                   </TabPane>
-                  <TabPane tab="版权信息" key="Tab_2">
+                  <TabPane tab="版权信息" key="2">
                     <FormItem label="版权所属" {...formItemLayout} >
-                      <RadioGroup defaultValue="a" disabled size="default">
-                        <RadioButton value="a">无</RadioButton>
-                        <RadioButton value="b">自有</RadioButton>
-                        <RadioButton value="c">第三方</RadioButton>
-                      </RadioGroup>
+                      {data.copyrightObj && renderOwnerType(data.copyrightObj.ownerType)}
                     </FormItem>
 
-                    <FormItem label="版权授权" {...formItemLayout}>
-                      <RadioGroup size="default">
-                        <RadioButton value="rm">RM</RadioButton>
-                        <RadioButton value="rf">RF</RadioButton>
-                        <RadioButton value="rr">RR</RadioButton>
-                      </RadioGroup>
+                    <FormItem label="版权授权" {...formItemLayout} >
+                      {data.copyrightObj && renderAuthType(data.copyrightObj.authType)}
                     </FormItem>
 
                     <FormItem label="授权类型" {...formItemLayout}>
-                      <CheckboxGroup options={TAG.rightsType} size="default"/>
+                      {data.copyrightObj && renderAuthRights(data.copyrightObj)}
                     </FormItem>
 
-                    <FormItem {...formItemLayout} label="上传时间">
-                      <p className="ant-form-text"><a href="">肖像权授权文件.pdf</a></p>
+                    <FormItem {...formItemLayout} label="授权文件">
+                      <p className="ant-form-text"><a
+                        href={data.copyrightObj ? data.copyrightObj.attachUrl : ''}>{data.copyrightObj && data.copyrightObj.attachFile || '无'}</a>
+                      </p>
                     </FormItem>
 
                     <FormItem {...formItemLayout} label="版权时效">
-                      <p className="ant-form-text">2016-02-26 14:56:51</p>
+                      <p className="ant-form-text">{data.copyrightObj && data.copyrightObj.expireDate}</p>
                     </FormItem>
-                    <FormItem {...formItemLayout} label="授权文件">
-                      <p className="ant-form-text"><a href="">肖像权授权文件.pdf</a></p>
-                    </FormItem>
-                    <FormItem {...formItemLayout} label="水印位置">
-                      <div className="btn-abs" style={{marginTop: 3}}>
-                        <Button className="lt">左上</Button>
-                        <Button className="tr">右上</Button>
-                        <Button className="c">中间</Button>
-                        <Button className="lb">左下</Button>
-                        <Button className="rb">右下</Button>
-                      </div>
-                    </FormItem>
+
                   </TabPane>
                 </Tabs>
-                <Col xs={{offset: 6}}>
-                  <Checkbox>是否在展示平台显示资源</Checkbox>
-                </Col>
               </Col>
             </Row>
             <div className="edit-view-exif">
-              <h4>EXIF信息</h4>
+              <h4>图片信息</h4>
               <Row gutter={24}>
                 <Col xs={{span: 6}}>
                   <ul className="list-v">
@@ -215,9 +243,10 @@ ImageDetails.propTypes = {
 };
 
 function mapStateToProps(state) {
-  const {image} = state;
+  const {image, categorys} = state;
   return {
-    image
+    image,
+categorys
   };
 }
 

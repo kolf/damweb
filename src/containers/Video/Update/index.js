@@ -46,7 +46,7 @@ class VideoUpdate extends Component {
     this.state = {
       id: this.props.routeParams.id
     };
-    this.handleSubmit = this.handleSubmit.bind(this);
+
   }
 
   componentDidMount() {

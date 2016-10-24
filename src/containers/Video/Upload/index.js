@@ -2,7 +2,6 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {
   Form,
-
   Select,
   Input,
   DatePicker,
@@ -17,7 +16,7 @@ import {
   Tag,
   message,
   TreeSelect,
- Checkbox
+  Checkbox
 } from 'antd';
 
 const CreateForm = Form.create;

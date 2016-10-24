@@ -39,7 +39,7 @@ class UploadList extends Component {
   queryList() {
     const {dispatch} = this.props;
     const query = Object.assign({}, this.state.query);
-    query.mediaSum = JSON.stringify(query.mediaSum);
+    // query.mediaSum = JSON.stringify(query.mediaSum);
     // console.log(query);
     dispatch(queryResource(query));
   }
@@ -54,7 +54,7 @@ class UploadList extends Component {
     this.setState({query});
     this.queryList();
   }
-  
+
   goToDetails(assetType, id) {
     browserHistory.push(`/${this.getAssetTypeName(assetType)}/details/${id}`);
   }
@@ -72,7 +72,7 @@ class UploadList extends Component {
     }
   }
 
-  handleSubmit(e){
+  handleSubmit(e) {
     e.preventDefault();
 
     const {form} = this.props;
@@ -90,11 +90,9 @@ class UploadList extends Component {
 
   handleReset(e) {
     e.preventDefault();
-    const {form} = this.props;
-    form.resetFields();
+    const query = {
 
-    const creds = (form.getFieldsValue());
-    this.state.query.phrase = creds.phrase;
+    };
 
     this.queryList()
   }
@@ -145,7 +143,7 @@ class UploadList extends Component {
               <FormItem>
                 {getFieldDecorator('resType', {
                   initialValue: this.state.query.mediaSum.resType,
-                  onChange:(value) => {
+                  onChange: (value) => {
                     this.state.query.mediaSum.resType = value;
                     this.queryList();
                   }
@@ -177,7 +175,8 @@ class UploadList extends Component {
                     {(() => {
                       switch (item.assetType) {
                         case 1:
-                          return <p><img src={item.ossId2} className="hidden"/><img src={item.ossId2} alt="item.name"/>
+                          return <p><img src={item.ossid2Url} className="hidden"/><img src={item.ossid2Url}
+                                                                                       alt="item.name"/>
                           </p>;
                         case 2:
                           return <p><img src={item.ossid3} className="hidden"/><img src={item.ossid3} alt="item.name"/>
@@ -211,20 +210,20 @@ class UploadList extends Component {
                   </div>
 
                   <div className="thumb-list-item-badges">
- {/*                   {item.copyrightObj.authType ? <Tag color="red">RM</Tag> : ''}
-                    <Tag>{(() => {
-                      switch (item.assetType) {
-                        case 1:
-                          return "图片";
-                        case 2:
-                          return "音频";
-                        case 3:
-                          return "视频";
-                        case 4:
-                          return "组照";
-                      }
-                    })()}
-                    </Tag>*/}
+                    {/*                   {item.copyrightObj.authType ? <Tag color="red">RM</Tag> : ''}
+                     <Tag>{(() => {
+                     switch (item.assetType) {
+                     case 1:
+                     return "图片";
+                     case 2:
+                     return "音频";
+                     case 3:
+                     return "视频";
+                     case 4:
+                     return "组照";
+                     }
+                     })()}
+                     </Tag>*/}
                     {/*{renderTags()}*/}
                   </div>
                 </div>

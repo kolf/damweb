@@ -29,12 +29,13 @@ function getImageError(message) {
   };
 }
 
-export function getImage(params) {
+export function getImage(params, cb) {
   return dispatch => {
     dispatch(requestGetImage());
     return cFetch(API_CONFIG.imageDetail, { method: "GET", params: params}).then((res) => {
       if (res.jsonResult.returnCode === '1') {
         dispatch(receiveGetImage(res.jsonResult));
+        cb && cb(res.jsonResult.data)
       } else {
         dispatch(getImageError(res.jsonResult.msg));
         message.error(res.jsonResult.msg);
