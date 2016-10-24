@@ -42,10 +42,12 @@ const TabPane = Tabs.TabPane;
 class VideoReview extends Component {
   constructor(props) {
     super(props);
+    this.handleSubmit = this.handleSubmit.bind(this);
+
     this.state = {
       id: this.props.routeParams.id
     };
-    this.handleSubmit = this.handleSubmit.bind(this);
+
   }
 
   componentDidMount() {
@@ -82,6 +84,10 @@ class VideoReview extends Component {
         copyrightObj.expireDate = JSON.stringify(creds.expireDate).substr(1, 10)
       }
 
+      if (typeof creds.tapeTime === 'object') {
+        creds.tapeTime = JSON.stringify(creds.tapeTime).substr(1, 10)
+      }
+
       copyrightObj.authType = creds.authType;
       copyrightObj.ownerType = creds.ownerType;
 
@@ -103,6 +109,7 @@ class VideoReview extends Component {
     const {setFieldsValue} = this.props.form;
     let rightsType = [];
     let expireDate = file.copyrightObj.expireDate? moment(file.copyrightObj.expireDate.substr(0, 10)) : '';
+    let tapeTime = file.tapeTime? moment(file.tapeTime.substr(0, 10)) : '';
 
     if (file.copyrightObj.objRights === 1) rightsType.push(`objRights`);
     if (file.copyrightObj.portraitRights === 1) rightsType.push(`portraitRights`);
@@ -110,16 +117,18 @@ class VideoReview extends Component {
     setFieldsValue({
       displayName: file.displayName,
       remark: file.remark,
-      vcgCategory: file.vcgCategory || [],
+      vcgCategory: file.vcgCategory || '',
       category: file.category || [],
       tags: file.tags ? file.tags.split(',') : [],
       keywords: file.keywords,
       author: file.author,
-      conType: file.conType || [],
+      conType: file.conType || '',
       ownerType: file.copyrightObj.ownerType + '',
       authType: file.copyrightObj.authType + '',
       rightsType: rightsType,
       expireDate: expireDate,
+      locale: file.locale || '',
+      tapeTime: tapeTime,
     })
   }
 
@@ -273,6 +282,15 @@ class VideoReview extends Component {
                             {required: true, message: '请填写作者'}
                           ]
                         })(<Input placeholder="请填写作者"/>)}
+                      </FormItem>
+                      <FormItem {...formItemLayout} label="拍摄时间">
+                        {getFieldDecorator('tapeTime', {})(
+                          <DatePicker />
+                        )}
+                      </FormItem>
+                      <FormItem {...formItemLayout} label="拍摄地点">
+                        {getFieldDecorator('locale', {
+                        })(<Input placeholder="请填写拍摄地点"/>)}
                       </FormItem>
                       <FormItem {...formItemLayout} label="内容类别">
                         {getFieldDecorator('conType', {

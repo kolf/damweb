@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {Form, Input, Row, Col, Menu, Dropdown, Button, Icon, Select, Card, Tag, Pagination, Tooltip} from 'antd';
+import {Form, Input, Row, Col, Menu, Dropdown, Button, Icon, Select, Card, Tag, Pagination, Tooltip, DatePicker} from 'antd';
 import {Link} from 'react-router';
 import {browserHistory} from 'react-router';
 
@@ -13,6 +13,7 @@ const FormItem = Form.Item;
 const ButtonGroup = Button.Group;
 const Option = Select.Option;
 const InputGroup = Input.Group;
+const RangePicker = DatePicker.RangePicker;
 
 import './style.scss';
 
@@ -20,6 +21,7 @@ class UploadList extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      timeBucket: [],
       query: {
         auditStatus: 5,
         pageNum: 1,
@@ -27,6 +29,8 @@ class UploadList extends Component {
         phrase: '',
         mediaSum: {
           resType: '',
+          startDate: '',
+          endDate: ''
         }
       }
     };
@@ -39,8 +43,7 @@ class UploadList extends Component {
   queryList() {
     const {dispatch} = this.props;
     const query = Object.assign({}, this.state.query);
-    // query.mediaSum = JSON.stringify(query.mediaSum);
-    // console.log(query);
+    query.mediaSum = JSON.stringify(query.mediaSum);
     dispatch(queryResource(query));
   }
 
@@ -90,9 +93,11 @@ class UploadList extends Component {
 
   handleReset(e) {
     e.preventDefault();
-    const query = {
+    const {form} = this.props;
+    form.resetFields();
 
-    };
+    const creds = (form.getFieldsValue());
+    this.state.query.phrase = creds.phrase;
 
     this.queryList()
   }
@@ -124,6 +129,30 @@ class UploadList extends Component {
       }
     };
 
+    const renderAuthType = (type) => {
+      switch (type) {
+        case 1:
+          return <Tag color="red">RM</Tag>;
+        case 2:
+          return <Tag color="red">RF</Tag>;
+        case 3:
+          return <Tag color="red">RR</Tag>;
+      }
+    };
+
+    const renderAssetType = (type) => {
+      switch (type) {
+        case 1:
+          return <Tag>图片</Tag>;
+        case 2:
+          return <Tag>音频</Tag>;
+        case 3:
+          return <Tag>视频</Tag>;
+        case 4:
+          return <Tag>组照</Tag>;
+      }
+    };
+
     return (
       <div>
         <CategoryMenu />
@@ -134,7 +163,23 @@ class UploadList extends Component {
                 {getFieldDecorator('phrase', {
                   initialValue: this.state.query.phrase,
                 })(
-                  <Input size="large" placeholder="输入您要找的关键词" style={{width: 400}}/>
+                  <Input size="large" placeholder="输入您要找的关键词" style={{width: 300}}/>
+                )}
+              </FormItem>
+              <FormItem label="申请日期">
+                {getFieldDecorator('timeBucket ', {
+                  onChange: (val) => {
+                    if (val.length) {
+                      this.state.query.mediaSum.startDate = JSON.stringify(val[0]).substr(1, 10);
+                      this.state.query.mediaSum.endDate = JSON.stringify(val[1]).substr(1, 10);
+                    }else{
+                      delete this.state.query.mediaSum.startDate;
+                      delete this.state.query.mediaSum.endDate;
+                      this.queryList();
+                    }
+                  }
+                })(
+                  <RangePicker style={{width: 200}}/>
                 )}
               </FormItem>
               <FormItem>
@@ -156,9 +201,6 @@ class UploadList extends Component {
                     <Option value="4">组图</Option>
                   </Select>
                 )}
-              </FormItem>
-              <FormItem>
-                <Button size="large" onClick={this.handleReset.bind(this)}>重置</Button>
               </FormItem>
             </Form>
           </div>
@@ -183,7 +225,7 @@ class UploadList extends Component {
                           </p>;
                         case 3:
                           return <Video controls muted>
-                            <source src={item.ossIdUrl2} type="video/flv"/>
+                            <source src={item.ossidUrl} type="video/mp4"/>
                           </Video>;
                         case 4:
                           return <p><img src={item.ossId2} className="hidden"/><img src={item.ossId2} alt="item.name"/>
@@ -210,21 +252,8 @@ class UploadList extends Component {
                   </div>
 
                   <div className="thumb-list-item-badges">
-                    {/*                   {item.copyrightObj.authType ? <Tag color="red">RM</Tag> : ''}
-                     <Tag>{(() => {
-                     switch (item.assetType) {
-                     case 1:
-                     return "图片";
-                     case 2:
-                     return "音频";
-                     case 3:
-                     return "视频";
-                     case 4:
-                     return "组照";
-                     }
-                     })()}
-                     </Tag>*/}
-                    {/*{renderTags()}*/}
+                    {item.copyrightObj && renderAuthType(item.copyrightObj.authType)}
+                    {item.assetType && renderAssetType(item.assetType)}
                   </div>
                 </div>
               </Col>

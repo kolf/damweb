@@ -155,6 +155,13 @@ class VideoDetails extends Component {
                     <FormItem {...formItemLayout} label="作者">
                       <p className="ant-form-text">{data.author}</p>
                     </FormItem>
+                    {data.tapeTime && <FormItem {...formItemLayout} label="拍摄时间">
+                        <p className="ant-form-text">{data.tapeTime}</p>
+                      </FormItem>
+                    }
+                    <FormItem {...formItemLayout} label="拍摄地点">
+                      <p className="ant-form-text">{data.locale}</p>
+                    </FormItem>
 
                     <FormItem {...formItemLayout} label="内容类别">
                       <p className="ant-form-text">

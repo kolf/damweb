@@ -83,6 +83,10 @@ class VideoUpdate extends Component {
         copyrightObj.expireDate = JSON.stringify(creds.expireDate).substr(1, 10)
       }
 
+      if (typeof creds.tapeTime === 'object') {
+        creds.tapeTime = JSON.stringify(creds.tapeTime).substr(1, 10)
+      }
+
       copyrightObj.authType = creds.authType;
       copyrightObj.ownerType = creds.ownerType;
 
@@ -105,6 +109,7 @@ class VideoUpdate extends Component {
     const {setFieldsValue} = this.props.form;
     let rightsType = [];
     let expireDate = file.copyrightObj.expireDate? moment(file.copyrightObj.expireDate.substr(0, 10)) : '';
+    let tapeTime = file.tapeTime? moment(file.tapeTime.substr(0, 10)) : '';
 
     if (file.copyrightObj.objRights === 1) rightsType.push(`objRights`);
     if (file.copyrightObj.portraitRights === 1) rightsType.push(`portraitRights`);
@@ -122,6 +127,8 @@ class VideoUpdate extends Component {
       authType: file.copyrightObj.authType + '',
       rightsType: rightsType,
       expireDate: expireDate,
+      locale: file.locale || '',
+      tapeTime: tapeTime,
     })
   }
 
@@ -263,6 +270,15 @@ class VideoUpdate extends Component {
                             {required: true, message: '请填写作者'}
                           ]
                         })(<Input placeholder="请填写作者"/>)}
+                      </FormItem>
+                      <FormItem {...formItemLayout} label="拍摄时间">
+                        {getFieldDecorator('tapeTime', {})(
+                          <DatePicker />
+                        )}
+                      </FormItem>
+                      <FormItem {...formItemLayout} label="拍摄地点">
+                        {getFieldDecorator('locale', {
+                        })(<Input placeholder="请填写拍摄地点"/>)}
                       </FormItem>
                       <FormItem {...formItemLayout} label="内容类别">
                         {getFieldDecorator('conType', {

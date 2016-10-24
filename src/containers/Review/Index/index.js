@@ -41,13 +41,13 @@ class ReviewIndex extends Component {
     super(props);
     this.state = {
       query: {
-        auditStatus: 1,
-        pageNum: 1,
+        pageNum: '1',
         pageSize: '24',
+        resType: '',
+        startDate: '',
+        endDate: '',
         phrase: '',
-        mediaSum: {
-          resType: '',
-        }
+        auditStatus: 1,
       }
     };
   }
@@ -58,15 +58,18 @@ class ReviewIndex extends Component {
 
   queryList() {
     const {dispatch} = this.props;
-    dispatch(queryResource(this.state.query));
+    const query = Object.assign({}, this.state.query);
+    // query = JSON.stringify(query);
+    dispatch(queryResource(query));
   }
 
   refresh(type, params) {
     let query = this.state.query;
     if (type === 'pager') {
-      Object.assign(query, this.state.query, params);
+      Object.assign(query, params);
     } else if (type === 'auditStatus') {
-      Object.assign(query, this.state.query, params, {'pageNum': 1});
+      query.auditStatus = params.auditStatus;
+      Object.assign(query, {'pageNum': 1});
     }
     this.setState({query});
     this.queryList();
@@ -89,7 +92,7 @@ class ReviewIndex extends Component {
     }
   }
 
-  handleSubmit(e){
+  handleSubmit(e) {
     e.preventDefault();
 
     const {form} = this.props;
@@ -160,6 +163,30 @@ class ReviewIndex extends Component {
       }
     };
 
+    const renderAuthType = (type) => {
+      switch (type) {
+        case 1:
+          return <Tag color="red">RM</Tag>;
+        case 2:
+          return <Tag color="red">RF</Tag>;
+        case 3:
+          return <Tag color="red">RR</Tag>;
+      }
+    };
+
+    const renderAssetType = (type) => {
+      switch (type) {
+        case 1:
+          return <Tag>图片</Tag>;
+        case 2:
+          return <Tag>音频</Tag>;
+        case 3:
+          return <Tag>视频</Tag>;
+        case 4:
+          return <Tag>组照</Tag>;
+      }
+    };
+
     return (
       <div>
         <div className="ant-layout-content">
@@ -169,17 +196,44 @@ class ReviewIndex extends Component {
                 {getFieldDecorator('phrase', {
                   initialValue: this.state.query.phrase,
                 })(
-                  <Input size="large" placeholder="输入您要找的关键词" style={{width: 400}}/>
+                  <Input size="large" placeholder="输入您要找的关键词" style={{width: 300}}/>
                 )}
               </FormItem>
               <FormItem label="申请日期">
-                {getFieldDecorator('phrase ', {})(
-                  <RangePicker style={{width: 220}}/>
+                {getFieldDecorator('timeBucket ', {
+                  onChange: (val) => {
+                    if (val.length) {
+                      this.state.query.startDate = JSON.stringify(val[0]).substr(1, 10);
+                      this.state.query.endDate = JSON.stringify(val[1]).substr(1, 10);
+                    }else{
+                      delete this.state.query.startDate;
+                      delete this.state.query.endDate;
+                      this.queryList();
+                    }
+                  }
+                })(
+                  <RangePicker style={{width: 200}}/>
                 )}
               </FormItem>
               <FormItem>
-                <Button type="primary" htmlType="submit" size="large">搜索</Button>
-                <Button className="gap-left" size="large">清空</Button>
+                <Button type="primary" htmlType="submit" size="large"><Icon type="search"/> 搜索</Button>
+              </FormItem>
+              <FormItem>
+                {getFieldDecorator('resType', {
+                  initialValue: this.state.query.resType,
+                  onChange: (value) => {
+                    this.state.query.resType = value;
+                    this.queryList();
+                  }
+                })(
+                  <Select style={{width: 70}} size="large">
+                    <Option value="">全部</Option>
+                    <Option value="1">图片</Option>
+                    <Option value="2">音频</Option>
+                    <Option value="3">视频</Option>
+                    <Option value="4">组图</Option>
+                  </Select>
+                )}
               </FormItem>
             </Form>
           </div>
@@ -187,21 +241,9 @@ class ReviewIndex extends Component {
             <TabPane tab="未审核资源" key="1"/>
             <TabPane tab="已拒绝的资源" key="4"/>
           </Tabs>
-          <div style={{marginBottom: 14}}>
-            <Select size="large" style={{width: 160}} placeholder="请选择上传类型">
-              <Option value="s1">所有资源</Option>
-              <Option value="s2">内部上传</Option>
-              <Option value="s3">用户上传</Option>
-            </Select>
-            <Select size="large" style={{width: 160, marginLeft: 10}} placeholder="请选择上传时间">
-              <Option value="s4">所有时间</Option>
-              <Option value="s5">最近一天</Option>
-              <Option value="s6">最近三天</Option>
-              <Option value="s7">最近一周</Option>
-              <Option value="s8">最近半月</Option>
-              <Option value="s9">最近一月</Option>
-            </Select>
-          </div>
+          {!data.length && <div className="text-center">
+            暂无数据...
+          </div>}
           <Row gutter={24}>
             {data && data.map(item =>
               <Col {...thumbItemLayout}>
@@ -210,7 +252,8 @@ class ReviewIndex extends Component {
                     {(() => {
                       switch (item.assetType) {
                         case 1:
-                          return <p><img src={item.ossId2} className="hidden"/><img src={item.ossId2} alt="item.name"/>
+                          return <p><img src={item.ossid2Url} className="hidden"/><img src={item.ossid2Url}
+                                                                                       alt="item.name"/>
                           </p>;
                         case 2:
                           return <p><img src={item.ossid3} className="hidden"/><img src={item.ossid3} alt="item.name"/>
@@ -220,8 +263,8 @@ class ReviewIndex extends Component {
                             <source src={item.ossidUrl} type="video/mp4"/>
                           </Video>;
                         case 4:
-                          return <p><img src={item.cover.ossId1} className="hidden"/><img src={item.cover.ossId1}
-                                                                                          alt="item.name"/></p>;
+                          return <p><img src={item.ossId2} className="hidden"/><img src={item.ossId2} alt="item.name"/>
+                          </p>;
                       }
                     })()}
                   </div>
@@ -248,20 +291,8 @@ class ReviewIndex extends Component {
                   </div>
 
                   <div className="thumb-list-item-badges">
-                    {item.conType ? <Tag color="red">RM</Tag> : ''}
-                    <Tag>{(() => {
-                      switch (item.assetType) {
-                        case 1:
-                          return "图片";
-                        case 2:
-                          return "音频";
-                        case 3:
-                          return "视频";
-                        case 4:
-                          return "组照";
-                      }
-                    })()}
-                    </Tag>
+                    {item.copyrightObj && renderAuthType(item.copyrightObj.authType)}
+                    {item.assetType && renderAssetType(item.assetType)}
                   </div>
                 </div>
               </Col>

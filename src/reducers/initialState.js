@@ -19,7 +19,7 @@ export default {
     isFetching: false,
     meta: {
       total: 0,
-      pageSize: 10,
+      pageSize: 24,
       pageNum: 1
     },
     data: []
