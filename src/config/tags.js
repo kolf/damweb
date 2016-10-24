@@ -33,8 +33,8 @@ export const TAG = {
       {key: '3', name: '混合'}
     ],
     audio_type: [
-      {key: '1', name: '编辑类'},
-      {key: '2', name: '创意类'}
+      {key: '6', name: '编辑类'},
+      {key: '7', name: '创意类'}
     ],
     descrip: [
       {key: '1', name: '风格'},

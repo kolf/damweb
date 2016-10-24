@@ -32,6 +32,7 @@ const ButtonGroup = Button.Group;
 const Option = Select.Option;
 const InputGroup = Input.Group;
 const TabPane = Tabs.TabPane;
+const RangePicker = DatePicker.RangePicker;
 
 import './style.scss';
 
@@ -39,13 +40,14 @@ class ReviewIndex extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      startValue: null,
-      endValue: null,
-      endOpen: false,
       query: {
         auditStatus: 1,
         pageNum: 1,
-        pageSize: 24,
+        pageSize: '24',
+        phrase: '',
+        mediaSum: {
+          resType: '',
+        }
       }
     };
   }
@@ -64,49 +66,10 @@ class ReviewIndex extends Component {
     if (type === 'pager') {
       Object.assign(query, this.state.query, params);
     } else if (type === 'auditStatus') {
-      console.log(type);
       Object.assign(query, this.state.query, params, {'pageNum': 1});
     }
     this.setState({query});
     this.queryList();
-  }
-
-  disabledStartDate(startValue) {
-    if (!startValue || !this.state.endValue) {
-      return false;
-    }
-    return startValue.getTime() >= this.state.endValue.getTime();
-  }
-
-  disabledEndDate(endValue) {
-    if (!endValue || !this.state.startValue) {
-      return false;
-    }
-    return endValue.getTime() <= this.state.startValue.getTime();
-  }
-
-  onChange(field, value) {
-    this.setState({
-      [field]: value,
-    });
-  }
-
-  onStartChange(value) {
-    this.onChange('startValue', value);
-  }
-
-  onEndChange(value) {
-    this.onChange('endValue', value);
-  }
-
-  handleStartToggle({open}) {
-    if (!open) {
-      this.setState({endOpen: true});
-    }
-  }
-
-  handleEndToggle({open}) {
-    this.setState({endOpen: open});
   }
 
   goToDetails(assetType, id) {
@@ -124,6 +87,33 @@ class ReviewIndex extends Component {
       case 4:
         return `imageGroup`;
     }
+  }
+
+  handleSubmit(e){
+    e.preventDefault();
+
+    const {form} = this.props;
+
+    form.validateFields((errors) => {
+      if (errors) {
+        return;
+      }
+      const creds = (form.getFieldsValue());
+      this.state.query.phrase = creds.phrase;
+      // Object.assign(this.state.query, creds);
+      this.queryList();
+    });
+  }
+
+  handleReset(e) {
+    e.preventDefault();
+    const {form} = this.props;
+    form.resetFields();
+
+    const creds = (form.getFieldsValue());
+    this.state.query.phrase = creds.phrase;
+
+    this.queryList()
   }
 
   handleReview(resultType, id, assetType) {
@@ -174,29 +164,18 @@ class ReviewIndex extends Component {
       <div>
         <div className="ant-layout-content">
           <div className="text-center">
-            <Form inline className="pad-bottom search-box" onSubmit={this.handleSubmit}>
-              <FormItem label="申请用户">
-                {getFieldDecorator('phrase ', {})(
-                  <Input/>
+            <Form inline className="pad-bottom search-box" onSubmit={this.handleSubmit.bind(this)}>
+              <FormItem>
+                {getFieldDecorator('phrase', {
+                  initialValue: this.state.query.phrase,
+                })(
+                  <Input size="large" placeholder="输入您要找的关键词" style={{width: 400}}/>
                 )}
               </FormItem>
               <FormItem label="申请日期">
-                <DatePicker
-                  disabledDate={this.disabledStartDate.bind(this)}
-                  value={this.state.startValue}
-                  placeholder="开始日期"
-                  onChange={this.onStartChange.bind(this)}
-                  toggleOpen={this.handleStartToggle.bind(this)}
-                  style={{marginRight: 12}}
-                />
-                <DatePicker
-                  disabledDate={this.disabledEndDate.bind(this)}
-                  value={this.state.endValue}
-                  placeholder="结束日期"
-                  onChange={this.onEndChange.bind(this)}
-                  open={this.state.endOpen}
-                  toggleOpen={this.handleEndToggle.bind(this)}
-                />
+                {getFieldDecorator('phrase ', {})(
+                  <RangePicker style={{width: 220}}/>
+                )}
               </FormItem>
               <FormItem>
                 <Button type="primary" htmlType="submit" size="large">搜索</Button>

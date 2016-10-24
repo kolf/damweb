@@ -24,6 +24,10 @@ class UploadList extends Component {
         auditStatus: 5,
         pageNum: 1,
         pageSize: '24',
+        phrase: '',
+        mediaSum: {
+          resType: '',
+        }
       }
     };
   }
@@ -32,9 +36,12 @@ class UploadList extends Component {
     this.queryList();
   }
 
-  queryList(params) {
+  queryList() {
     const {dispatch} = this.props;
-    dispatch(queryResource(this.state.query));
+    const query = Object.assign({}, this.state.query);
+    query.mediaSum = JSON.stringify(query.mediaSum);
+    // console.log(query);
+    dispatch(queryResource(query));
   }
 
   refresh(type, params) {
@@ -42,13 +49,12 @@ class UploadList extends Component {
     if (type === 'pager') {
       Object.assign(query, this.state.query, params);
     } else if (type === 'auditStatus') {
-      console.log(type);
       Object.assign(query, this.state.query, params, {'pageNum': 1});
     }
     this.setState({query});
     this.queryList();
   }
-
+  
   goToDetails(assetType, id) {
     browserHistory.push(`/${this.getAssetTypeName(assetType)}/details/${id}`);
   }
@@ -66,8 +72,34 @@ class UploadList extends Component {
     }
   }
 
+  handleSubmit(e){
+    e.preventDefault();
+
+    const {form} = this.props;
+
+    form.validateFields((errors) => {
+      if (errors) {
+        return;
+      }
+      const creds = (form.getFieldsValue());
+      this.state.query.phrase = creds.phrase;
+      // Object.assign(this.state.query, creds);
+      this.queryList();
+    });
+  }
+
+  handleReset(e) {
+    e.preventDefault();
+    const {form} = this.props;
+    form.resetFields();
+
+    const creds = (form.getFieldsValue());
+    this.state.query.phrase = creds.phrase;
+
+    this.queryList()
+  }
+
   render() {
-    const _this = this;
     const {getFieldDecorator} = this.props.form;
     const {resources:{data, meta:{total}}} = this.props;
 
@@ -86,11 +118,11 @@ class UploadList extends Component {
       "showTotal": () => {
         return '共 ' + total + ' 条';
       },
-      onShowSizeChange(pageNum, pageSize) {
-        _this.refresh("pager", {"pageNum": pageNum, "pageSize": pageSize});
+      onShowSizeChange: (pageNum, pageSize)=> {
+        this.refresh("pager", {"pageNum": pageNum, "pageSize": pageSize});
       },
-      onChange(pageNum) {
-        _this.refresh("pager", {"pageNum": pageNum});
+      onChange: (pageNum)=> {
+        this.refresh("pager", {"pageNum": pageNum});
       }
     };
 
@@ -99,9 +131,11 @@ class UploadList extends Component {
         <CategoryMenu />
         <div className="ant-layout-content">
           <div className="text-center">
-            <Form inline className="pad-bottom search-box" onSubmit={this.handleSubmit}>
+            <Form inline className="pad-bottom search-box" onSubmit={this.handleSubmit.bind(this)}>
               <FormItem>
-                {getFieldDecorator('phrase ', {})(
+                {getFieldDecorator('phrase', {
+                  initialValue: this.state.query.phrase,
+                })(
                   <Input size="large" placeholder="输入您要找的关键词" style={{width: 400}}/>
                 )}
               </FormItem>
@@ -109,7 +143,13 @@ class UploadList extends Component {
                 <Button type="primary" htmlType="submit" size="large"><Icon type="search"/> 搜索</Button>
               </FormItem>
               <FormItem>
-                {getFieldDecorator('auditStatus ', {initialValue: ''})(
+                {getFieldDecorator('resType', {
+                  initialValue: this.state.query.mediaSum.resType,
+                  onChange:(value) => {
+                    this.state.query.mediaSum.resType = value;
+                    this.queryList();
+                  }
+                })(
                   <Select style={{width: 70}} size="large">
                     <Option value="">全部</Option>
                     <Option value="1">图片</Option>
@@ -120,7 +160,7 @@ class UploadList extends Component {
                 )}
               </FormItem>
               <FormItem>
-                <Button size="large">清空</Button>
+                <Button size="large" onClick={this.handleReset.bind(this)}>重置</Button>
               </FormItem>
             </Form>
           </div>
@@ -171,7 +211,7 @@ class UploadList extends Component {
                   </div>
 
                   <div className="thumb-list-item-badges">
-                    {item.conType ? <Tag color="red">RM</Tag> : ''}
+ {/*                   {item.copyrightObj.authType ? <Tag color="red">RM</Tag> : ''}
                     <Tag>{(() => {
                       switch (item.assetType) {
                         case 1:
@@ -184,7 +224,8 @@ class UploadList extends Component {
                           return "组照";
                       }
                     })()}
-                    </Tag>
+                    </Tag>*/}
+                    {/*{renderTags()}*/}
                   </div>
                 </div>
               </Col>

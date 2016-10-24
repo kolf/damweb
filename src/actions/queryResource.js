@@ -32,7 +32,7 @@ function resourceError(message) {
 export function queryResource(params) {
   return dispatch => {
     dispatch(requestResource());
-    return cFetch(API_CONFIG.queryResource, { method: "GET", params: params }).then((res) => {
+    return cFetch(API_CONFIG.queryResource, { method: "POST", body: JSON.stringify(params) }).then((res) => {
       if (res.jsonResult.returnCode === '1') {
         dispatch(receiveResource(res.jsonResult));
       } else {
