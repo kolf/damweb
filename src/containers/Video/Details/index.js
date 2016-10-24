@@ -134,11 +134,11 @@ class VideoDetails extends Component {
                       {findCategory(categoryData, data.category)}
                     </FormItem>
 
-                    <FormItem {...formItemLayout} label="VCG分类">
-                      {data.vcgCategory && TAG.audio.audio_type.find(item =>
-                        item.key = data.vcgCategory
+                    {data.vcgCategory && <FormItem {...formItemLayout} label="VCG分类">
+                      {TAG.audio.audio_type.find(item =>
+                        item.key == data.vcgCategory
                       ).name}
-                    </FormItem>
+                    </FormItem>}
 
                     <FormItem {...formItemLayout} label="标签">
                       {data.tags && (()=> {
