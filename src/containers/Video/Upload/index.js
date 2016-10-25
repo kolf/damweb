@@ -19,22 +19,20 @@ import {
   Checkbox
 } from 'antd';
 
+import {TAG} from '../../../config/tags';
+import {API_CONFIG} from '../../../config/api';
+import {updateVideo, removeVideo} from '../../../actions/video';
+import {queryVcgCategory} from '../../../actions/vcgCategory';
+import {queryCategory} from '../../../actions/category';
+import cookie from 'js-cookie';
+import './style.scss';
+
 const CreateForm = Form.create;
 const FormItem = Form.Item;
 const Option = Select.Option;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;
-
-import {TAG} from '../../../config/tags';
-import {API_CONFIG} from '../../../config/api';
-import {updateVideo} from '../../../actions/updateVideo';
-import {queryCategory} from '../../../actions/category';
-import CategorySelect from '../../../components/CategorySelect';
-import defaultVideoThmmb from '../../../assets/images/shipin.png';
-import cookie from 'js-cookie';
-
-import './style.scss';
 
 class VideoUpload extends Component {
   constructor(props) {
@@ -52,6 +50,7 @@ class VideoUpload extends Component {
   componentDidMount() {
     const {dispatch} = this.props;
     dispatch(queryCategory());
+    dispatch(queryVcgCategory());
   }
 
   handleSubmit(e) {
@@ -96,7 +95,6 @@ class VideoUpload extends Component {
 
       Object.assign(creds, {
         id: this.state.attachId,
-        tags: creds.tags.join(','),
         copyrightObj
       });
 
@@ -105,18 +103,16 @@ class VideoUpload extends Component {
   }
 
   setValues(file) {
-    console.log(file);
-
     const {setFieldsValue} = this.props.form;
     setFieldsValue({
       displayName: file.displayName,
       remark: file.remark,
       vcgCategory: file.vcgCategory || [],
       category: file.category || [],
-      tags: file.tags || [],
+      tags: file.tags,
       keywords: file.keywords,
       author: file.author,
-      conType: file.conType || '',
+      conType: file.conType || [],
       ownerType: file.ownerType + '' || '',
       authType: file.authType + '' || '',
       rightsType: file.rightsType,
@@ -129,6 +125,7 @@ class VideoUpload extends Component {
   render() {
     const {getFieldDecorator, getFieldsValue} = this.props.form;
     const categoryData = this.props.categorys.data || [];
+    const vcgCategorysData = this.props.vcgCategorys.data || [];
 
     const toTreeData = data => {
       return data.map((item) => {
@@ -143,13 +140,26 @@ class VideoUpload extends Component {
       })
     };
 
+    const toVcgTreeData = data => {
+      return data.map((item) => {
+        let obj = {
+          value: item.id + '',
+          label: item.cateName
+        };
+        if (item.childNode.length) {
+          obj.children = toVcgTreeData(item.childNode)
+        }
+        return obj;
+      })
+    };
+
     const formItemLayout = {
       labelCol: {span: 7},
       wrapperCol: {span: 17}
     };
 
     const uploadListProps = {
-      action: API_CONFIG.baseUri + API_CONFIG.uploadVideo + '?token='+ cookie.get('token'),
+      action: API_CONFIG.baseUri + API_CONFIG.uploadVideo + '?token=' + cookie.get('token'),
       listType: 'picture-card',
       accept: 'video/*',
       multiple: true,
@@ -189,13 +199,16 @@ class VideoUpload extends Component {
           })
         }
       },
-      onRemove: () => {
-        console.log('remove')
+      onRemove: (file) => {
+        const {dispatch} = this.props;
+        file.response && dispatch(removeVideo({
+          id: file.response.data.id
+        }))
       }
     };
 
     const cpAttachProps = {
-      action: API_CONFIG.baseUri + API_CONFIG.videoUploadAttach + '?token='+ cookie.get('token'),
+      action: API_CONFIG.baseUri + API_CONFIG.videoUploadAttach + '?token=' + cookie.get('token'),
       accept: 'application/*',
       showUploadList: false,
       disabled: this.state.attachId ? false : true,
@@ -253,7 +266,8 @@ class VideoUpload extends Component {
                     {required: true, message: '请选择资源分类'}
                   ]
                 })(
-                  <TreeSelect size="large" allowClear dropdownStyle={{maxHeight: 400, overflow: 'auto'}} treeData={toTreeData(categoryData)} placeholder="请选择" treeDefaultExpandAll/>
+                  <TreeSelect size="large" allowClear dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
+                              treeData={toTreeData(categoryData)} placeholder="请选择" treeDefaultExpandAll/>
                 )}
               </FormItem>
 
@@ -263,11 +277,8 @@ class VideoUpload extends Component {
                     {required: true, message: '请选择VCG分类'}
                   ]
                 })(
-                  <Select placeholder="请选择" style={{width: '100%'}}>
-                    {TAG.audio.audio_type.map(item =>
-                      <Option key={item.key}>{item.name}</Option>
-                    )}
-                  </Select>
+                  <TreeSelect size="large" allowClear dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
+                              treeData={toVcgTreeData(vcgCategorysData)} placeholder="请选择" treeDefaultExpandAll/>
                 )}
                 <div className="ant-form-explain">(全局分类)</div>
               </FormItem>
@@ -275,15 +286,11 @@ class VideoUpload extends Component {
               <FormItem {...formItemLayout} label="标签">
                 {getFieldDecorator('tags', {
                   rules: [
-                    {required: true, message: '请添加标签', type: 'array'}
+                    {required: true, message: '请添加关健字'}
                   ]
                 })(
-                  <Select tags placeholder="请添加标签" style={{width: '100%'}}>
-                    {TAG.tags.map(item =>
-                      <Option value={item.key} key={item.key}>{item.name}</Option>
-                    )}
-                  </Select>
-                )}
+                  <Input placeholder="请添加关健字"/>)}
+                <div className="ant-form-explain">多个标签以','隔开</div>
               </FormItem>
               <FormItem {...formItemLayout} label="关健字">
                 {getFieldDecorator('keywords', {
@@ -292,6 +299,7 @@ class VideoUpload extends Component {
                   ]
                 })(
                   <Input placeholder="请添加关健字"/>)}
+                <div className="ant-form-explain">多个关健字以','隔开</div>
               </FormItem>
               <FormItem {...formItemLayout} label="作者">
                 {getFieldDecorator('author', {
@@ -300,15 +308,14 @@ class VideoUpload extends Component {
                   ]
                 })(<Input placeholder="请填写作者"/>)}
               </FormItem>
-                      <FormItem {...formItemLayout} label="拍摄时间">
-                        {getFieldDecorator('tapeTime', {})(
-                          <DatePicker />
-                        )}
-                      </FormItem>
-                      <FormItem {...formItemLayout} label="拍摄地点">
-                        {getFieldDecorator('locale', {
-                        })(<Input placeholder="请填写拍摄地点"/>)}
-                      </FormItem>
+              <FormItem {...formItemLayout} label="拍摄时间">
+                {getFieldDecorator('tapeTime', {})(
+                  <DatePicker />
+                )}
+              </FormItem>
+              <FormItem {...formItemLayout} label="拍摄地点">
+                {getFieldDecorator('locale', {})(<Input placeholder="请填写拍摄地点"/>)}
+              </FormItem>
               <FormItem {...formItemLayout} label="内容类别">
                 {getFieldDecorator('conType', {
                   rules: [
@@ -316,7 +323,7 @@ class VideoUpload extends Component {
                   ]
                 })(
                   <Select placeholder="请选择" style={{width: '100%'}}>
-                    {TAG.audio.con_type.map(item =>
+                    {TAG.video.con_type.map(item =>
                       <Option key={item.key}>{item.name}</Option>
                     )}
                   </Select>)}
@@ -350,9 +357,7 @@ class VideoUpload extends Component {
               </FormItem>
 
               <FormItem label="版权时效" {...formItemLayout}>
-                {getFieldDecorator('expireDate', {
-
-                })(
+                {getFieldDecorator('expireDate', {})(
                   <DatePicker />
                 )}
               </FormItem>
@@ -382,9 +387,10 @@ VideoUpload.propTypes = {
 };
 
 function mapStateToProps(state) {
-  const {categorys} = state;
+  const {categorys, vcgCategorys} = state;
   return {
-    categorys
+    categorys,
+    vcgCategorys
   };
 }
 

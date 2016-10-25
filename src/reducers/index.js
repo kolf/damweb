@@ -8,6 +8,7 @@ import audio from './audio';
 import image from './image';
 import video from './video';
 import categorys from './categorys';
+import vcgCategorys from './vcgCategorys';
 import roles from './roles';
 import userroles from './userroles';
 
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
   image,
   video,
   categorys,
+  vcgCategorys,
   roles,
   userroles
 });

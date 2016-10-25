@@ -30,6 +30,7 @@ export const API_CONFIG = {
   uploadVideo:'videoRes/uploadVideo',         //上传频资源视
   videoDetail:'videoRes/view',           //视频详情
   videoUpdate:'videoRes/update',         //视频修改
+  removeUpdate:'videoRes/delete',         //视频修改
   videoUploadAttach:'videoRes/uploadAttach',         //视频修改
   uploadImg :'img/uploadImg',             //图片上传
   updateImg :'img/update',             //图片编辑
@@ -45,6 +46,7 @@ export const API_CONFIG = {
   updateImageGroup: 'imgGroup/create',
 
   queryCategory: 'category/treeView',
+  queryVcgCategory: 'vcgCategory/treeView',
   createCategory: 'category/create',
   removeCategory: 'category/delete',
   updateCategory: 'category/update',

@@ -6,7 +6,8 @@ import {browserHistory} from 'react-router';
 
 import CategoryMenu from '../../../components/CategoryMenu';
 import {queryResource} from '../../../actions/queryResource';
-import Video from 'react-html5video';
+import defaultVideoThumb from '../../../assets/images/defaultVideo.gif';
+// import Video from 'react-html5video';
 
 const CreateForm = Form.create;
 const FormItem = Form.Item;
@@ -21,17 +22,14 @@ class UploadList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      timeBucket: [],
       query: {
-        auditStatus: 5,
-        pageNum: 1,
+        pageNum: '1',
         pageSize: '24',
+        resType: '',
+        startDate: '',
+        endDate: '',
         phrase: '',
-        mediaSum: {
-          resType: '',
-          startDate: '',
-          endDate: ''
-        }
+        auditStatus: 1,
       }
     };
   }
@@ -43,16 +41,17 @@ class UploadList extends Component {
   queryList() {
     const {dispatch} = this.props;
     const query = Object.assign({}, this.state.query);
-    query.mediaSum = JSON.stringify(query.mediaSum);
+    // query = JSON.stringify(query);
     dispatch(queryResource(query));
   }
 
   refresh(type, params) {
     let query = this.state.query;
     if (type === 'pager') {
-      Object.assign(query, this.state.query, params);
+      Object.assign(query, params);
     } else if (type === 'auditStatus') {
-      Object.assign(query, this.state.query, params, {'pageNum': 1});
+      query.auditStatus = params.auditStatus;
+      Object.assign(query, {'pageNum': 1});
     }
     this.setState({query});
     this.queryList();
@@ -112,7 +111,8 @@ class UploadList extends Component {
     };
 
     const pager = {
-      "page": this.state.query.pageNum,
+      'defaultCurrent': 1,
+      "current": this.state.query.pageNum,
       "pageSize": this.state.query.pageSize,
       "total": total,
       "pageSizeOptions": ['24', '48', '96'],
@@ -170,11 +170,11 @@ class UploadList extends Component {
                 {getFieldDecorator('timeBucket ', {
                   onChange: (val) => {
                     if (val.length) {
-                      this.state.query.mediaSum.startDate = JSON.stringify(val[0]).substr(1, 10);
-                      this.state.query.mediaSum.endDate = JSON.stringify(val[1]).substr(1, 10);
+                      this.state.query.startDate = JSON.stringify(val[0]).substr(1, 10);
+                      this.state.query.endDate = JSON.stringify(val[1]).substr(1, 10);
                     }else{
-                      delete this.state.query.mediaSum.startDate;
-                      delete this.state.query.mediaSum.endDate;
+                      delete this.state.query.startDate;
+                      delete this.state.query.endDate;
                       this.queryList();
                     }
                   }
@@ -187,9 +187,9 @@ class UploadList extends Component {
               </FormItem>
               <FormItem>
                 {getFieldDecorator('resType', {
-                  initialValue: this.state.query.mediaSum.resType,
+                  initialValue: this.state.query.resType,
                   onChange: (value) => {
-                    this.state.query.mediaSum.resType = value;
+                    this.state.query.resType = value;
                     this.queryList();
                   }
                 })(
@@ -209,6 +209,9 @@ class UploadList extends Component {
               上传资源</Link></Button>
             <Button type="ghost" size="large"><Link to={'/imageGroup/upload'}><Icon type="hdd"/> 合并组照</Link></Button>
           </div>
+	  {!data.length && <div className="text-center">
+            暂无数据...
+          </div>}
           <Row gutter={24}>
             {data && data.map(item =>
               <Col {...thumbItemLayout}>
@@ -224,9 +227,8 @@ class UploadList extends Component {
                           return <p><img src={item.ossid3} className="hidden"/><img src={item.ossid3} alt="item.name"/>
                           </p>;
                         case 3:
-                          return <Video controls muted>
-                            <source src={item.ossidUrl} type="video/mp4"/>
-                          </Video>;
+                          return <p><img src={defaultVideoThumb} className="hidden"/><img src={defaultVideoThumb} alt="item.name"/>
+                          </p>;
                         case 4:
                           return <p><img src={item.ossId2} className="hidden"/><img src={item.ossId2} alt="item.name"/>
                           </p>;
@@ -236,13 +238,13 @@ class UploadList extends Component {
                   <div className="thumb-list-item-text">{(() => {
                     switch (item.assetType) {
                       case 1:
-                        return item.title
+                        return item.title;
                       case 2:
-                        return item.displayName
+                        return item.displayName;
                       case 3:
-                        return item.displayName
+                        return item.displayName;
                       case 4:
-                        return item.title
+                        return item.title;
                     }
                   })()}
                     <div className="thumb-list-item-btns ant-btn-group ant-btn-group-sm">

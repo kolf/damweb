@@ -43,3 +43,27 @@ export function getVideo(params, cb) {
     });
   };
 }
+
+export function updateVideo(creds, cb) {
+  return () => {
+    return cFetch(API_CONFIG.videoUpdate, { method: "POST", body: JSON.stringify(creds) }).then((res) => {
+      if (res.jsonResult.returnCode === '1') {
+        cb && cb(res.jsonResult);
+      } else {
+        message.error(res.jsonResult.msg);
+      }
+    });
+  };
+}
+
+export function removeVideo(creds, cb) {
+  return () => {
+    return cFetch(API_CONFIG.removeUpdate, { method: "GET", params: creds }).then((res) => {
+      if (res.jsonResult.returnCode === '1') {
+        cb && cb(res.jsonResult);
+      } else {
+        message.error(res.jsonResult.msg);
+      }
+    });
+  };
+}

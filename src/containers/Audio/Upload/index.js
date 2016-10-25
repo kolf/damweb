@@ -27,7 +27,7 @@ const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;
 
 import {API_CONFIG} from '../../../config/api';
-import {updateAudio} from '../../../actions/updateAudio';
+import {updateAudio} from '../../../actions/audio';
 
 import {TAG} from '../../../config/tags';
 

@@ -28,7 +28,7 @@ const CheckboxGroup = Checkbox.Group;
 
 import {TAG} from '../../../config/tags';
 import {API_CONFIG} from '../../../config/api';
-import {updateImage} from '../../../actions/updateImage';
+import {updateImage} from '../../../actions/image';
 import {queryCategory} from '../../../actions/category';
 import cookie from 'js-cookie';
 

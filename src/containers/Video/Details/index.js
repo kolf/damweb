@@ -19,8 +19,9 @@ import {
 import {connect} from 'react-redux';
 import {browserHistory, Link} from 'react-router';
 import './style.scss';
-import {getVideo} from '../../../actions/getVideo';
+import {getVideo} from '../../../actions/video';
 import {queryCategory} from '../../../actions/category';
+import {queryVcgCategory} from '../../../actions/vcgCategory';
 import {TAG} from '../../../config/tags';
 import Video from 'react-html5video';
 
@@ -33,6 +34,7 @@ const CheckboxGroup = Checkbox.Group;
 const TabPane = Tabs.TabPane;
 
 let categoryName = '';
+let vcgCategoryName = '';
 const findCategory = (data, id) => {
   data.forEach((item) => {
     if (item.code == id) {
@@ -45,6 +47,18 @@ const findCategory = (data, id) => {
   return categoryName;
 };
 
+const findVcgCategory = (data, id) => {
+  data.forEach((item) => {
+    if (item.id == id) {
+      vcgCategoryName = item.cateName
+    } else if (item.childNode) {
+      findVcgCategory(item.childNode, id)
+    }
+  });
+
+  return vcgCategoryName;
+};
+
 class VideoDetails extends Component {
   constructor(props) {
     super(props);
@@ -55,13 +69,15 @@ class VideoDetails extends Component {
     dispatch(getVideo({
       id: routeParams.id
     }));
-    dispatch(queryCategory())
+    dispatch(queryCategory());
+    dispatch(queryVcgCategory());
   }
 
   render() {
     // const {getFieldDecorator} = this.props.form;
     const {video: {data}} = this.props;
     const categoryData = this.props.categorys.data || [];
+    const vcgCategorysData = this.props.vcgCategorys.data || [];
 
     const renderOwnerType = (type) => {
       switch (type) {
@@ -108,17 +124,18 @@ class VideoDetails extends Component {
             <Row gutter={24}>
               <Col lg={{span: 16}}>
                 <div className="edit-view">
-                  <Video controls loop muted poster="../../../assets/images/music.png"
-                         style={{width: '100%', height: '100%'}}>
-                    <source src={data.ossidUrl ? data.ossidUrl : ''} type="video/mp4"/>
-                  </Video>
+                  {data.ossidUrl && <Video controls loop muted poster="../../../assets/images/music.png"
+                                           style={{width: '100%', height: '100%'}}>
+                    <source src={data.ossidUrl} type="video/mp4"/>
+                  </Video>}
                 </div>
               </Col>
               <Col lg={{span: 8}}>
-                <div className="ant-row ant-form-item ant-col-offset-6">
+                <div className="ant-row ant-form-item">
                   <Button htmlType="submit" size="large" type="primary"><Link
                     to={`/video/update/${this.props.routeParams.id}`}>编辑视频</Link></Button>
                   <Button size="large" className="gap-left"><a href={data.ossidUrl}>下载视频</a></Button>
+                  <a style={{marginLeft: 5}} target="_black" href={data.ossidUrl}><Icon type="link" />查看源视频</a>
                 </div>
                 <Tabs type="card" animated={false}>
                   <TabPane tab="基本信息" key="tab_1">
@@ -135,15 +152,12 @@ class VideoDetails extends Component {
                     </FormItem>
 
                     {data.vcgCategory && <FormItem {...formItemLayout} label="VCG分类">
-                      {TAG.audio.audio_type.find(item =>
-                        item.key == data.vcgCategory
-                      ).name}
+                      {findVcgCategory(vcgCategorysData, data.vcgCategory)}
                     </FormItem>}
 
                     <FormItem {...formItemLayout} label="标签">
                       {data.tags && (()=> {
-                        const TagsData = data.tags.split(',') || [];
-                        return TAG.tags.filter(tag => (TagsData.indexOf(tag.key) !== -1)).map(item => <Tag>{item.name}</Tag>)
+                        return data.tags.split(',').map(tag => <Tag>{tag}</Tag>)
                       })()
                       }
                     </FormItem>
@@ -165,7 +179,7 @@ class VideoDetails extends Component {
 
                     <FormItem {...formItemLayout} label="内容类别">
                       <p className="ant-form-text">
-                        {data.conType && TAG.audio.con_type.find(item =>
+                        {data.conType && TAG.video.con_type.find(item =>
                           item.key == data.conType
                         ).name}
                       </p>
@@ -242,10 +256,11 @@ VideoDetails.propTypes = {
 };
 
 function mapStateToProps(state) {
-  const {video, categorys} = state;
+  const {video, categorys, vcgCategorys} = state;
   return {
     video,
-    categorys
+    categorys,
+    vcgCategorys
   };
 }
 

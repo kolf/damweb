@@ -21,9 +21,9 @@ import {
 import {connect} from 'react-redux';
 import {browserHistory, Link} from 'react-router';
 import './style.scss';
-import {updateVideo} from '../../../actions/updateVideo';
-import {getVideo} from '../../../actions/getVideo';
+import {updateVideo, getVideo} from '../../../actions/video';
 import {queryCategory} from '../../../actions/category';
+import {queryVcgCategory} from '../../../actions/vcgCategory';
 import {TAG} from '../../../config/tags';
 import {API_CONFIG} from '../../../config/api';
 import Video from 'react-html5video';
@@ -52,6 +52,7 @@ class VideoUpdate extends Component {
   componentDidMount() {
     const {dispatch} = this.props;
     dispatch(queryCategory());
+    dispatch(queryVcgCategory());
     dispatch(getVideo({
       id: this.state.id
     }, (videoData) => {
@@ -87,6 +88,9 @@ class VideoUpdate extends Component {
         creds.tapeTime = JSON.stringify(creds.tapeTime).substr(1, 10)
       }
 
+      // if(creds.onlineStatus ==)
+      creds.onlineStatus = creds.onlineStatus?'1':'0';
+
       copyrightObj.authType = creds.authType;
       copyrightObj.ownerType = creds.ownerType;
 
@@ -94,7 +98,6 @@ class VideoUpdate extends Component {
 
       Object.assign(creds, {
         id: this.state.id,
-        tags: creds.tags.join(','),
         copyrightObj
       });
 
@@ -117,18 +120,19 @@ class VideoUpdate extends Component {
     setFieldsValue({
       displayName: file.displayName,
       remark: file.remark,
-      vcgCategory: file.vcgCategory || '',
+      vcgCategory: file.vcgCategory || [],
       category: file.category || [],
-      tags: file.tags ? file.tags.split(',') : [],
+      tags: file.tags,
       keywords: file.keywords,
       author: file.author,
-      conType: file.conType || '',
+      conType: file.conType || [],
       ownerType: file.copyrightObj.ownerType + '',
       authType: file.copyrightObj.authType + '',
       rightsType: rightsType,
       expireDate: expireDate,
       locale: file.locale || '',
       tapeTime: tapeTime,
+      onlineStatus: file.onlineStatus == '1' ? true : false
     })
   }
 
@@ -136,6 +140,7 @@ class VideoUpdate extends Component {
   render() {
     const {getFieldDecorator} = this.props.form;
     const categoryData = this.props.categorys.data || [];
+    const vcgCategorysData = this.props.vcgCategorys.data || [];
     const {video: {data}} = this.props;
 
     const toTreeData = data => {
@@ -151,6 +156,18 @@ class VideoUpdate extends Component {
       })
     };
 
+    const toVcgTreeData = data => {
+      return data.map((item) => {
+        let obj = {
+          value: item.id + '',
+          label: item.cateName
+        };
+        if (item.childNode.length) {
+          obj.children = toVcgTreeData(item.childNode)
+        }
+        return obj;
+      })
+    };
     const cpAttachProps = {
       action: API_CONFIG.baseUri + API_CONFIG.videoUploadAttach + '?token='+ cookie.get('token'),
       accept: 'application/*',
@@ -183,17 +200,17 @@ class VideoUpdate extends Component {
             <Row gutter={24}>
               <Col lg={{span: 16}}>
                 <div className="edit-view">
-                  <Video controls loop muted poster="../../../assets/images/music.png"
-                         style={{width: '100%', height: '100%'}}>
+                  {data.ossidUrl && <Video controls loop muted poster="../../../assets/images/music.png" style={{width: '100%', height: '100%'}}>
                     <source src={data.ossidUrl} type="video/mp4"/>
-                  </Video>
+                  </Video>}
                 </div>
               </Col>
               <Col lg={{span: 8}}>
                 <Form horizontal onSubmit={this.handleSubmit}>
-                  <div className="ant-row ant-col-offset-6 pad-bottom">
+                  <div className="ant-row pad-bottom">
                     <Button size="large" type="primary" htmlType="submit">保存编辑</Button>
                     <Button size="large" className="gap-left"><a href={data.ossidUrl}>下载视频</a></Button>
+                    <a style={{marginLeft: 5}} target="_black" href={data.ossidUrl}><Icon type="link" />查看源视频</a>
                   </div>
                   <Tabs type="card" animated={false}>
                     <TabPane tab="基本信息" key="Tab_1">
@@ -228,70 +245,63 @@ class VideoUpdate extends Component {
                         )}
                       </FormItem>
 
-                      <FormItem {...formItemLayout} label="VCG分类">
-                        {getFieldDecorator('vcgCategory', {
-                          rules: [
-                            {required: true, message: '请选择VCG分类'}
-                          ]
-                        })(
-                          <Select placeholder="请选择" style={{width: '100%'}}>
-                            {TAG.audio.audio_type.map(item =>
-                              <Option key={item.key}>{item.name}</Option>
-                            )}
-                          </Select>
-                        )}
-                        <div className="ant-form-explain">(全局分类)</div>
-                      </FormItem>
+              <FormItem {...formItemLayout} label="VCG分类">
+                {getFieldDecorator('vcgCategory', {
+                  rules: [
+                    {required: true, message: '请选择VCG分类'}
+                  ]
+                })(
+                  <TreeSelect size="large" allowClear dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
+                              treeData={toVcgTreeData(vcgCategorysData)} placeholder="请选择" treeDefaultExpandAll/>
+                )}
+                <div className="ant-form-explain">(全局分类)</div>
+              </FormItem>
 
-                      <FormItem {...formItemLayout} label="标签">
-                        {getFieldDecorator('tags', {
-                          rules: [
-                            {required: true, message: '请添加标签', type: 'array'}
-                          ]
-                        })(
-                          <Select tags placeholder="请添加标签" style={{width: '100%'}}>
-                            {TAG.tags.map(item =>
-                              <Option value={item.key} key={item.key}>{item.name}</Option>
-                            )}
-                          </Select>
-                        )}
-                      </FormItem>
-                      <FormItem {...formItemLayout} label="关健字">
-                        {getFieldDecorator('keywords', {
-                          rules: [
-                            {required: true, message: '请添加关健字'}
-                          ]
-                        })(
-                          <Input placeholder="请添加关健字"/>)}
-                      </FormItem>
-                      <FormItem {...formItemLayout} label="作者">
-                        {getFieldDecorator('author', {
-                          rules: [
-                            {required: true, message: '请填写作者'}
-                          ]
-                        })(<Input placeholder="请填写作者"/>)}
-                      </FormItem>
-                      <FormItem {...formItemLayout} label="拍摄时间">
-                        {getFieldDecorator('tapeTime', {})(
-                          <DatePicker />
-                        )}
-                      </FormItem>
-                      <FormItem {...formItemLayout} label="拍摄地点">
-                        {getFieldDecorator('locale', {
-                        })(<Input placeholder="请填写拍摄地点"/>)}
-                      </FormItem>
-                      <FormItem {...formItemLayout} label="内容类别">
-                        {getFieldDecorator('conType', {
-                          rules: [
-                            {required: true, message: '请选择内容类别'}
-                          ]
-                        })(
-                          <Select placeholder="请选择" style={{width: '100%'}}>
-                            {TAG.audio.con_type.map(item =>
-                              <Option key={item.key}>{item.name}</Option>
-                            )}
-                          </Select>)}
-                      </FormItem>
+              <FormItem {...formItemLayout} label="标签">
+                {getFieldDecorator('tags', {
+                  rules: [
+                    {required: true, message: '请添加关健字'}
+                  ]
+                })(
+                  <Input placeholder="请添加关健字"/>)}
+                <div className="ant-form-explain">多个标签以','隔开</div>
+              </FormItem>
+              <FormItem {...formItemLayout} label="关健字">
+                {getFieldDecorator('keywords', {
+                  rules: [
+                    {required: true, message: '请添加关健字'}
+                  ]
+                })(
+                  <Input placeholder="请添加关健字"/>)}
+                <div className="ant-form-explain">多个关健字以','隔开</div>
+              </FormItem>
+              <FormItem {...formItemLayout} label="作者">
+                {getFieldDecorator('author', {
+                  rules: [
+                    {required: true, message: '请填写作者'}
+                  ]
+                })(<Input placeholder="请填写作者"/>)}
+              </FormItem>
+              <FormItem {...formItemLayout} label="拍摄时间">
+                {getFieldDecorator('tapeTime', {})(
+                  <DatePicker />
+                )}
+              </FormItem>
+              <FormItem {...formItemLayout} label="拍摄地点">
+                {getFieldDecorator('locale', {})(<Input placeholder="请填写拍摄地点"/>)}
+              </FormItem>
+              <FormItem {...formItemLayout} label="内容类别">
+                {getFieldDecorator('conType', {
+                  rules: [
+                    {required: true, message: '请选择内容类别'}
+                  ]
+                })(
+                  <Select placeholder="请选择" style={{width: '100%'}}>
+                    {TAG.video.con_type.map(item =>
+                      <Option key={item.key}>{item.name}</Option>
+                    )}
+                  </Select>)}
+              </FormItem>
 
 
                     </TabPane>
@@ -338,7 +348,7 @@ class VideoUpdate extends Component {
                     </TabPane>
                   </Tabs>
                   <Col xs={{offset: 6}}>
-                    {getFieldDecorator('agreement', {initialValue: false, valuePropName: 'checked'})(
+                    {getFieldDecorator('onlineStatus', {valuePropName: 'checked'})(
                       <Checkbox>是否在展示平台显示资源</Checkbox>
                     )}
                   </Col>
@@ -384,10 +394,11 @@ VideoUpdate.propTypes = {
 };
 
 function mapStateToProps(state) {
-  const {video, categorys} = state;
+  const {video, categorys, vcgCategorys} = state;
   return {
     video,
-    categorys
+    categorys,
+    vcgCategorys
   };
 }
 

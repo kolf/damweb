@@ -9,7 +9,7 @@ const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
 import {API_CONFIG} from '../../../config/api';
-import { updateImage } from '../../../actions/updateImage';
+import { updateImage } from '../../../actions/image';
 
 import './style.scss';
 

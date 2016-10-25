@@ -12,7 +12,7 @@ import {
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
 import './style.scss';
-import {getAudio} from '../../../actions/getAudio';
+import {getAudio} from '../../../actions/audio';
 import {TAG} from '../../../config/tags';
 import Video from 'react-html5video';
 

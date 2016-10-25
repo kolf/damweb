@@ -23,7 +23,7 @@ import {browserHistory} from 'react-router';
 
 import {queryResource} from '../../../actions/queryResource';
 import {review} from '../../../actions/review';
-
+import defaultVideoThumb from '../../../assets/images/defaultVideo.gif';
 import Video from 'react-html5video';
 
 const CreateForm = Form.create;
@@ -140,13 +140,16 @@ class ReviewIndex extends Component {
     const {getFieldDecorator} = this.props.form;
     const {resources:{data, meta:{total}}} = this.props;
 
+    // console.log(resources);
+
     const thumbItemLayout = {
       xs: {span: 6},
       lg: {span: 3}
     };
 
     const pager = {
-      "page": this.state.query.pageNum,
+      'defaultCurrent': 1,
+      "current": this.state.query.pageNum,
       "pageSize": this.state.query.pageSize,
       "total": total,
       "pageSizeOptions": ['24', '48', '96'],
@@ -205,7 +208,7 @@ class ReviewIndex extends Component {
                     if (val.length) {
                       this.state.query.startDate = JSON.stringify(val[0]).substr(1, 10);
                       this.state.query.endDate = JSON.stringify(val[1]).substr(1, 10);
-                    }else{
+                    } else {
                       delete this.state.query.startDate;
                       delete this.state.query.endDate;
                       this.queryList();
@@ -259,9 +262,9 @@ class ReviewIndex extends Component {
                           return <p><img src={item.ossid3} className="hidden"/><img src={item.ossid3} alt="item.name"/>
                           </p>;
                         case 3:
-                          return <Video controls muted>
-                            <source src={item.ossidUrl} type="video/mp4"/>
-                          </Video>;
+                          return <p><img src={defaultVideoThumb} className="hidden"/><img src={defaultVideoThumb}
+                                                                                          alt="item.name"/>
+                          </p>;
                         case 4:
                           return <p><img src={item.ossId2} className="hidden"/><img src={item.ossId2} alt="item.name"/>
                           </p>;

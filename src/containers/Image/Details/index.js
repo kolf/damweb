@@ -19,7 +19,7 @@ import {
 import {connect} from 'react-redux';
 import {browserHistory, Link} from 'react-router';
 import './style.scss';
-import {getImage} from '../../../actions/getImage';
+import {getImage} from '../../../actions/Image';
 import {queryCategory} from '../../../actions/category';
 import {TAG} from '../../../config/tags';
 

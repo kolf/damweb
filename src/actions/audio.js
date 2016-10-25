@@ -42,3 +42,15 @@ export function getAudio(params) {
     });
   };
 }
+
+export function updateAudio(creds, cb) {
+  return () => {
+    return cFetch(API_CONFIG.audioUpdate, { method: "POST", body: JSON.stringify(creds) }).then((res) => {
+      if (res.jsonResult.returnCode === '1') {
+        cb && cb(res.jsonResult.msg);
+      } else {
+        message.error(res.jsonResult.msg);
+      }
+    });
+  };
+}

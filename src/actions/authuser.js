@@ -24,9 +24,6 @@ export function authuser(params) {
   };
 }
 
-
-
-
 function requestAuthUser(user) {
   return {
     type: USER_ROLE_REQUEST,

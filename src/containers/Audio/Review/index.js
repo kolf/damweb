@@ -14,8 +14,7 @@ import {
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
 import './style.scss';
-import {updateAudio} from '../../../actions/updateAudio';
-import {getAudio} from '../../../actions/getAudio';
+import {updateAudio, getAudio} from '../../../actions/audio';
 import {review} from '../../../actions/review';
 import {TAG} from '../../../config/tags';
 import Video from 'react-html5video';

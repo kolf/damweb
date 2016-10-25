@@ -28,6 +28,10 @@ export default {
     isFetching: false,
     data: []
   },
+  vcgCategorys: {
+    isFetching: false,
+    data: []
+  },
   audio: {
     isFetching: false,
     data: {}

@@ -49,5 +49,17 @@ export const TAG = {
       {key: '10', name: '爵士'}
     ],
     tag: []
+  },
+  video: {
+    con_type: [
+      {key: '1', name: '明星'},
+      {key: '2', name: '影视'},
+      {key: '3', name: '体育'},
+      {key: '4', name: '科技'},
+      {key: '5', name: '娱乐媒体'},
+      {key: '6', name: '新闻'},
+      {key: '7', name: '八卦'},
+      {key: '8', name: '纪录片'}
+    ]
   }
 };
