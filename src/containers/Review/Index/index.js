@@ -262,8 +262,7 @@ class ReviewIndex extends Component {
                           return <p><img src={item.ossid3} className="hidden"/><img src={item.ossid3} alt="item.name"/>
                           </p>;
                         case 3:
-                          return <p><img src={defaultVideoThumb} className="hidden"/><img src={defaultVideoThumb}
-                                                                                          alt="item.name"/>
+                          return <p><img src={item.ossidUrl4} className="hidden"/><img src={item.ossidUrl4} alt="item.name"/>
                           </p>;
                         case 4:
                           return <p><img src={item.ossId2} className="hidden"/><img src={item.ossId2} alt="item.name"/>

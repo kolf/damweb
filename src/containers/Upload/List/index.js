@@ -227,7 +227,7 @@ class UploadList extends Component {
                           return <p><img src={item.ossid3} className="hidden"/><img src={item.ossid3} alt="item.name"/>
                           </p>;
                         case 3:
-                          return <p><img src={defaultVideoThumb} className="hidden"/><img src={defaultVideoThumb} alt="item.name"/>
+                          return <p><img src={item.ossidUrl4} className="hidden"/><img src={item.ossidUrl4} alt="item.name"/>
                           </p>;
                         case 4:
                           return <p><img src={item.ossId2} className="hidden"/><img src={item.ossId2} alt="item.name"/>
@@ -249,7 +249,7 @@ class UploadList extends Component {
                   })()}
                     <div className="thumb-list-item-btns ant-btn-group ant-btn-group-sm">
                       <span className="ant-btn ant-btn-primary ant-btn-icon-only"><Icon type="eye-o"/></span>
-                      <span className="ant-btn ant-btn-icon-only"><Icon type="download"/></span>
+                      <a href={data.ossidUrl} className="ant-btn ant-btn-icon-only"><Icon type="download"/></a>
                     </div>
                   </div>
 
