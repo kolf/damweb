@@ -1,6 +1,6 @@
-// const host = "http://dev.dam-server.vcg.com";
+const host = "http://dev.dam-server.vcg.com";
 // const host = "http://192.168.3.178:8080";
-const host = "http://192.168.3.120:8080";
+// const host = "http://192.168.3.120:8080";
 // const host = "http://192.168.3.109:8080";
 
 const baseUri = host + "/";

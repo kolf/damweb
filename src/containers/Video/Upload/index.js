@@ -163,6 +163,8 @@ class VideoUpload extends Component {
       listType: 'picture-card',
       accept: 'video/*',
       multiple: true,
+      headers:{"X-Requested-With": ''},
+      // withCredentials:true,
       onChange: ({file}) => {
         if (file.status === 'done') {
           const fileList = this.state.fileList.concat(file);
@@ -211,6 +213,10 @@ class VideoUpload extends Component {
       action: API_CONFIG.baseUri + API_CONFIG.videoUploadAttach + '?token=' + cookie.get('token'),
       accept: 'application/*',
       showUploadList: false,
+      headers:{
+        "X-Requested-With": null
+      },
+      // withCredentials:true,
       disabled: this.state.attachId ? false : true,
       handleChange(info) {
         let fileList = info.fileList;

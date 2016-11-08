@@ -1,1 +1,0 @@
-cd /application/ && node  damServer.js
