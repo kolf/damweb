@@ -29,7 +29,7 @@ class UploadList extends Component {
         startDate: '',
         endDate: '',
         phrase: '',
-        auditStatus: 1,
+        auditStatus: 2,
       }
     };
   }
