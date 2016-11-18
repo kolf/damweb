@@ -58,7 +58,8 @@ class UploadList extends Component {
   }
 
   goToDetails(assetType, id) {
-    browserHistory.push(`/${this.getAssetTypeName(assetType)}/details/${id}`);
+    // browserHistory.push(`/${this.getAssetTypeName(assetType)}/details/${id}`);
+    // location.href=`/${this.getAssetTypeName(assetType)}/details/${id}`;
   }
 
   getAssetTypeName(assetType) {
@@ -215,8 +216,8 @@ class UploadList extends Component {
           <Row gutter={24}>
             {data && data.map(item =>
               <Col {...thumbItemLayout}>
-                <div className="thumb-list-item">
-                  <div className="thumb-list-item-img" onClick={this.goToDetails.bind(this, item.assetType, item.id)}>
+                <a className="thumb-list-item" target="_blank" href={`/${this.getAssetTypeName(item.assetType)}/details/${item.id}`}>
+                  <div className="thumb-list-item-img">
                     {(() => {
                       switch (item.assetType) {
                         case 1:
@@ -257,7 +258,7 @@ class UploadList extends Component {
                     {item.copyrightObj && renderAuthType(item.copyrightObj.authType)}
                     {item.assetType && renderAssetType(item.assetType)}
                   </div>
-                </div>
+                </a>
               </Col>
             )}
           </Row>

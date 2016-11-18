@@ -250,7 +250,7 @@ class ReviewIndex extends Component {
           <Row gutter={24}>
             {data && data.map(item =>
               <Col {...thumbItemLayout}>
-                <div className="thumb-list-item">
+                <a className="thumb-list-item" target="_blank" href={`/${this.getAssetTypeName(item.assetType)}/details/${item.id}`}>
                   <div className="thumb-list-item-img" onClick={this.goToDetails.bind(this, item.assetType, item.id)}>
                     {(() => {
                       switch (item.assetType) {
@@ -296,7 +296,7 @@ class ReviewIndex extends Component {
                     {item.copyrightObj && renderAuthType(item.copyrightObj.authType)}
                     {item.assetType && renderAssetType(item.assetType)}
                   </div>
-                </div>
+                </a>
               </Col>
             )}
           </Row>
