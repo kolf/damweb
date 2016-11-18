@@ -261,7 +261,7 @@ class VideoReview extends Component {
                         )}
                       </FormItem>
 
-              <FormItem {...formItemLayout} label="VCG分类">
+              {/* <FormItem {...formItemLayout} label="VCG分类">
                 {getFieldDecorator('vcgCategory', {
                   // rules: [
                   //   {required: true, message: '请选择VCG分类'}
@@ -271,9 +271,9 @@ class VideoReview extends Component {
                               treeData={toVcgTreeData(vcgCategorysData)} placeholder="请选择" treeDefaultExpandAll/>
                 )}
                 <div className="ant-form-explain">(全局分类)</div>
-              </FormItem>
+              </FormItem> */}
 
-              <FormItem {...formItemLayout} label="标签">
+              {/* <FormItem {...formItemLayout} label="标签">
                 {getFieldDecorator('tags', {
                   // rules: [
                   //   {required: true, message: '请添加关健字'}
@@ -281,7 +281,7 @@ class VideoReview extends Component {
                 })(
                   <Input placeholder="请添加关健字"/>)}
                 <div className="ant-form-explain">多个标签以','隔开</div>
-              </FormItem>
+              </FormItem> */}
               <FormItem {...formItemLayout} label="关健字">
                 {getFieldDecorator('keywords', {
                   rules: [
@@ -296,7 +296,7 @@ class VideoReview extends Component {
                   // rules: [
                   //   {required: true, message: '请填写作者'}
                   // ]
-                })(<Input placeholder="请填写作者"/>)}
+                })(<Input placeholder="请填写作者" disabled  />)}
               </FormItem>
               {/* <FormItem {...formItemLayout} label="拍摄时间">
                 {getFieldDecorator('tapeTime', {})(

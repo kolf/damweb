@@ -29,7 +29,7 @@ import {API_CONFIG} from '../../../config/api';
 import Video from 'react-html5video';
 import moment from 'moment';
 import cookie from 'js-cookie';
-
+import localStorage from '../../../utils/localStorage';
 const CreateForm = Form.create;
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -109,13 +109,18 @@ class VideoUpdate extends Component {
   }
 
   setValues(file) {
+    console.log(file);
     const {setFieldsValue} = this.props.form;
     let rightsType = [];
-    let expireDate = file.copyrightObj.expireDate? moment(file.copyrightObj.expireDate.substr(0, 10)) : '';
+    let expireDate = (file.copyrightObj && file.copyrightObj.expireDate)? moment(file.copyrightObj.expireDate.substr(0, 10)) : '';
     let tapeTime = file.tapeTime? moment(file.tapeTime.substr(0, 10)) : '';
 
-    if (file.copyrightObj.objRights === 1) rightsType.push(`objRights`);
-    if (file.copyrightObj.portraitRights === 1) rightsType.push(`portraitRights`);
+    if(file.copyrightObj){
+      if (file.copyrightObj.objRights === 1) rightsType.push(`objRights`);
+      if (file.copyrightObj.portraitRights === 1) rightsType.push(`portraitRights`);
+    }
+
+    console.log(file.author, localStorage.get('user').damId);
 
     setFieldsValue({
       displayName: file.displayName,
@@ -124,10 +129,10 @@ class VideoUpdate extends Component {
       category: file.category || [],
       tags: file.tags,
       keywords: file.keywords,
-      author: file.author,
+      author: file.author || localStorage.get('user').damId,
       conType: file.conType || [],
-      ownerType: file.copyrightObj.ownerType + '',
-      authType: file.copyrightObj.authType + '',
+      ownerType: file.copyrightObj?file.copyrightObj.ownerType + '':'',
+      authType: file.copyrightObj?file.copyrightObj.authType + '':'',
       rightsType: rightsType,
       expireDate: expireDate,
       locale: file.locale || '',
@@ -245,27 +250,27 @@ class VideoUpdate extends Component {
                         )}
                       </FormItem>
 
-              <FormItem {...formItemLayout} label="VCG分类">
+              {/* <FormItem {...formItemLayout} label="VCG分类">
                 {getFieldDecorator('vcgCategory', {
-                  rules: [
-                    {required: true, message: '请选择VCG分类'}
-                  ]
+                  // rules: [
+                  //   {required: true, message: '请选择VCG分类'}
+                  // ]
                 })(
                   <TreeSelect size="large" allowClear dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
                               treeData={toVcgTreeData(vcgCategorysData)} placeholder="请选择" treeDefaultExpandAll/>
                 )}
                 <div className="ant-form-explain">(全局分类)</div>
-              </FormItem>
+              </FormItem> */}
 
-              <FormItem {...formItemLayout} label="标签">
+              {/* <FormItem {...formItemLayout} label="标签">
                 {getFieldDecorator('tags', {
-                  rules: [
-                    {required: true, message: '请添加关健字'}
-                  ]
+                  // rules: [
+                  //   {required: true, message: '请添加关健字'}
+                  // ]
                 })(
                   <Input placeholder="请添加关健字"/>)}
                 <div className="ant-form-explain">多个标签以','隔开</div>
-              </FormItem>
+              </FormItem> */}
               <FormItem {...formItemLayout} label="关健字">
                 {getFieldDecorator('keywords', {
                   rules: [
@@ -277,12 +282,12 @@ class VideoUpdate extends Component {
               </FormItem>
               <FormItem {...formItemLayout} label="作者">
                 {getFieldDecorator('author', {
-                  rules: [
-                    {required: true, message: '请填写作者'}
-                  ]
-                })(<Input placeholder="请填写作者"/>)}
+                  // rules: [
+                  //   {required: true, message: '请填写作者'}
+                  // ]
+                })(<Input placeholder="请填写作者" disabled  />)}
               </FormItem>
-              <FormItem {...formItemLayout} label="拍摄时间">
+              {/* <FormItem {...formItemLayout} label="拍摄时间">
                 {getFieldDecorator('tapeTime', {})(
                   <DatePicker />
                 )}
@@ -292,16 +297,16 @@ class VideoUpdate extends Component {
               </FormItem>
               <FormItem {...formItemLayout} label="内容类别">
                 {getFieldDecorator('conType', {
-                  rules: [
-                    {required: true, message: '请选择内容类别'}
-                  ]
+                  // rules: [
+                  //   {required: true, message: '请选择内容类别'}
+                  // ]
                 })(
                   <Select placeholder="请选择" style={{width: '100%'}}>
                     {TAG.video.con_type.map(item =>
                       <Option key={item.key}>{item.name}</Option>
                     )}
                   </Select>)}
-              </FormItem>
+              </FormItem> */}
 
 
                     </TabPane>
@@ -347,11 +352,11 @@ class VideoUpdate extends Component {
                       </FormItem>
                     </TabPane>
                   </Tabs>
-                  <Col xs={{offset: 6}}>
+                  {/* <Col xs={{offset: 6}}>
                     {getFieldDecorator('onlineStatus', {valuePropName: 'checked'})(
                       <Checkbox>是否在展示平台显示资源</Checkbox>
                     )}
-                  </Col>
+                  </Col> */}
                 </Form>
               </Col>
             </Row>

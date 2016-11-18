@@ -151,16 +151,16 @@ class VideoDetails extends Component {
                       {findCategory(categoryData, data.category)}
                     </FormItem>
 
-                    {data.vcgCategory && <FormItem {...formItemLayout} label="VCG分类">
+                    {/* {data.vcgCategory && <FormItem {...formItemLayout} label="VCG分类">
                       {findVcgCategory(vcgCategorysData, data.vcgCategory)}
-                    </FormItem>}
+                    </FormItem>} */}
 
-                    <FormItem {...formItemLayout} label="标签">
+                    {/* <FormItem {...formItemLayout} label="标签">
                       {data.tags && (()=> {
                         return data.tags.split(',').map(tag => <Tag>{tag}</Tag>)
                       })()
                       }
-                    </FormItem>
+                    </FormItem> */}
 
                     <FormItem {...formItemLayout} label="关健字">
                       <p className="ant-form-text">{data.keywords}</p>
@@ -169,7 +169,8 @@ class VideoDetails extends Component {
                     <FormItem {...formItemLayout} label="作者">
                       <p className="ant-form-text">{data.author}</p>
                     </FormItem>
-                    {data.tapeTime && <FormItem {...formItemLayout} label="拍摄时间">
+
+                    {/* {data.tapeTime && <FormItem {...formItemLayout} label="拍摄时间">
                         <p className="ant-form-text">{data.tapeTime}</p>
                       </FormItem>
                     }
@@ -187,7 +188,7 @@ class VideoDetails extends Component {
 
                     <FormItem {...formItemLayout} label="上传时间">
                       <p className="ant-form-text">{data.uploadTime}</p>
-                    </FormItem>
+                    </FormItem> */}
 
                   </TabPane>
                   <TabPane tab="版权信息" key="2">
