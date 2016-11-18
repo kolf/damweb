@@ -214,7 +214,7 @@ class VideoUpdate extends Component {
                 <Form horizontal onSubmit={this.handleSubmit}>
                   <div className="ant-row pad-bottom">
                     <Button size="large" type="primary" htmlType="submit">保存编辑</Button>
-                    <Button size="large" className="gap-left"><a href={data.ossidUrl}>下载视频</a></Button>
+                    {/* <Button size="large" className="gap-left"><a href={data.ossidUrl}>下载视频</a></Button> */}
                     {/* <a style={{marginLeft: 5}} target="_black" href={data.ossidUrl}><Icon type="link" />查看源视频</a> */}
                   </div>
                   <Tabs type="card" animated={false}>

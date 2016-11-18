@@ -134,7 +134,7 @@ class VideoDetails extends Component {
                 <div className="ant-row ant-form-item">
                   <Button htmlType="submit" size="large" type="primary"><Link
                     to={`/video/update/${this.props.routeParams.id}`}>编辑视频</Link></Button>
-                  <Button size="large" className="gap-left"><a href={data.ossidUrl}>下载视频</a></Button>
+                  {/* <Button size="large" className="gap-left"><a href={data.ossidUrl}>下载视频</a></Button> */}
                   {/* <a style={{marginLeft: 5}} target="_black" href={data.ossidUrl}><Icon type="link" />查看源视频</a> */}
                 </div>
                 <Tabs type="card" animated={false}>
