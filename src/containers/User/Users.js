@@ -17,6 +17,12 @@ class Users extends Component {
     super(props);
     this.handleTableChange = this.handleTableChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.state = {
+      query: {
+        pageSize: 10,
+        pageNum: 1
+      }
+    }
   }
 
   handleSubmit(e) {
@@ -106,8 +112,6 @@ class Users extends Component {
         key: 'operation',
         render: (item) => (
           <ButtonGroup>
-            <Button>启用</Button>
-            <Button>停用</Button>
             <Button htmlType="submit"><Link to={`/authUser/${item.damId}`}>分配角色</Link></Button>
           </ButtonGroup>
         )
@@ -117,8 +121,9 @@ class Users extends Component {
     const pagination = {
       showSizeChanger: true,
       total: meta.total,
-      pageSize: meta.pageSize,
-      pageSizeOptions: ['5','10','20','40']
+      pageSize: this.state.query.pageSize,
+      page: this.state.query.pageNum,
+      pageSizeOptions: ['10', '20', '40', '100'],
     };
 
     const formItemLayout = {

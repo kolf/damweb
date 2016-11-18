@@ -30,7 +30,7 @@ import {API_CONFIG} from '../../../config/api';
 import Video from 'react-html5video';
 import moment from 'moment';
 import cookie from 'js-cookie';
-
+import localStorage from '../../../utils/localStorage';
 const CreateForm = Form.create;
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -127,7 +127,7 @@ class VideoReview extends Component {
       category: file.category || [],
       tags: file.tags,
       keywords: file.keywords,
-      author: file.author,
+      author: file.author || localStorage.get('user').damId,
       conType: file.conType || [],
       ownerType: ownerType,
       authType: authType,
@@ -226,7 +226,7 @@ class VideoReview extends Component {
                   <div className="ant-row pad-bottom">
                     <Button size="large" type="primary" htmlType="submit">审核通过</Button>
                     <Button size="large" className="gap-left" onClick={this.handleReview.bind(this, 4)}>审核拒绝</Button>
-                    <a style={{marginLeft: 5}} target="_black" href={data.ossidUrl}><Icon type="link" />查看源视频</a>
+                    {/* <a style={{marginLeft: 5}} target="_black" href={data.ossidUrl}><Icon type="link" />查看源视频</a> */}
                   </div>
                   <Tabs type="card" animated={false}>
                     <TabPane tab="基本信息" key="Tab_1">
@@ -263,9 +263,9 @@ class VideoReview extends Component {
 
               <FormItem {...formItemLayout} label="VCG分类">
                 {getFieldDecorator('vcgCategory', {
-                  rules: [
-                    {required: true, message: '请选择VCG分类'}
-                  ]
+                  // rules: [
+                  //   {required: true, message: '请选择VCG分类'}
+                  // ]
                 })(
                   <TreeSelect size="large" allowClear dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
                               treeData={toVcgTreeData(vcgCategorysData)} placeholder="请选择" treeDefaultExpandAll/>
@@ -275,9 +275,9 @@ class VideoReview extends Component {
 
               <FormItem {...formItemLayout} label="标签">
                 {getFieldDecorator('tags', {
-                  rules: [
-                    {required: true, message: '请添加关健字'}
-                  ]
+                  // rules: [
+                  //   {required: true, message: '请添加关健字'}
+                  // ]
                 })(
                   <Input placeholder="请添加关健字"/>)}
                 <div className="ant-form-explain">多个标签以','隔开</div>
@@ -293,12 +293,12 @@ class VideoReview extends Component {
               </FormItem>
               <FormItem {...formItemLayout} label="作者">
                 {getFieldDecorator('author', {
-                  rules: [
-                    {required: true, message: '请填写作者'}
-                  ]
+                  // rules: [
+                  //   {required: true, message: '请填写作者'}
+                  // ]
                 })(<Input placeholder="请填写作者"/>)}
               </FormItem>
-              <FormItem {...formItemLayout} label="拍摄时间">
+              {/* <FormItem {...formItemLayout} label="拍摄时间">
                 {getFieldDecorator('tapeTime', {})(
                   <DatePicker />
                 )}
@@ -308,16 +308,16 @@ class VideoReview extends Component {
               </FormItem>
               <FormItem {...formItemLayout} label="内容类别">
                 {getFieldDecorator('conType', {
-                  rules: [
-                    {required: true, message: '请选择内容类别'}
-                  ]
+                  // rules: [
+                  //   {required: true, message: '请选择内容类别'}
+                  // ]
                 })(
                   <Select placeholder="请选择" style={{width: '100%'}}>
                     {TAG.video.con_type.map(item =>
                       <Option key={item.key}>{item.name}</Option>
                     )}
                   </Select>)}
-              </FormItem>
+              </FormItem> */}
 
 
                     </TabPane>
@@ -363,11 +363,11 @@ class VideoReview extends Component {
                       </FormItem>
                     </TabPane>
                   </Tabs>
-                  <Col xs={{offset: 6}}>
+                  {/* <Col xs={{offset: 6}}>
                     {getFieldDecorator('onlineStatus', {valuePropName: 'checked'})(
                       <Checkbox>是否在展示平台显示资源</Checkbox>
                     )}
-                  </Col>
+                  </Col> */}
                 </Form>
               </Col>
             </Row>

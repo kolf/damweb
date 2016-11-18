@@ -247,10 +247,10 @@ class UploadList extends Component {
                         return item.title;
                     }
                   })()}
-                    <div className="thumb-list-item-btns ant-btn-group ant-btn-group-sm">
+                    {/* <div className="thumb-list-item-btns ant-btn-group ant-btn-group-sm">
                       <span className="ant-btn ant-btn-primary ant-btn-icon-only"><Icon type="eye-o"/></span>
                       <a href={data.ossidUrl} className="ant-btn ant-btn-icon-only"><Icon type="download"/></a>
-                    </div>
+                    </div> */}
                   </div>
 
                   <div className="thumb-list-item-badges">
