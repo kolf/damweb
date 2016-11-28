@@ -1,4 +1,4 @@
-const host = "http://test.dam-server.vcg.com";
+const host = "http://123.57.3.226:8080";
 // const host = "http://192.168.3.178:8080";
 // const host = "http://192.168.3.120:8080";
 // const host = "http://192.168.3.109:8080";
