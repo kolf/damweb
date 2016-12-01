@@ -1,34 +1,21 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component, PropTypes} from "react";
 import {
   Form,
-  Select,
-  Input,
-  DatePicker,
-  Switch,
-  Radio,
-  Cascader,
   Button,
   Row,
   Col,
-  Upload,
-  Icon,
   Tag,
-  Checkbox,
   Tabs
-} from 'antd';
-import {connect} from 'react-redux';
-import {browserHistory, Link} from 'react-router';
-import './style.scss';
-import {getImage} from '../../../actions/Image';
-import {queryCategory} from '../../../actions/category';
-import {TAG} from '../../../config/tags';
+} from "antd";
+import {connect} from "react-redux";
+import {Link} from "react-router";
+import "./style.scss";
+import {getImage} from "../../../actions/image";
+import {queryCategory} from "../../../actions/category";
+import {TAG} from "../../../config/tags";
 
 const CreateForm = Form.create;
 const FormItem = Form.Item;
-const Option = Select.Option;
-const RadioButton = Radio.Button;
-const RadioGroup = Radio.Group;
-const CheckboxGroup = Checkbox.Group;
 const TabPane = Tabs.TabPane;
 
 let categoryName = '';
@@ -140,7 +127,8 @@ class ImageDetails extends Component {
                     <FormItem {...formItemLayout} label="标签">
                       {data.tags && (()=> {
                         const TagsData = data.tags.split(',') || [];
-                        return TAG.tags.filter(tag => (TagsData.indexOf(tag.key) !== -1)).map(item => <Tag>{item.name}</Tag>)
+                        return TAG.tags.filter(tag => (TagsData.indexOf(tag.key) !== -1)).map(item =>
+                          <Tag>{item.name}</Tag>)
                       })()
                       }
                     </FormItem>
@@ -246,7 +234,7 @@ function mapStateToProps(state) {
   const {image, categorys} = state;
   return {
     image,
-categorys
+    categorys
   };
 }
 

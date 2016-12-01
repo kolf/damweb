@@ -21,7 +21,7 @@ import {
 import {connect} from 'react-redux';
 import {browserHistory, Link} from 'react-router';
 import './style.scss';
-import {getImage, updateImage} from '../../../actions/Image';
+import {getImage, updateImage} from '../../../actions/image';
 import {queryCategory} from '../../../actions/category';
 import {TAG} from '../../../config/tags';
 import {API_CONFIG} from '../../../config/api';

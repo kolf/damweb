@@ -1,8 +1,8 @@
 ## 使用
 ### 安装
 ```
-git clone git@gitlab.vcg.com:dam/damAdmin.git
-cd damAdmin
+git clone git@gitlab.vcg.com:dam/damweb.git
+cd damweb
 npm install
 
 # 开发
